@@ -2,13 +2,22 @@ package main
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/rodeyfeld/doppler/db"
+	"github.com/rodeyfeld/doppler/handlers"
 	"net/http"
 )
 
+const dbName = "user_data.db"
+
 func main() {
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
+	app := echo.New()
+	app.HTTPErrorHandler = handlers.DopplerHTTPErrorHandler
+	app.Static("/", "assets")
+
+	app.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "HELO")
 	})
-	e.Logger.Fatal(e.Start(":1323"))
+
+	uStore, err := db.NewUserStore(dbName)
+	app.Logger.Fatal(e.Start(":1323"))
 }
