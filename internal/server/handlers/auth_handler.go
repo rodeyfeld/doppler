@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"echo-demo-project/models"
-	"echo-demo-project/repositories"
-	"echo-demo-project/requests"
-	"echo-demo-project/responses"
-	s "echo-demo-project/server"
-	tokenservice "echo-demo-project/services/token"
 	"fmt"
+	"github.com/rodeyfeld/doppler/internal/models"
+	"github.com/rodeyfeld/doppler/internal/repositories"
+	"github.com/rodeyfeld/doppler/internal/requests"
+	"github.com/rodeyfeld/doppler/internal/responses"
+	s "github.com/rodeyfeld/doppler/internal/server"
+	tokenservice "github.com/rodeyfeld/doppler/internal/services/token"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

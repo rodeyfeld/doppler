@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"echo-demo-project/models"
+	"github.com/rodeyfeld/doppler/internal/models"
 
 	"gorm.io/gorm"
 )

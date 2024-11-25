@@ -1,8 +1,8 @@
 package user
 
 import (
-	"echo-demo-project/requests"
-	"echo-demo-project/server/builders"
+	"github.com/rodeyfeld/doppler/internal/requests"
+	"github.com/rodeyfeld/doppler/internal/server/builders"
 
 	"golang.org/x/crypto/bcrypt"
 )

@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"echo-demo-project/models"
-
 	"gorm.io/gorm"
 )
 

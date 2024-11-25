@@ -1,8 +1,8 @@
 package token
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/models"
+	"github.com/rodeyfeld/doppler/internal/config"
+	"github.com/rodeyfeld/doppler/internal/models"
 
 	"github.com/golang-jwt/jwt/v5"
 )

@@ -1,8 +1,8 @@
 package post
 
 import (
-	"echo-demo-project/models"
-	"echo-demo-project/requests"
+	"github.com/rodeyfeld/doppler/internal/models"
+	"github.com/rodeyfeld/doppler/internal/requests"
 
 	"gorm.io/gorm"
 )

@@ -1,8 +1,8 @@
 package server
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/db"
+	"github.com/rodeyfeld/doppler/internal/config"
+	"github.com/rodeyfeld/doppler/internal/db"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"

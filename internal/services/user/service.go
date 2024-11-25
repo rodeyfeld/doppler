@@ -1,7 +1,7 @@
 package user
 
 import (
-	"echo-demo-project/requests"
+	"github.com/rodeyfeld/doppler/internal/requests"
 
 	"gorm.io/gorm"
 )
