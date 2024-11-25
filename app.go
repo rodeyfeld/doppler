@@ -1,19 +1,15 @@
 package application
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/server"
-	"echo-demo-project/server/routes"
+	"doppler/internal/server"
 	"log"
 )
 
-func Start(cfg *config.Config) {
-	app := server.NewServer(cfg)
-
-	routes.ConfigureRoutes(app)
-
-	err := app.Start(cfg.HTTP.Port)
+func Start() {
+	log.Print("spin")
+	appServer := server.NewServer()
+	err := appServer.Start()
 	if err != nil {
-		log.Fatal("Port already used")
+		log.Print(err)
 	}
 }
