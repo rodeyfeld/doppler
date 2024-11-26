@@ -4,17 +4,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Server struct {
+type AppServer struct {
 	Echo *echo.Echo
 }
 
-func NewServer() *Server {
-	return &Server{
+func New() *AppServer {
+	return &AppServer{
 		Echo: echo.New(),
 	}
 }
 
-func (server *Server) Start() error {
+func (server *AppServer) Start() error {
 	return server.Echo.Start(":1323")
 }
-

@@ -1,13 +1,14 @@
 package application
 
 import (
+	"doppler/internal/db"
 	"doppler/internal/server"
 	"log"
 )
 
 func Start() {
-	log.Print("spin")
-	appServer := server.NewServer()
+	db.SetupDb()
+	appServer := server.New()
 	err := appServer.Start()
 	if err != nil {
 		log.Print(err)
