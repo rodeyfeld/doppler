@@ -11,18 +11,14 @@ import (
 	"path/filepath"
 )
 
-type DB struct {
-	Db *sql.DB
-}
-
 var dbName string = "doppler.db"
 
-func Connect() (*sql.DB, error) {
+func Connect() *sql.DB {
 	db, err := sql.Open("sqlite", dbName)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to connect to %s: %s", dbName, err)
+		log.Panicf("Failed to connect to %v: %v", dbName, err)
 	}
-	return db, nil
+	return db
 }
 
 func SetupDb() {
@@ -56,10 +52,7 @@ func handleMigration(conn *sql.DB, path string, info fs.FileInfo, err error) err
 	return nil
 }
 func Migrate() {
-	conn, err := Connect()
-	if err != nil {
-		log.Panicf("Could not connect to DB during migration! %s", err)
-	}
+	conn := Connect()
 	filepath.Walk("sql/migrations", func(path string, entry fs.FileInfo, err error) error {
 		return handleMigration(conn, path, entry, err)
 	})

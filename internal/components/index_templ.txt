@@ -1,0 +1,1 @@
+<section class=\"mx-auto w-fit flex flex-col gap-8 text-center\"><h1 class=\"text-5xl font-bold\">)))DOPPLER)))</h1><p class=\"text-2xl font-thin\">Wave to the world.</p></section>

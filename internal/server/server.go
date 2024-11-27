@@ -1,19 +1,23 @@
 package server
 
 import (
+	"database/sql"
+	"doppler/internal/db"
 	"github.com/labstack/echo/v4"
 )
 
-type AppServer struct {
+type DopplerServer struct {
 	Echo *echo.Echo
+	DB   *sql.DB
 }
 
-func New() *AppServer {
-	return &AppServer{
+func NewDopplerServer() *DopplerServer {
+	return &DopplerServer{
 		Echo: echo.New(),
+		DB:   db.Connect(),
 	}
 }
 
-func (server *AppServer) Start() error {
+func (server *DopplerServer) Start() error {
 	return server.Echo.Start(":1323")
 }
