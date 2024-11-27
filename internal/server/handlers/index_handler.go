@@ -17,7 +17,7 @@ func NewIndexHandler(s *server.DopplerServer) *IndexHandler {
 }
 
 func (iH *IndexHandler) Index(c echo.Context) error {
-	indexComponent := components.Index()
+	indexComponent := components.Layout("Doppler")
 	return renderView(c, indexComponent)
 }
 

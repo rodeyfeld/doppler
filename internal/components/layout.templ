@@ -2,7 +2,7 @@ package components
 
 templ Layout(title string) {
 	<!DOCTYPE html>
-	<html lang="en">
+	<html lang="en" data-theme="forest">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,6 +13,7 @@ templ Layout(title string) {
 			<meta name="google" content="notranslate"/>
 			<link rel="shortcut icon" href="/static/img/templ.png" type="image/png"/>
 			<link rel="stylesheet" href="/static/css/main.css" type="text/css"/>
+			<link rel="stylesheet" href="/static/css/output.css"></link>
 			<title>{ title }</title>
 			<script src="/static/js/htmx.min.js"></script>
 			<script src="/static/js/hyperscript.min.js"></script>
