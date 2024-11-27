@@ -10,6 +10,7 @@ import (
 func Start() {
 	db.SetupDb()
 	dopplerServer := server.NewDopplerServer()
+	dopplerServer.Echo.Static("/static", "static")
 	routes.Setup(dopplerServer)
 	err := dopplerServer.Start()
 	if err != nil {
