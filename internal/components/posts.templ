@@ -1,0 +1,16 @@
+package components
+
+templ Posts() {
+  <div class="bg-primary-content border-solid border-4 border-tertiary-content">
+    { children... } 
+  </div>
+}
+
+templ PostIndex(createCmp templ.Component, listCmp templ.Component){
+  @Layout("app"){
+    @Posts(){
+      @createCmp
+      @listCmp
+    }
+  }
+}

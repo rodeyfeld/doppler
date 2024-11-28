@@ -16,8 +16,8 @@ func NewHomeHandler(s *server.DopplerServer) *HomeHandler {
 	return &HomeHandler{server: s}
 }
 
-func (iH *HomeHandler) HomeIndex(c echo.Context) error {
-	homeComponent := components.HomeIndex("Doppler", components.Home())
+func (h *HomeHandler) HomeIndex(c echo.Context) error {
+	homeComponent := components.HomeIndex("Doppler")
 	return renderView(c, homeComponent)
 }
 

@@ -2,15 +2,12 @@ package components
 
 templ Home() {
 	<section class="mx-auto w-fit flex flex-col gap-8 text-center">
-		<h1 class="text-5xl font-bold"><i class="fa-solid fa-water"></i>WAVES<i class="fa-solid fa-water"></i></h1>
-		<p class="text-2xl font-thin">
-
-		</p>
+		<h1 class="text-5xl font-bold">doppler.</h1>
 	</section>
 }
 
-templ HomeIndex(title string, cmp templ.Component) {
+templ HomeIndex(title string) {
 	@Layout(title){
-		@cmp
+		@Home() 
 	}
 }
