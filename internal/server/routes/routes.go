@@ -8,8 +8,8 @@ import (
 
 func Setup(s *server.DopplerServer) {
 
-	indexHandler := handlers.NewIndexHandler(s)
-	s.Echo.GET("/", indexHandler.Index)
+	homeHandler := handlers.NewHomeHandler(s)
+	s.Echo.GET("/", homeHandler.HomeIndex)
 
 	postHandler := handlers.NewPostHandler(s)
 

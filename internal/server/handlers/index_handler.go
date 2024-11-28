@@ -8,17 +8,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type IndexHandler struct {
+type HomeHandler struct {
 	server *server.DopplerServer
 }
 
-func NewIndexHandler(s *server.DopplerServer) *IndexHandler {
-	return &IndexHandler{server: s}
+func NewHomeHandler(s *server.DopplerServer) *HomeHandler {
+	return &HomeHandler{server: s}
 }
 
-func (iH *IndexHandler) Index(c echo.Context) error {
-	indexComponent := components.Layout("Doppler")
-	return renderView(c, indexComponent)
+func (iH *HomeHandler) HomeIndex(c echo.Context) error {
+	homeComponent := components.HomeIndex("Doppler", components.Home())
+	return renderView(c, homeComponent)
 }
 
 func renderView(c echo.Context, cmp templ.Component) error {
