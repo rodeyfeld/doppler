@@ -14,16 +14,35 @@ templ Layout(title string) {
 			<link rel="stylesheet" href="/static/css/all.min.css"></link>
 			<link rel="shortcut icon" href="/static/img/templ.png" type="image/png"/>
 			<link rel="stylesheet" href="/static/css/output.css"></link>
-			<title>{ title }</title>
+			<title>doppler | { title }</title>
 			<script src="/static/js/htmx.min.js"></script>
 		</head>
-		<body hx-boost="true">
-			<header>
-				@Header() 
-			</header>
-			<main>
-				{ children... }
-			</main>
+		<body>
+
+			@Header()
+			
+			<div class="drawer lg:drawer-open">
+			
+  <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex flex-col items-center justify-center" id="primary-content">
+    <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
+	Open Drawer
+    </label>
+    {children... }
+  </div>
+			@Sidebar()
+			</div>
 		</body>
 	</html>
+	<style>
+	#primary-content {
+		background-image:
+			radial-gradient(at 0% 99%, oklch(var(--b2) / 0.33) 0px, transparent 50%),
+			radial-gradient(at 0% 1%, oklch(var(--n) / .33) 0px, transparent 50%),
+			radial-gradient(at 99% 1%, oklch(var(--b2) / 0.15) 0px, transparent 50%),
+			radial-gradient(at 99% 99%, oklch(var(--n) / 0.15) 0px, transparent 50%);
+	}
+	}
+	</style>
 }
+

@@ -1,4 +1,5 @@
-<!doctype html><html lang=\"en\" data-theme=\"forest\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"description\" content=\"Doppler: Wave to the World\"><meta name=\"google\" content=\"notranslate\"><link rel=\"stylesheet\" href=\"/static/css/all.min.css\"><link rel=\"shortcut icon\" href=\"/static/img/templ.png\" type=\"image/png\"><link rel=\"stylesheet\" href=\"/static/css/output.css\"><title>
-</title><script src=\"/static/js/htmx.min.js\"></script></head><body hx-boost=\"true\"><header>
-</header><main>
-</main></body></html>
+<!doctype html><html lang=\"en\" data-theme=\"forest\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"description\" content=\"Doppler: Wave to the World\"><meta name=\"google\" content=\"notranslate\"><link rel=\"stylesheet\" href=\"/static/css/all.min.css\"><link rel=\"shortcut icon\" href=\"/static/img/templ.png\" type=\"image/png\"><link rel=\"stylesheet\" href=\"/static/css/output.css\"><title>doppler | 
+</title><script src=\"/static/js/htmx.min.js\"></script></head><body>
+<div class=\"drawer lg:drawer-open\"><input id=\"my-drawer-2\" type=\"checkbox\" class=\"drawer-toggle\"><div class=\"drawer-content flex flex-col items-center justify-center\" id=\"primary-content\"><label for=\"my-drawer-2\" class=\"btn btn-primary drawer-button lg:hidden\">Open Drawer</label>
+</div>
+</div></body></html><style>\n\t#primary-content {\n\t\tbackground-image:\n\t\t\tradial-gradient(at 0% 99%, oklch(var(--b2) / 0.33) 0px, transparent 50%),\n\t\t\tradial-gradient(at 0% 1%, oklch(var(--n) / .33) 0px, transparent 50%),\n\t\t\tradial-gradient(at 99% 1%, oklch(var(--b2) / 0.15) 0px, transparent 50%),\n\t\t\tradial-gradient(at 99% 99%, oklch(var(--n) / 0.15) 0px, transparent 50%);\n\t}\n\t}\n\t</style>

@@ -1,16 +1,30 @@
 package components
 
-templ Posts() {
-  <div class="bg-primary-content border-solid border-4 border-tertiary-content">
-    { children... } 
+templ Posts(createCmp templ.Component, listCmp templ.Component) {
+<div class="drawer lg:drawer-open">
+  <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex flex-col items-center justify-center">
+    @listCmp 
+    <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
+      Open drawer
+    </label>
   </div>
+  <div class="drawer-side">
+    <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+      @createCmp
+      <li><a>Search</a></li>
+      <li><a>Lists</a></li>
+      <li><a>Profile</a></li>
+      <li><a>Settings</a></li>
+    </ul>
+  </div>
+</div>
 }
 
 templ PostIndex(createCmp templ.Component, listCmp templ.Component){
   @Layout("app"){
-    @Posts(){
-      @createCmp
-      @listCmp
-    }
+    @Header()
+    @Posts(createCmp, listCmp)
   }
 }
