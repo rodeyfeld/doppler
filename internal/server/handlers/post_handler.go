@@ -3,6 +3,7 @@ package handlers
 import (
 	"doppler/internal/components"
 	"doppler/internal/server"
+	"doppler/internal/services"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,6 +16,13 @@ func NewPostHandler(s *server.DopplerServer) *PostHandler {
 }
 
 func (h *PostHandler) Index(c echo.Context) error {
-	cmp := components.PostIndex(components.CreatePost(), components.ListPost())
+	posts := services.GetPosts(h.server.DB)
+	cmp := components.PostIndex(components.ListPosts(posts))
+	return renderView(c, cmp)
+}
+
+func (h *PostHandler) Create(c echo.Context) error {
+	post := services.CreatePost(h.server.DB, c.FormValue("name"))
+	cmp := components.PostSuccess(post)
 	return renderView(c, cmp)
 }

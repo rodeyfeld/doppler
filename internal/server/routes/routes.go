@@ -14,7 +14,8 @@ func Setup(s *server.DopplerServer) {
 	postHandler := handlers.NewPostHandler(s)
 
 	s.Echo.Use(middleware.Logger())
-	g := s.Echo.Group("/posts")
+	g := s.Echo.Group("/app")
 
 	g.GET("/", postHandler.Index)
+	g.POST("/create", postHandler.Create)
 }

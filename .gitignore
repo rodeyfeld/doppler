@@ -30,5 +30,8 @@ tmp/*
 *.db
 
 node_modules/
-
+static/css/all.min.css
 static/css/output.css
+*_templ.go
+*_templ.txt
+

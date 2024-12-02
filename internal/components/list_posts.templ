@@ -1,8 +1,13 @@
 package components
 
-templ ListPost() {
-    <div>
-      <h1 class="text-5x1">Emit Wave</h1>
-    </div>
-}
+import "doppler/internal/models"
 
+templ ListPosts(posts []models.Post) {
+	<div>
+		i[ps
+		for _, post := range posts {
+			<li>{ post.Name }</li>
+		}
+		<h1 class="text-5x1">Emit Wave</h1>
+	</div>
+}
