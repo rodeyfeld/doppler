@@ -11,9 +11,9 @@ templ CreatePost() {
 					</form>
 				</div>
 				<h3 class="text-lg font-bold p-4">Send a Signal!</h3>
-				<form method="post" hx-post="/app/create">
-					<textarea class="textarea textarea-primary textarea-bordered w-full" placeholder="Type here"></textarea>
-					<button class="btn btn-primary btn-block">Emit</button>
+				<form method="post" hx-post="/app/create" hx-swap="none">
+					<textarea name="text-content" class="textarea textarea-primary textarea-bordered w-full" placeholder="Type here"></textarea>
+					<button class="btn btn-primary btn-block" onclick="my_modal_1.close()">Emit</button>
 				</form>
 			</div>
 		</dialog>

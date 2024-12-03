@@ -2,7 +2,9 @@
 -- +goose StatementBegin
 CREATE TABLE post (
 	id integer primary key,
-	name text
+	user text,
+	content text,
+	created datetime default current_timestamp
 );
 -- +goose StatementEnd
 

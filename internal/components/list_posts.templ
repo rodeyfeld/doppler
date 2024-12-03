@@ -4,9 +4,11 @@ import "doppler/internal/models"
 
 templ ListPosts(posts []models.Post) {
 	<div>
-		i[ps
 		for _, post := range posts {
-			<li>{ post.Name }</li>
+			<div class="card bg-base-100 w-96">
+				{ post.User }
+				{ post.Content }
+			</div>
 		}
 		<h1 class="text-5x1">Emit Wave</h1>
 	</div>
