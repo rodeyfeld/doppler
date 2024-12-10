@@ -3,13 +3,10 @@ package components
 import "doppler/internal/models"
 
 templ ListPosts(posts []models.Post) {
-	<div>
-		for _, post := range posts {
-			<div class="card bg-base-100 w-96">
-				{ post.User }
-				{ post.Content }
-			</div>
-		}
-		<h1 class="text-5x1">Emit Wave</h1>
-	</div>
+	for _, post := range posts {
+		<div class="card bg-base-100 w-96">
+			{ post.User }
+			{ post.Content }
+		</div>
+	}
 }
