@@ -6,8 +6,8 @@ Personal website for rodeyfeld.
 - Create and Migrate db using `goose`:
 ```bash
 go install github.com/pressly/goose/v3/cmd/goose@latest
-touch /app/doppler.db
-goose -dir /app/internal/db/sql/ sqlite3 /app/doppler.db up
+touch doppler.db
+goose -dir internal/db/sql/ sqlite3 doppler.db up
 ```
 
 - To install dependencies:
