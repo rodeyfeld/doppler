@@ -1,18 +1,22 @@
 # doppler
+Personal website for rodeyfeld.
 
-Create db:
+## local dev 
+
+- Create and Migrate db using `goose`:
 ```bash
-touch doppler.db
+go install github.com/pressly/goose/v3/cmd/goose@latest
+touch /app/doppler.db
+goose -dir /app/internal/db/sql/ sqlite3 /app/doppler.db up
 ```
 
-To install dependencies:
+- To install dependencies:
 
 ```bash
 bun install
 ```
 
-
-To run Go hot reload:
+- To run Go hot reload:
 ```bash
 air
 ```
