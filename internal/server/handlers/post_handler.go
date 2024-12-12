@@ -22,7 +22,7 @@ func (h *PostHandler) Index(c echo.Context) error {
 }
 
 func (h *PostHandler) Create(c echo.Context) error {
-	post := services.CreatePost(h.server.DB, "base_user", c.FormValue("text-content"))
+	post := services.CreatePost(h.server.DB, "base_user", c.FormValue("title"), c.FormValue("content"))
 	cmp := components.PostSuccess(post)
 	return renderView(c, cmp)
 }

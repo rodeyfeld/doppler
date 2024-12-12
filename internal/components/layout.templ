@@ -21,24 +21,30 @@ templ Layout(title string) {
 				@Header()
 				<div class="drawer lg:drawer-open max-w-[100rem] mx-auto">
 					<input id="my-drawer-2" type="checkbox" class="drawer-toggle"/>
-					<div class="drawer-content flex flex-col items-center justify-center" id="primary-content">
+					<div class="drawer-content flex flex-col" id="primary-content">
 						<label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
 							Open Drawer
 						</label>
 						{ children... }
-						<dialog id="my_modal_1" class="modal">
+						<dialog id="create_post_modal" class="modal">
 							<div class="modal-box">
 								<div class="modal-action">
-									<form method="dialog" class="modal-backdrop">
-										<button class="btn">Close</button>
+									<form method="dialog">
+										<button class="btn btn-ghost">Close</button>
 									</form>
 								</div>
-								<h3 class="text-lg font-bold p-4">Send a Signal!</h3>
+								<h3 class="text-lg font-bold p-4">Post a Signal!</h3>
 								<form method="post" hx-post="/app/create" hx-swap="none">
-									<textarea name="text-content" class="textarea textarea-primary textarea-bordered w-full" placeholder="Type here"></textarea>
-									<button class="btn btn-primary btn-block" onclick="my_modal_1.close()">Emit</button>
+									<label class="input input-bordered flex items-center gap-2 my-2">
+										<input name="title" class="grow" placeholder="Title"/>
+									</label>
+									<textarea name="content" class="grow w-full textarea textarea-bordered gap-2 my-2" placeholder="Type content here"></textarea>
+									<button class="btn btn-primary btn-block" onclick="create_post_modal.close()">Emit</button>
 								</form>
 							</div>
+							<form method="dialog" class="modal-backdrop">
+								<button type="button" onclick="create_post_modal.close()">close</button>
+							</form>
 						</dialog>
 					</div>
 					@Sidebar()
