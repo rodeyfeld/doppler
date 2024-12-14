@@ -33,15 +33,15 @@ func GetPosts(db *sql.DB) []models.Post {
 	return posts
 }
 
-func CreatePost(db *sql.DB, user string, title string, content string) models.Post {
+func CreatePost(db *sql.DB, userID int, title string, content string) models.Post {
 
-	var query, err = db.Prepare("INSERT INTO post (user, title, content) VALUES (?, ?, ?) RETURNING id, user, title, content")
+	var query, err = db.Prepare("INSERT INTO post (user_id, title, content) VALUES (?, ?, ?) RETURNING id, user_id, title, content")
 	if err != nil {
 		log.Panic(err)
 	}
 
 	post := models.Post{}
-	err = query.QueryRow(user, title, content).Scan(&post.ID, &post.UserID, &post.Title, &post.Content)
+	err = query.QueryRow(userID, title, content).Scan(&post.ID, &post.UserID, &post.Title, &post.Content)
 	if err != nil {
 		log.Panicf("Query failed: %v", err)
 	}

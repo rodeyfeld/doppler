@@ -4,6 +4,7 @@ import (
 	"doppler/internal/components"
 	"doppler/internal/server"
 	"doppler/internal/services"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
@@ -22,7 +23,12 @@ func (h *PostHandler) Index(c echo.Context) error {
 }
 
 func (h *PostHandler) Create(c echo.Context) error {
-	post := services.CreatePost(h.server.DB, "base_user", c.FormValue("title"), c.FormValue("content"))
+	sess, err := session.Get("auth-session", c)
+	if err != nil {
+		return err
+	}
+	userID := sess.Values["userID"].(int)
+	post := services.CreatePost(h.server.DB, userID, c.FormValue("title"), c.FormValue("content"))
 	cmp := components.PostSuccess(post)
 	return renderView(c, cmp)
 }

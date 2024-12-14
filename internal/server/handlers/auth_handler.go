@@ -4,6 +4,7 @@ import (
 	"doppler/internal/components"
 	"doppler/internal/server"
 	"doppler/internal/services"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/sessions"
@@ -19,22 +20,62 @@ func NewAuthHandler(s *server.DopplerServer) *AuthHandler {
 	return &AuthHandler{server: s}
 }
 
-func (h *AuthHandler) Index(c echo.Context) error {
-	cmp := components.AuthIndex("message")
+func (h *AuthHandler) LoginIndex(c echo.Context) error {
+	cmp := components.LoginIndex()
 	return renderView(c, cmp)
 }
 
 func (h *AuthHandler) Login(c echo.Context) error {
-	if services.ValidateUser(h.server.DB, c.FormValue("username"), c.FormValue("password")) {
-		return c.Redirect(http.StatusSeeOther, "/app/")
+	if !services.ValidateUser(h.server.DB, c.FormValue("username"), c.FormValue("password")) {
+		return c.Redirect(http.StatusFound, "/doppler/signup/")
 	}
-	sess, err := session.Get("auth-session-key", c)
+	user, err := services.GetUser(h.server.DB, c.FormValue("username"))
 	if err != nil {
+		log.Printf("Failed to get username after authenticating user")
+		return err
+	}
+	sess, err := session.Get("auth-session", c)
+	if err != nil {
+		log.Printf("Failed to setup gorilla session")
 		return err
 	}
 	sess.Options = &sessions.Options{
 		Path:   "/",
 		MaxAge: 3600,
 	}
-	return c.Redirect(http.StatusSeeOther, "/app/")
+	sess.Values["username"] = user.Username
+	sess.Values["authed"] = true
+	sess.Values["userID"] = user.ID
+	sess.Save(c.Request(), c.Response())
+	return c.Redirect(http.StatusFound, "/doppler/")
+}
+
+func (h *AuthHandler) ProfileIndex(c echo.Context) error {
+	sess, err := session.Get("auth-session", c)
+	if err != nil {
+		return err
+	}
+	username := sess.Values["username"].(string)
+	user, err := services.GetUser(h.server.DB, username)
+	if err != nil {
+		return c.Redirect(http.StatusInternalServerError, "/doppler/signup/")
+	}
+	cmp := components.ProfileIndex(user)
+	return renderView(c, cmp)
+}
+
+func (h *AuthHandler) SignupIndex(c echo.Context) error {
+	cmp := components.SignupIndex()
+	return renderView(c, cmp)
+}
+
+func (h *AuthHandler) Signup(c echo.Context) error {
+
+	user, _ := services.GetUser(h.server.DB, c.FormValue("username"))
+	if user != nil {
+		return c.Redirect(http.StatusInternalServerError, "/doppler/signup/")
+	}
+
+	user = services.CreateUser(h.server.DB, c.FormValue("username"), c.FormValue("password"), c.FormValue("email"))
+	return c.Redirect(http.StatusFound, "/doppler/profile/")
 }

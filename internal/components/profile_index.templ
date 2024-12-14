@@ -1,0 +1,17 @@
+package components
+
+import "doppler/internal/models"
+
+templ Profile(user *models.User) {
+	Hi!
+	{ user.Username }
+	{ user.Email }
+}
+
+templ ProfileIndex(user *models.User) {
+	@Layout("profile") {
+		<div class="lg:p-72 p-12">
+			@Profile(user)
+		</div>
+	}
+}

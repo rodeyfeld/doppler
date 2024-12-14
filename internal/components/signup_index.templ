@@ -1,21 +1,24 @@
 package components
 
-templ LoginForm() {
-	<form method="post" action="/doppler/login">
+templ SignupForm() {
+	<form method="post" action="/doppler/signup">
 		<label class="input input-bordered flex items-center gap-2 my-2">
 			<input type="text" name="username" class="grow" placeholder="username"/>
 		</label>
 		<label class="input input-bordered flex items-center gap-2 my-2">
+			<input type="text" name="email" class="grow" placeholder="email"/>
+		</label>
+		<label class="input input-bordered flex items-center gap-2 my-2">
 			<input type="password" name="password" class="grow" placeholder="password"/>
 		</label>
-		<button class="btn btn-primary btn-block">login</button>
+		<button class="btn btn-primary btn-block">signup</button>
 	</form>
 }
 
-templ LoginIndex() {
-	@Layout("login") {
+templ SignupIndex() {
+	@Layout("signup") {
 		<div class="lg:p-72 p-12">
-			@LoginForm()
+			@SignupForm()
 		</div>
 	}
 }

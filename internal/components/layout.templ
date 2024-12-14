@@ -8,7 +8,7 @@ templ Layout(title string) {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<meta
 				name="description"
-				content="Doppler: Wave to the World"
+				content="Doppler: Send Signals!"
 			/>
 			<meta name="google" content="notranslate"/>
 			<link rel="stylesheet" href="/static/css/all.min.css"/>
@@ -26,26 +26,7 @@ templ Layout(title string) {
 							Open Drawer
 						</label>
 						{ children... }
-						<dialog id="create_post_modal" class="modal">
-							<div class="modal-box">
-								<div class="modal-action">
-									<form method="dialog">
-										<button class="btn btn-ghost">Close</button>
-									</form>
-								</div>
-								<h3 class="text-lg font-bold p-4">Post a Signal!</h3>
-								<form method="post" hx-post="/app/create" hx-swap="none">
-									<label class="input input-bordered flex items-center gap-2 my-2">
-										<input name="title" class="grow" placeholder="Title"/>
-									</label>
-									<textarea name="content" class="grow w-full textarea textarea-bordered gap-2 my-2" placeholder="Type content here"></textarea>
-									<button class="btn btn-primary btn-block" onclick="create_post_modal.close()">Emit</button>
-								</form>
-							</div>
-							<form method="dialog" class="modal-backdrop">
-								<button type="button" onclick="create_post_modal.close()">close</button>
-							</form>
-						</dialog>
+						@CreatePostModal()
 					</div>
 					@Sidebar()
 				</div>
