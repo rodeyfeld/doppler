@@ -1,11 +1,7 @@
 package components
 
-templ Posts(listCmp templ.Component) {
-  @listCmp
-}
-
-templ PostIndex(listCmp templ.Component){
-  @Layout("app"){
-    @Posts(listCmp)
-  }
+templ PostIndex(listCmp templ.Component) {
+	@Layout("posts") {
+		@listCmp
+	}
 }

@@ -10,7 +10,7 @@ import (
 
 func GetUsers(db *sql.DB) []models.User {
 
-	var query, err = db.Prepare("SELECT u.id, u.username, u.email, u.created FROM post u;")
+	var query, err = db.Prepare("SELECT u.id, u.username, u.email, u.created FROM user u;")
 
 	if err != nil {
 		log.Panic(err)
@@ -56,4 +56,20 @@ func CreateUser(db *sql.DB, username string, password string, email string) mode
 	}
 	return user
 
+}
+
+func ValidateUser(db *sql.DB, username string, password string) bool {
+
+	var query, err = db.Prepare("SELECT u.password, FROM user u WHERE u.username = ?;")
+
+	if err != nil {
+		log.Panic(err)
+	}
+	var encodedHash string
+	err = query.QueryRow(username).Scan(&encodedHash)
+	if err != nil {
+		log.Panicf("Query failed: %v", err)
+	}
+	comparePasswordAndHash(password, encodedHash)
+	return true
 }
