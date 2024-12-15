@@ -3,16 +3,10 @@ package components
 templ Header() {
 	<div class="navbar bg-base-100 max-w-[100rem] mx-auto">
 		<div class="flex-1">
-			<a class="btn btn-ghost text-xl"><i class="fa-solid fa-record-vinyl"></i>doppler.</a>
+			<a class="btn btn-ghost text-xl"><i class="fa-solid fa-record-vinyl"></i>doppler</a>
 		</div>
 		<div class="flex-none">
 			<div class="dropdown dropdown-end">
-				<div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-					<div class="indicator">
-						<i class="fa-solid fa-water"></i>
-						<span class="badge badge-sm indicator-item">0</span>
-					</div>
-				</div>
 				<div
 					tabindex="0"
 					class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
@@ -35,13 +29,12 @@ templ Header() {
 					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
 				>
 					<li>
-						<a class="justify-between">
+						<a class="justify-between" href="/doppler/profile">
 							Profile
-							<span class="badge">New</span>
 						</a>
 					</li>
-					<li><a>Settings</a></li>
-					<li><a>Logout</a></li>
+					<li><a href="/doppler/login">Login</a></li>
+					<li><a href="/doppler/logout">Logout</a></li>
 				</ul>
 			</div>
 		</div>
