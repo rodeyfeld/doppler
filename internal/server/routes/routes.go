@@ -18,6 +18,7 @@ func Setup(s *server.DopplerServer) {
 	g := s.Echo.Group("/doppler")
 	g.GET("/", postHandler.Index)
 	g.POST("/create", postHandler.Create)
+	g.GET("/user-info/:id", postHandler.UserInfo)
 
 	g.GET("/login", authHandler.LoginIndex)
 	g.POST("/login", authHandler.Login)

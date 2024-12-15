@@ -29,7 +29,7 @@ func (h *AuthHandler) Login(c echo.Context) error {
 	if !services.ValidateUser(h.server.DB, c.FormValue("username"), c.FormValue("password")) {
 		return c.Redirect(http.StatusFound, "/doppler/signup/")
 	}
-	user, err := services.GetUser(h.server.DB, c.FormValue("username"))
+	user, err := services.GetUserByUsername(h.server.DB, c.FormValue("username"))
 	if err != nil {
 		log.Printf("Failed to get username after authenticating user")
 		return err
@@ -56,7 +56,7 @@ func (h *AuthHandler) ProfileIndex(c echo.Context) error {
 		return err
 	}
 	username := sess.Values["username"].(string)
-	user, err := services.GetUser(h.server.DB, username)
+	user, err := services.GetUserByUsername(h.server.DB, username)
 	if err != nil {
 		return c.Redirect(http.StatusInternalServerError, "/doppler/signup/")
 	}
@@ -71,7 +71,7 @@ func (h *AuthHandler) SignupIndex(c echo.Context) error {
 
 func (h *AuthHandler) Signup(c echo.Context) error {
 
-	user, _ := services.GetUser(h.server.DB, c.FormValue("username"))
+	user, _ := services.GetUserByUsername(h.server.DB, c.FormValue("username"))
 	if user != nil {
 		return c.Redirect(http.StatusInternalServerError, "/doppler/signup/")
 	}

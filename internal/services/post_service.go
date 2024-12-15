@@ -9,7 +9,7 @@ import (
 
 func GetPosts(db *sql.DB) []models.Post {
 
-	var query, err = db.Prepare("SELECT p.user_id, p.title, p.content, p.created FROM post p;")
+	var query, err = db.Prepare("SELECT p.user_id, p.title, p.content, p.created FROM post p")
 
 	if err != nil {
 		log.Panic(err)
@@ -23,7 +23,6 @@ func GetPosts(db *sql.DB) []models.Post {
 	posts := []models.Post{}
 	for rows.Next() {
 		var p models.Post
-		p.UserID = 1
 		err = rows.Scan(&p.UserID, &p.Title, &p.Content, &p.Created)
 		if err != nil {
 			log.Panicf("Failed scanning to Post: %v", err)

@@ -4,6 +4,8 @@ import (
 	"doppler/internal/components"
 	"doppler/internal/server"
 	"doppler/internal/services"
+	"strconv"
+
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
@@ -30,5 +32,20 @@ func (h *PostHandler) Create(c echo.Context) error {
 	userID := sess.Values["userID"].(int)
 	post := services.CreatePost(h.server.DB, userID, c.FormValue("title"), c.FormValue("content"))
 	cmp := components.PostSuccess(post)
+	return renderView(c, cmp)
+}
+
+func (h *PostHandler) UserInfo(c echo.Context) error {
+	userID := c.QueryParam("user_id")
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+
+		return err
+	}
+	user, err := services.GetUserByID(h.server.DB, id)
+	if err != nil {
+		return err
+	}
+	cmp := components.PostUserInfo(user)
 	return renderView(c, cmp)
 }

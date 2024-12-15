@@ -10,7 +10,13 @@ templ ListPosts(posts []models.Post) {
 					<h2 class="card-title">
 						{ post.Title }
 					</h2>
-					<h3>created by { string(post.UserID) }</h3>
+					<h3>created by</h3>
+					{ userString, err := strconv.Itoa(post.UserID) }
+					:w
+					
+					<div hx-get={ userString }>
+						test	
+					</div>
 					<h3>created on { post.Created.String() }</h3>
 					<p>
 						{ post.Content }

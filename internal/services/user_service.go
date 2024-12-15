@@ -8,7 +8,22 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func GetUser(db *sql.DB, username string) (*models.User, error) {
+func GetUserByID(db *sql.DB, id int) (*models.User, error) {
+
+	var query, err = db.Prepare("SELECT u.id, u.username, u.email, u.created FROM user u WHERE u.id = ?;")
+
+	if err != nil {
+		log.Panic(err)
+	}
+	user := models.User{}
+	err = query.QueryRow(id).Scan(&user.ID, &user.Username, &user.Email, &user.Created)
+	if err != nil {
+		log.Printf("No user found with userID %v: %v", id, err)
+		return nil, err
+	}
+	return &user, nil
+}
+func GetUserByUsername(db *sql.DB, username string) (*models.User, error) {
 
 	var query, err = db.Prepare("SELECT u.id, u.username, u.email, u.created FROM user u WHERE u.username = ?;")
 
@@ -20,7 +35,6 @@ func GetUser(db *sql.DB, username string) (*models.User, error) {
 	if err != nil {
 		log.Printf("No user found with username %v: %v", username, err)
 		return nil, err
-
 	}
 	return &user, nil
 }
