@@ -4,6 +4,7 @@ import (
 	"doppler/internal/components"
 	"doppler/internal/server"
 	"doppler/internal/services"
+	"log"
 	"strconv"
 
 	"github.com/labstack/echo-contrib/session"
@@ -36,8 +37,9 @@ func (h *PostHandler) Create(c echo.Context) error {
 }
 
 func (h *PostHandler) UserInfo(c echo.Context) error {
-	userID := c.QueryParam("user_id")
-	id, err := strconv.Atoi(userID)
+	p := c.Param("id")
+	log.Printf(p)
+	id, err := strconv.Atoi(p)
 	if err != nil {
 
 		return err
