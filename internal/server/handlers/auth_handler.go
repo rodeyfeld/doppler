@@ -53,7 +53,7 @@ func (h *AuthHandler) Login(c echo.Context) error {
 func (h *AuthHandler) ProfileIndex(c echo.Context) error {
 	sess, err := session.Get("auth-session", c)
 	if err != nil {
-		return err
+		return c.Redirect(http.StatusInternalServerError, "/doppler/signup/")
 	}
 	username := sess.Values["username"].(string)
 	user, err := services.GetUserByUsername(h.server.DB, username)
@@ -77,5 +77,5 @@ func (h *AuthHandler) Signup(c echo.Context) error {
 	}
 
 	user = services.CreateUser(h.server.DB, c.FormValue("username"), c.FormValue("password"), c.FormValue("email"))
-	return c.Redirect(http.StatusFound, "/doppler/profile/")
+	return c.Redirect(http.StatusFound, "/doppler/")
 }

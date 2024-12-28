@@ -1,12 +1,8 @@
 
-//tsParticles library - https://github.com/matteobruni/tsparticles
-
-//tsParticles library - https://github.com/matteobruni/tsparticles
-
 (async () => {
-	await loadFull(tsParticles);
-
+	await loadFull(tsParticles)
 	await tsParticles.load({
+		id: "tsparticles",
 		options: {
 			particles: {
 				destroy: {

@@ -3,7 +3,7 @@ package components
 templ Header() {
 	<div class="navbar bg-base-100 max-w-[100rem] mx-auto">
 		<div class="flex-1">
-			<a class="btn btn-ghost text-xl"><i class="fa-solid fa-record-vinyl"></i>doppler</a>
+			<a class="btn btn-ghost text-xl" href="/doppler/"><i class="fa-solid fa-record-vinyl"></i>doppler</a>
 		</div>
 		<div class="flex-none">
 			<div class="dropdown dropdown-end">
@@ -28,13 +28,7 @@ templ Header() {
 					tabindex="0"
 					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
 				>
-					<li>
-						<a class="justify-between" href="/doppler/profile">
-							Profile
-						</a>
-					</li>
 					<li><a href="/doppler/login">Login</a></li>
-					<li><a href="/doppler/logout">Logout</a></li>
 				</ul>
 			</div>
 		</div>
