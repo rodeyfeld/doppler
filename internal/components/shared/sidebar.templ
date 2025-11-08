@@ -1,16 +1,23 @@
 package shared
 
-templ Sidebar() {
+import "doppler/internal/models"
+
+templ Sidebar(user *models.User) {
 	<div class="drawer-side">
 		<label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
 		<ul class="menu text-base-content min-h-full w-80 p-4 bg-base-200">
 			<li><a href="/">Links</a></li>
-			<li><a disabled>Search<span class="badge badge-neutral badge-outline">coming soon!</span></a></li>
-			<li><a href="/doppler/login">Login</a></li>
 			<li><a href="/doppler/">Posts</a></li>
-			<li>
-				@CreatePost()
-			</li>
+			<li><a disabled>Search<span class="badge badge-neutral badge-outline">coming soon!</span></a></li>
+			if user != nil {
+				<li><a href="/doppler/profile">Profile</a></li>
+				<li>
+					@CreatePost()
+				</li>
+			} else {
+				<li><a href="/doppler/login">Login</a></li>
+				<li><a href="/doppler/signup">Signup</a></li>
+			}
 		</ul>
 	</div>
 }

@@ -31,7 +31,7 @@ templ Layout(title string, user *models.User) {
 						{ children... }
 						@CreatePostModal()
 					</div>
-					@Sidebar()
+					@Sidebar(user)
 				</div>
 			</div>
 		</body>

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"doppler/internal/components/post"
+	"doppler/internal/components/shared"
 	"doppler/internal/models"
 	"doppler/internal/server"
 	"doppler/internal/services"
@@ -44,9 +45,18 @@ func (h *PostHandler) Index(c echo.Context) error {
 func (h *PostHandler) Create(c echo.Context) error {
 	sess, err := session.Get("auth-session", c)
 	if err != nil {
+		log.Printf("Failed to get auth session: %v", err)
 		return err
 	}
-	userID := sess.Values["userID"].(int)
+
+	// Check if user is logged in
+	userID, ok := sess.Values["userID"].(int)
+	if !ok {
+		log.Printf("User not authenticated, cannot create post")
+		cmp := shared.AuthRequired()
+		return renderView(c, cmp)
+	}
+
 	createdPost := services.CreatePost(h.server.DB, userID, c.FormValue("title"), c.FormValue("content"))
 	cmp := post.PostSuccess(createdPost)
 	return renderView(c, cmp)
