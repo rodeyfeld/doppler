@@ -2,19 +2,20 @@ package shared
 
 templ CreatePostModal() {
 	<dialog id="create_post_modal" class="modal">
-		<div class="modal-box">
+		<div class="modal-box max-w-3xl">
 			<div class="modal-action">
 				<form method="dialog">
 					<button class="btn btn-ghost">close</button>
 				</form>
 			</div>
 			<h3 class="text-lg font-bold p-4">post a signal!</h3>
-			<form method="post" hx-post="/doppler/create" hx-swap="none">
+			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-swap="none">
 				<label class="input input-bordered flex items-center gap-2 my-2">
 					<input name="title" class="grow" placeholder="title"/>
 				</label>
-				<textarea name="content" class="grow w-full textarea textarea-bordered gap-2 my-2" placeholder="type content here"></textarea>
-				<button class="btn btn-primary btn-block" onclick="create_post_modal.close()">emit</button>
+				<div id="editor" class="bg-base-100 rounded-lg my-2 min-h-[200px]"></div>
+				<input type="hidden" name="content"/>
+				<button type="submit" class="btn btn-primary btn-block" onclick="create_post_modal.close()">emit</button>
 			</form>
 		</div>
 		<form method="dialog" class="modal-backdrop">

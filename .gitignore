@@ -32,6 +32,12 @@ tmp/*
 node_modules/
 static/css/all.min.css
 static/css/output.css
+
+# Generated bundles
+static/js/bundle.js
+static/js/quill*.css
+
+# Templ generated files
 *_templ.go
 *_templ.txt
 
