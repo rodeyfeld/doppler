@@ -79,3 +79,15 @@ func (h *AuthHandler) Signup(c echo.Context) error {
 	user = services.CreateUser(h.server.DB, c.FormValue("username"), c.FormValue("password"), c.FormValue("email"))
 	return c.Redirect(http.StatusFound, "/doppler/")
 }
+
+func (h *AuthHandler) Logout(c echo.Context) error {
+	sess, err := session.Get("auth-session", c)
+	if err != nil {
+		return c.Redirect(http.StatusInternalServerError, "/doppler/")
+	}
+	sess.Options.MaxAge = -1
+	sess.Values["authed"] = false
+	sess.Values["userID"] = 0
+	sess.Save(c.Request(), c.Response())
+	return c.Redirect(http.StatusFound, "/doppler/")
+}

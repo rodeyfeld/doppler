@@ -3,6 +3,7 @@ package routes
 import (
 	"doppler/internal/server"
 	"doppler/internal/server/handlers"
+
 	"github.com/labstack/echo/v4/middleware"
 )
 
@@ -22,7 +23,7 @@ func Setup(s *server.DopplerServer) {
 
 	g.GET("/login", authHandler.LoginIndex)
 	g.POST("/login", authHandler.Login)
-
+	g.GET("/logout", authHandler.Logout)
 	g.GET("/profile", authHandler.ProfileIndex)
 
 	g.GET("/signup", authHandler.SignupIndex)
