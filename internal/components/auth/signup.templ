@@ -1,4 +1,6 @@
-package components
+package auth
+
+import "doppler/internal/components/shared"
 
 templ SignupForm() {
 	<form method="post" action="/doppler/signup">
@@ -16,7 +18,7 @@ templ SignupForm() {
 }
 
 templ SignupIndex() {
-	@Layout("signup") {
+	@shared.Layout("signup") {
 		<div class="lg:p-72 p-12">
 			@SignupForm()
 		</div>

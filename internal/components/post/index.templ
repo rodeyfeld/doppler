@@ -1,0 +1,9 @@
+package post
+
+import "doppler/internal/components/shared"
+
+templ PostIndex(listCmp templ.Component) {
+	@shared.Layout("posts") {
+		@listCmp
+	}
+}

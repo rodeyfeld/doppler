@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"doppler/internal/components"
+	"doppler/internal/components/post"
 	"doppler/internal/server"
 	"doppler/internal/services"
 	"log"
@@ -21,7 +21,7 @@ func NewPostHandler(s *server.DopplerServer) *PostHandler {
 
 func (h *PostHandler) Index(c echo.Context) error {
 	posts := services.GetPosts(h.server.DB)
-	cmp := components.PostIndex(components.ListPosts(posts))
+	cmp := post.PostIndex(post.ListPosts(posts))
 	return renderView(c, cmp)
 }
 
@@ -31,8 +31,8 @@ func (h *PostHandler) Create(c echo.Context) error {
 		return err
 	}
 	userID := sess.Values["userID"].(int)
-	post := services.CreatePost(h.server.DB, userID, c.FormValue("title"), c.FormValue("content"))
-	cmp := components.PostSuccess(post)
+	createdPost := services.CreatePost(h.server.DB, userID, c.FormValue("title"), c.FormValue("content"))
+	cmp := post.PostSuccess(createdPost)
 	return renderView(c, cmp)
 }
 
@@ -48,6 +48,6 @@ func (h *PostHandler) UserInfo(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	cmp := components.PostUserInfo(user)
+	cmp := post.PostUserInfo(user)
 	return renderView(c, cmp)
 }

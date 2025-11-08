@@ -1,6 +1,9 @@
-package components
+package auth
 
-import "doppler/internal/models"
+import (
+	"doppler/internal/components/shared"
+	"doppler/internal/models"
+)
 
 templ Profile(user *models.User) {
 	Hi!
@@ -9,7 +12,7 @@ templ Profile(user *models.User) {
 }
 
 templ ProfileIndex(user *models.User) {
-	@Layout("profile") {
+	@shared.Layout("profile") {
 		<div class="lg:p-72 p-12">
 			@Profile(user)
 		</div>

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"doppler/internal/components"
+	"doppler/internal/components/auth"
 	"doppler/internal/server"
 	"doppler/internal/services"
 	"log"
@@ -21,7 +21,7 @@ func NewAuthHandler(s *server.DopplerServer) *AuthHandler {
 }
 
 func (h *AuthHandler) LoginIndex(c echo.Context) error {
-	cmp := components.LoginIndex()
+	cmp := auth.LoginIndex()
 	return renderView(c, cmp)
 }
 
@@ -60,12 +60,12 @@ func (h *AuthHandler) ProfileIndex(c echo.Context) error {
 	if err != nil {
 		return c.Redirect(http.StatusInternalServerError, "/doppler/signup/")
 	}
-	cmp := components.ProfileIndex(user)
+	cmp := auth.ProfileIndex(user)
 	return renderView(c, cmp)
 }
 
 func (h *AuthHandler) SignupIndex(c echo.Context) error {
-	cmp := components.SignupIndex()
+	cmp := auth.SignupIndex()
 	return renderView(c, cmp)
 }
 

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"doppler/internal/components"
+	"doppler/internal/components/home"
 	"doppler/internal/server"
 
 	"github.com/a-h/templ"
@@ -17,7 +17,7 @@ func NewHomeHandler(s *server.DopplerServer) *HomeHandler {
 }
 
 func (h *HomeHandler) HomeIndex(c echo.Context) error {
-	homeComponent := components.HomeIndex("Doppler")
+	homeComponent := home.HomeIndex("Doppler")
 	return renderView(c, homeComponent)
 }
 
