@@ -15,7 +15,7 @@ templ LoginForm() {
 }
 
 templ LoginIndex() {
-	@shared.Layout("login") {
+	@shared.Layout("login", nil) {
 		<div class="lg:p-72 p-12">
 			@LoginForm()
 		</div>

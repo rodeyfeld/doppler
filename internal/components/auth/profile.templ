@@ -12,7 +12,7 @@ templ Profile(user *models.User) {
 }
 
 templ ProfileIndex(user *models.User) {
-	@shared.Layout("profile") {
+	@shared.Layout("profile", user) {
 		<div class="lg:p-72 p-12">
 			@Profile(user)
 		</div>

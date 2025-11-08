@@ -18,7 +18,7 @@ templ SignupForm() {
 }
 
 templ SignupIndex() {
-	@shared.Layout("signup") {
+	@shared.Layout("signup", nil) {
 		<div class="lg:p-72 p-12">
 			@SignupForm()
 		</div>

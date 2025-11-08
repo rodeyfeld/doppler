@@ -1,9 +1,12 @@
 package post
 
-import "doppler/internal/components/shared"
+import (
+	"doppler/internal/components/shared"
+	"doppler/internal/models"
+)
 
-templ PostIndex(listCmp templ.Component) {
-	@shared.Layout("posts") {
+templ PostIndex(listCmp templ.Component, user *models.User) {
+	@shared.Layout("posts", user) {
 		@listCmp
 	}
 }

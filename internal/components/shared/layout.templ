@@ -1,6 +1,8 @@
 package shared
 
-templ Layout(title string) {
+import "doppler/internal/models"
+
+templ Layout(title string, user *models.User) {
 	<!DOCTYPE html>
 	<html lang="en" data-theme="forest">
 		<head>
@@ -19,7 +21,7 @@ templ Layout(title string) {
 		</head>
 		<body>
 			<div class="bg-base-300">
-				@Header()
+				@Header(user)
 				<div class="drawer lg:drawer-open max-w-[100rem] mx-auto">
 					<input id="my-drawer-2" type="checkbox" class="drawer-toggle"/>
 					<div class="drawer-content flex flex-col" id="primary-content">
@@ -41,7 +43,6 @@ templ Layout(title string) {
 			radial-gradient(at 0% 1%, oklch(var(--n) / .33) 0px, transparent 50%),
 			radial-gradient(at 99% 1%, oklch(var(--b2) / .33) 0px, transparent 50%),
 			radial-gradient(at 99% 99%, oklch(var(--n) / 0.33) 0px, transparent 50%);
-	}
 	}
 	</style>
 }

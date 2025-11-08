@@ -1,26 +1,17 @@
 package shared
 
-templ Header() {
+import "doppler/internal/models"
+
+templ Header(user *models.User) {
 	<div class="navbar bg-base-100 max-w-[100rem] mx-auto">
 		<div class="flex-1">
 			<a class="btn btn-ghost text-xl" href="/doppler/"><i class="fa-solid fa-record-vinyl"></i>doppler</a>
 		</div>
 		<div class="flex-none">
 			<div class="dropdown dropdown-end">
-				<div
-					tabindex="0"
-					class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
-				>
-					<div class="card-body">
-						<span class="text-lg font-bold">8 Items</span>
-						<span class="text-info">Subtotal: $999</span>
-						<div class="card-actions">
-							<button class="btn btn-primary btn-block">View cart</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="dropdown dropdown-end">
+				if user != nil {
+					<span class="mx-2">{ user.Username }</span>
+				}
 				<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
 					<i class="fa-solid fa-user"></i>
 				</div>
@@ -28,7 +19,13 @@ templ Header() {
 					tabindex="0"
 					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
 				>
-					<li><a href="/doppler/login">Login</a></li>
+					if user != nil {
+						<li><a href="/doppler/profile">Profile</a></li>
+						<li><a href="/doppler/logout">Logout</a></li>
+					} else {
+						<li><a href="/doppler/login">Login</a></li>
+						<li><a href="/doppler/signup">Signup</a></li>
+					}
 				</ul>
 			</div>
 		</div>

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"doppler/internal/components/post"
+	"doppler/internal/models"
 	"doppler/internal/server"
 	"doppler/internal/services"
 	"log"
@@ -21,7 +22,22 @@ func NewPostHandler(s *server.DopplerServer) *PostHandler {
 
 func (h *PostHandler) Index(c echo.Context) error {
 	posts := services.GetPosts(h.server.DB)
-	cmp := post.PostIndex(post.ListPosts(posts))
+	sess, err := session.Get("auth-session", c)
+	if err != nil {
+		log.Printf("Failed to get auth session")
+		return err
+	}
+
+	var user *models.User
+	// Check if user is logged in
+	if userID, ok := sess.Values["userID"].(int); ok {
+		user, err = services.GetUserByID(h.server.DB, userID)
+		if err != nil {
+			log.Printf("Failed to get user by ID: %v", err)
+		}
+	}
+
+	cmp := post.PostIndex(post.ListPosts(posts), user)
 	return renderView(c, cmp)
 }
 
