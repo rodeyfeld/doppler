@@ -3,6 +3,7 @@ import 'quill/dist/quill.snow.css';
 
 export function initQuillEditor() {
     const modal = document.getElementById('create_post_modal');
+    const form = document.querySelector('#create_post_form');
     let quill = null;
 
     // Initialize Quill when modal is opened
@@ -22,8 +23,22 @@ export function initQuillEditor() {
                     ]
                 }
             });
+
+            console.log('Quill editor initialized');
         }
     };
+
+    // Use HTMX's configRequest event to add Quill content before submission
+    if (form) {
+        form.addEventListener('htmx:configRequest', (event) => {
+            if (quill) {
+                const content = quill.root.innerHTML;
+                // Add content to the HTMX request parameters
+                event.detail.parameters['content'] = content;
+                console.log('Quill content added to HTMX request:', content);
+            }
+        });
+    }
 
     // Initialize when modal opens
     if (modal) {
@@ -36,16 +51,4 @@ export function initQuillEditor() {
 
     // Initialize immediately if modal exists
     setTimeout(initQuill, 100);
-
-    // Handle form submission to get Quill content
-    const form = document.querySelector('#create_post_form');
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            if (quill) {
-                const content = quill.root.innerHTML;
-                document.querySelector('input[name="content"]').value = content;
-            }
-        });
-    }
 }
-

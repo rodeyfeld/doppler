@@ -11,10 +11,9 @@ templ CreatePostModal() {
 			<h3 class="text-lg font-bold p-4">post a signal!</h3>
 			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-swap="none">
 				<label class="input input-bordered flex items-center gap-2 my-2">
-					<input name="title" class="grow" placeholder="title"/>
+					<input name="title" class="grow" placeholder="title" required/>
 				</label>
 				<div id="editor" class="bg-base-100 rounded-lg my-2 min-h-[200px]"></div>
-				<input type="hidden" name="content"/>
 				<button type="submit" class="btn btn-primary btn-block" onclick="create_post_modal.close()">emit</button>
 			</form>
 		</div>

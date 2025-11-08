@@ -11,6 +11,7 @@ import (
 
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
+	"github.com/microcosm-cc/bluemonday"
 )
 
 type PostHandler struct {
@@ -57,7 +58,24 @@ func (h *PostHandler) Create(c echo.Context) error {
 		return renderView(c, cmp)
 	}
 
-	createdPost := services.CreatePost(h.server.DB, userID, c.FormValue("title"), c.FormValue("content"))
+	// Get form values
+	rawTitle := c.FormValue("title")
+	rawContent := c.FormValue("content")
+
+	// Sanitize inputs using bluemonday
+	// UGCPolicy allows safe HTML tags (for Quill content) while stripping dangerous elements
+	p := bluemonday.UGCPolicy()
+
+	// Sanitize title (strip all HTML tags)
+	title := bluemonday.StrictPolicy().Sanitize(rawTitle)
+
+	// Sanitize content (allow safe HTML tags for rich text)
+	content := p.Sanitize(rawContent)
+
+	log.Printf("Creating post - Title: %s, Content length: %d", title, len(content))
+	log.Printf("Content preview (sanitized): %s", content)
+
+	createdPost := services.CreatePost(h.server.DB, userID, title, content)
 	cmp := post.PostSuccess(createdPost)
 	return renderView(c, cmp)
 }

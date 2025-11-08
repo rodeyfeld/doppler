@@ -26,9 +26,9 @@ templ ListPosts(posts []models.Post) {
 						@UserInfo(post.UserID)
 					</h3>
 					<h3>created on { post.Created.String() }</h3>
-					<p>
-						{ post.Content }
-					</p>
+					<div class="prose max-w-none">
+						@templ.Raw(post.Content)
+					</div>
 				</div>
 			</div>
 		}
