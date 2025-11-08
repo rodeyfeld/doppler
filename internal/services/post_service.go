@@ -3,13 +3,14 @@ package services
 import (
 	"database/sql"
 	"doppler/internal/models"
-	_ "github.com/mattn/go-sqlite3"
 	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func GetPosts(db *sql.DB) []models.Post {
 
-	var query, err = db.Prepare("SELECT p.user_id, p.title, p.content, p.created FROM post p")
+	var query, err = db.Prepare("SELECT p.user_id, p.title, p.content, p.created FROM post p ORDER BY p.created DESC;")
 
 	if err != nil {
 		log.Panic(err)
