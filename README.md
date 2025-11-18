@@ -28,7 +28,6 @@ Personal website for rodeyfeld.
 
 3. **Access the application**
    - App: http://localhost:1323
-   - Garage Admin UI: http://localhost:3902
 
 ### What's Included
 
@@ -49,8 +48,6 @@ The `docker compose up` command automatically:
 2. Watches for file changes and rebuilds automatically
 3. Runs `templ generate` and `bun run build:js` before each build
 4. Hot-reloads the Go application
-
-Just edit your files and the app will rebuild automatically!
 
 ### Finding S3 Credentials
 
@@ -100,20 +97,33 @@ If you prefer to run outside Docker:
 
 ## Production Deployment
 
-### Build Production Image
+### Build and Push Production Image
 
 ```bash
-docker build -t edrodefeld/doppler:latest .
-docker push edrodefeld/doppler:latest
+cd /home/prometheus/universe/doppler
+
+# Build production image (uses default 'runner' stage)
+docker build -t edrodefeld/doppler .
+
+# Push to registry
+docker push edrodefeld/doppler
 ```
 
 The Dockerfile defaults to a production build (slim Debian image with compiled binary).
 
 ### Deploy to Kubernetes
 
+**Initial deployment:**
 ```bash
 kubectl apply -f ../mirage/deployments/doppler.yml
 ```
+
+**Update deployment (after pushing new image):**
+```bash
+kubectl rollout restart deployment/doppler -n galaxy
+```
+
+The deployment uses `imagePullPolicy: Always` to ensure fresh images are pulled on every rollout.
 
 **Production Configuration:**
 - Uses Garage S3 at `http://garage-s3.galaxy.svc.cluster.local:3900`
@@ -121,25 +131,6 @@ kubectl apply -f ../mirage/deployments/doppler.yml
 - SQLite database persisted on PVC `doppler-volume-claim`
 - Database path: `data/doppler.db` (automatically creates directory)
 
-## Project Structure
-
-```
-doppler/
-├── cmd/
-│   ├── main.go              # Application entry point
-│   └── garageinit/          # Garage bootstrap utility
-├── internal/
-│   ├── components/          # Templ components
-│   ├── db/                  # Database connection & migrations
-│   ├── models/              # Data models
-│   ├── server/              # HTTP server setup
-│   └── services/            # Business logic
-├── static/                  # CSS, JS, images
-├── compose.yml              # Docker Compose for local dev
-├── Dockerfile               # Multi-stage build (dev + production)
-├── garage-init.Dockerfile   # Garage bootstrap container
-└── garage.toml              # Garage configuration
-```
 
 ## Environment Variables
 
@@ -147,7 +138,6 @@ See `example.env` for all available options:
 
 - `DB_PATH` - SQLite database path (default: `data/doppler.db`)
 - `GARAGE_RPC_SECRET` - Garage cluster secret (for Docker Compose only)
-- S3 variables are commented out - they'll be needed when S3 features are implemented
 
 ## Troubleshooting
 
