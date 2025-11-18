@@ -1,1 +1,32 @@
+# Database
 doppler.db
+*.db
+data/
+
+# Development
+tmp/
+.git/
+.env
+.env.*
+!example.env
+
+# Dependencies
+node_modules/
+.bun/
+
+# Build artifacts
+*.log
+build-errors.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+Dockerfile*
+compose.yml

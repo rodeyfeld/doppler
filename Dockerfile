@@ -9,7 +9,25 @@ WORKDIR /app/cmd
 RUN go build -o /app/app-binary
 
 
-FROM debian:bookworm-slim AS runner
+FROM golang:1.23 AS dev
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y unzip
+
+# Install Go tools
+RUN go install github.com/air-verse/air@v1.52.3
+RUN go install github.com/a-h/templ/cmd/templ@latest
+
+# Install bun for JavaScript bundling
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+
+CMD ["air"]
+
+
+# Default target for production
+FROM debian:bookworm-slim
 WORKDIR /app
 COPY --from=builder /app/app-binary .
 COPY --from=builder /app/static ./static

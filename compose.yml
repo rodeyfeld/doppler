@@ -1,0 +1,86 @@
+services:
+  web:
+    build:
+      context: .
+      target: dev
+    working_dir: /app
+    command: sh /app/start-dev.sh
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - go-mod-cache:/go/pkg/mod
+      - go-build-cache:/root/.cache/go-build
+      - doppler-db:/app/data
+      - s3-credentials:/shared
+    depends_on:
+      garage-init:
+        condition: service_completed_successfully
+    ports:
+      - 1323:1323
+    networks:
+      - doppler-net
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --spider -q http://localhost:1323 || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+  garage:
+    image: dxflrs/garage:v2.1.0
+    env_file:
+      - .env
+    volumes:
+      - ./garage.toml:/etc/garage.toml
+      - garage-meta:/var/lib/garage/meta
+      - garage-data:/var/lib/garage/data
+    ports:
+      - 3900:3900 # S3 API
+      - 3901:3901 # RPC
+      - 3902:3902 # web UI
+    networks:
+      - doppler-net
+    secrets:
+      - garage_rpc_secret
+    healthcheck:
+      test: [ "CMD", "/garage", "-c", "/etc/garage.toml", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  garage-init:
+    build:
+      context: .
+      dockerfile: garage-init.Dockerfile
+    depends_on:
+      garage:
+        condition: service_healthy
+    volumes:
+      - ./garage.toml:/etc/garage.toml
+      - garage-meta:/var/lib/garage/meta
+      - garage-data:/var/lib/garage/data
+      - s3-credentials:/shared
+    restart: "no"
+    networks:
+      - doppler-net
+    secrets:
+      - garage_rpc_secret
+
+volumes:
+  go-mod-cache:
+  go-build-cache:
+  doppler-db:
+  garage-meta:
+  garage-data:
+  s3-credentials:
+
+
+secrets:
+  garage_rpc_secret:
+    environment: GARAGE_RPC_SECRET
+
+networks:
+  doppler-net:
+    driver: bridge
