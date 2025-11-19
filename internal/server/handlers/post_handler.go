@@ -61,6 +61,11 @@ func (h *PostHandler) Create(c echo.Context) error {
 	// Get form values
 	rawTitle := c.FormValue("title")
 	rawContent := c.FormValue("content")
+	imageFormFile, err := c.FormFile("image-content")
+	if err != nil {
+		log.Printf("No image file provided: %v", err)
+		return c.String(400, "Image file is required")
+	}
 
 	// Sanitize inputs using bluemonday
 	// UGCPolicy allows safe HTML tags (for Quill content) while stripping dangerous elements
@@ -71,12 +76,13 @@ func (h *PostHandler) Create(c echo.Context) error {
 
 	// Sanitize content (allow safe HTML tags for rich text)
 	content := p.Sanitize(rawContent)
-
 	log.Printf("Creating post - Title: %s, Content length: %d", title, len(content))
 	log.Printf("Content preview (sanitized): %s", content)
 
 	createdPost := services.CreatePost(h.server.DB, userID, title, content)
-	cmp := post.PostSuccess(createdPost)
+	createdImage := services.CreatePicture(h.server.DB, createdPost.ID, imageFormFile)
+
+	cmp := post.PostSuccess(createdPost, createdImage)
 	return renderView(c, cmp)
 }
 
@@ -94,4 +100,26 @@ func (h *PostHandler) UserInfo(c echo.Context) error {
 	}
 	cmp := post.PostUserInfo(user)
 	return renderView(c, cmp)
+}
+
+// GetImage serves images from S3 storage through the backend as a proxy
+// This avoids exposing S3/Garage endpoints publicly
+func (h *PostHandler) GetImage(c echo.Context) error {
+	filename := c.Param("filename")
+	if filename == "" {
+		return c.String(400, "Filename is required")
+	}
+
+	// Stream the image from S3
+	reader, contentType, err := services.GetPictureStream(filename)
+	if err != nil {
+		log.Printf("Failed to get picture stream: %v", err)
+		return c.String(404, "Image not found")
+	}
+	defer reader.Close()
+
+	// Set content type and stream to response
+	c.Response().Header().Set("Content-Type", contentType)
+	c.Response().Header().Set("Cache-Control", "public, max-age=86400") // Cache for 24 hours
+	return c.Stream(200, contentType, reader)
 }

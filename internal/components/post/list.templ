@@ -16,16 +16,51 @@ templ UserInfo(id int) {
 templ ListPosts(posts []models.Post) {
 	<div class="p-8">
 		for _, post := range posts {
-			<div class="card lg:card-side bg-base-100 m-4 p-4">
+			<div class="card lg:card-side bg-base-100 shadow-xl m-4">
+				if len(post.PictureURLs) > 0 {
+					<figure class="lg:w-1/3">
+						if len(post.PictureURLs) == 1 {
+							<img
+								src={ post.PictureURLs[0] }
+								alt={ post.Title }
+								class="w-full h-full object-cover"
+							/>
+						} else {
+							<div class="carousel w-full h-full">
+								for idx, picURL := range post.PictureURLs {
+									<div id={ fmt.Sprintf("slide%d-%d", post.ID, idx) } class="carousel-item relative w-full">
+										<img
+											src={ picURL }
+											alt={ fmt.Sprintf("%s - Image %d", post.Title, idx+1) }
+											class="w-full object-cover"
+										/>
+										<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+											if idx > 0 {
+												<a href={ templ.URL(fmt.Sprintf("#slide%d-%d", post.ID, idx-1)) } class="btn btn-circle">❮</a>
+											} else {
+												<span></span>
+											}
+											if idx < len(post.PictureURLs)-1 {
+												<a href={ templ.URL(fmt.Sprintf("#slide%d-%d", post.ID, idx+1)) } class="btn btn-circle">❯</a>
+											} else {
+												<span></span>
+											}
+										</div>
+									</div>
+								}
+							</div>
+						}
+					</figure>
+				}
 				<div class="card-body">
 					<h2 class="card-title">
 						{ post.Title }
 					</h2>
-					<h3>
+					<h3 class="text-sm opacity-70">
 						created by 
 						@UserInfo(post.UserID)
 					</h3>
-					<h3>created on { post.Created.String() }</h3>
+					<h3 class="text-sm opacity-70">created on { post.Created.String() }</h3>
 					<div class="prose max-w-none">
 						@templ.Raw(post.Content)
 					</div>

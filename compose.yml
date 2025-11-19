@@ -21,7 +21,7 @@ services:
     networks:
       - doppler-net
     healthcheck:
-      test: [ "CMD-SHELL", "wget --spider -q http://localhost:1323 || exit 1" ]
+      test: [ "CMD-SHELL", "wget -q -O /dev/null http://localhost:1323/doppler/ || exit 1" ]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -45,7 +45,7 @@ services:
       - garage_rpc_secret
     healthcheck:
       test: [ "CMD", "/garage", "-c", "/etc/garage.toml", "status" ]
-      interval: 10s
+      interval: 60s
       timeout: 5s
       retries: 3
       start_period: 10s

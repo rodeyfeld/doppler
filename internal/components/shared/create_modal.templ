@@ -1,6 +1,23 @@
 package shared
 
 templ CreatePostModal() {
+	<style>
+		/* Hide indicator by default */
+		.htmx-indicator {
+			display: none;
+		}
+		/* Show indicator when HTMX request is in flight */
+		.htmx-request .htmx-indicator,
+		.htmx-request.htmx-indicator {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+		/* Hide non-indicator content during request */
+		.htmx-request .htmx-not-indicator {
+			display: none;
+		}
+	</style>
 	<dialog id="create_post_modal" class="modal">
 		<div class="modal-box max-w-3xl">
 			<div class="modal-action">
@@ -8,17 +25,55 @@ templ CreatePostModal() {
 					<button class="btn btn-ghost">close</button>
 				</form>
 			</div>
-			<h3 class="text-lg font-bold p-4">post a signal!</h3>
-			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-swap="none">
+			<h3 class="text-lg font-bold p-4">create a post!</h3>
+			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-encoding="multipart/form-data" hx-swap="none" hx-indicator="#loading-indicator">
 				<label class="input input-bordered flex items-center gap-2 my-2">
 					<input name="title" class="grow" placeholder="title" required/>
 				</label>
 				<div id="editor" class="bg-base-100 rounded-lg my-2 min-h-[200px]"></div>
-				<button type="submit" class="btn btn-primary btn-block" onclick="create_post_modal.close()">emit</button>
+				<!-- Image Upload Section -->
+				<div class="form-control my-4">
+					<label class="label">
+						<span class="label-text">Add Image (optional)</span>
+					</label>
+					<input
+						type="file"
+						name="image-content"
+						accept="image/*"
+						class="file-input file-input-bordered file-input-primary w-full"
+						onchange="previewImage(event)"
+					/>
+					<div id="image-preview" class="mt-2 hidden">
+						<img id="preview-img" class="rounded-lg max-h-48 object-cover" alt="Preview"/>
+					</div>
+				</div>
+				<!-- Submit Button with Loading State -->
+				<button type="submit" class="btn btn-primary btn-block" onclick="create_post_modal.close()" hx-disabled-elt="this">
+					<span class="htmx-indicator" id="loading-indicator">
+						<span class="loading loading-spinner loading-sm"></span>
+						uploading...
+					</span>
+					<span class="htmx-not-indicator">send</span>
+				</button>
 			</form>
 		</div>
 		<form method="dialog" class="modal-backdrop">
 			<button type="button" onclick="create_post_modal.close()">close</button>
 		</form>
 	</dialog>
+	<script>
+		function previewImage(event) {
+			const file = event.target.files[0];
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = function(e) {
+					document.getElementById('preview-img').src = e.target.result;
+					document.getElementById('image-preview').classList.remove('hidden');
+				}
+				reader.readAsDataURL(file);
+			} else {
+				document.getElementById('image-preview').classList.add('hidden');
+			}
+		}
+	</script>
 }

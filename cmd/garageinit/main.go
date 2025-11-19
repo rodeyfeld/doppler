@@ -34,24 +34,18 @@ func main() {
 	garageOk(ctx, "bucket", "create", bucketName)
 
 	// Create or find key
-	keyID := findOrCreateKey(ctx)
+	keyID, secretKey := findOrCreateKey(ctx)
 	log.Printf("Granting key %s access to %s...", keyID, bucketName)
 	garageOk(ctx, "bucket", "allow", "--key", keyID, "--read", "--write", bucketName)
 
 	// Export credentials for the web service
-	exportCredentials(ctx, keyID)
+	exportCredentials(ctx, keyID, secretKey)
 
 	log.Printf("Garage bootstrap finished.")
 }
 
-func exportCredentials(ctx context.Context, keyID string) {
+func exportCredentials(ctx context.Context, keyID string, secretKey string) {
 	log.Printf("Exporting S3 credentials...")
-
-	// Get full key details including secret
-	out := garage(ctx, "key", "info", keyID)
-
-	// Parse the secret key
-	secretKey := parseField(out, "Secret key:", 2)
 
 	// Write to shared volume that web service can read
 	envContent := fmt.Sprintf("S3_ACCESS_KEY_ID=%s\nS3_SECRET_ACCESS_KEY=%s\n", keyID, secretKey)
@@ -83,16 +77,28 @@ func waitForGarage(ctx context.Context) {
 	}
 }
 
-func findOrCreateKey(ctx context.Context) string {
+func findOrCreateKey(ctx context.Context) (string, string) {
 	out, _ := garageRun(ctx, "key", "list")
 	if strings.Contains(out, keyLabel) {
-		log.Printf("Key '%s' exists", keyLabel)
-		return parseField(out, keyLabel, 0)
+		log.Printf("Key '%s' already exists", keyLabel)
+		keyID := parseField(out, keyLabel, 0)
+
+		// For existing keys, try to get secret from key info (will be redacted, so recreate key)
+		log.Printf("Deleting and recreating key to get secret...")
+		garageOk(ctx, "key", "delete", "--yes", keyID)
+
+		// Now create it fresh
+		out = garage(ctx, "key", "create", keyLabel)
+		keyID = parseField(out, "Key ID:", 2)
+		secretKey := parseField(out, "Secret key:", 2)
+		return keyID, secretKey
 	}
 
 	log.Printf("Creating key '%s'...", keyLabel)
 	out = garage(ctx, "key", "create", keyLabel)
-	return parseField(out, "Key ID:", 2)
+	keyID := parseField(out, "Key ID:", 2)
+	secretKey := parseField(out, "Secret key:", 2)
+	return keyID, secretKey
 }
 
 // garage runs a command and exits on error

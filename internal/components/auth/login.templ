@@ -2,13 +2,19 @@ package auth
 
 import "doppler/internal/components/shared"
 
-templ LoginForm() {
-	<form method="post" action="/doppler/login">
-		<label class="input input-bordered flex items-center gap-2 my-2">
-			<input type="text" name="username" class="grow" placeholder="username"/>
+templ LoginForm(errorMessage string) {
+	<form hx-post="/doppler/login" hx-swap="outerHTML" class="flex flex-col gap-4">
+		if errorMessage != "" {
+			<div role="alert" class="alert alert-error">
+				<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+				<span>{ errorMessage }</span>
+			</div>
+		}
+		<label class="input input-bordered flex items-center gap-2">
+			<input type="text" name="username" class="grow" placeholder="username" required/>
 		</label>
-		<label class="input input-bordered flex items-center gap-2 my-2">
-			<input type="password" name="password" class="grow" placeholder="password"/>
+		<label class="input input-bordered flex items-center gap-2">
+			<input type="password" name="password" class="grow" placeholder="password" required/>
 		</label>
 		<button class="btn btn-primary btn-block">login</button>
 	</form>
@@ -17,7 +23,7 @@ templ LoginForm() {
 templ LoginIndex() {
 	@shared.Layout("login", nil) {
 		<div class="lg:p-72 p-12">
-			@LoginForm()
+			@LoginForm("")
 		</div>
 	}
 }

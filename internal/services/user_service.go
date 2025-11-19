@@ -64,18 +64,27 @@ func CreateUser(db *sql.DB, username string, password string, email string) *mod
 
 }
 
-func ValidateUser(db *sql.DB, username string, password string) bool {
+func ValidateUser(db *sql.DB, username string, password string) (bool, error) {
 
 	var query, err = db.Prepare("SELECT u.password FROM user u WHERE u.username = ?;")
 
 	if err != nil {
-		log.Panic(err)
+		log.Printf("Prepare failed: %v", err)
+		return false, err
 	}
 	var encodedHash string
 	err = query.QueryRow(username).Scan(&encodedHash)
 	if err != nil {
-		log.Panicf("Query failed: %v", err)
+		if err == sql.ErrNoRows {
+			return false, nil
+		}
+		log.Printf("Query failed: %v", err)
+		return false, err
 	}
-	comparePasswordAndHash(password, encodedHash)
-	return true
+	match, err := comparePasswordAndHash(password, encodedHash)
+	if err != nil {
+		log.Printf("Password check failed: %v", err)
+		return false, err
+	}
+	return match, nil
 }

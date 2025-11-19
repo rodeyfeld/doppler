@@ -26,18 +26,23 @@ func (h *AuthHandler) LoginIndex(c echo.Context) error {
 }
 
 func (h *AuthHandler) Login(c echo.Context) error {
-	if !services.ValidateUser(h.server.DB, c.FormValue("username"), c.FormValue("password")) {
-		return c.Redirect(http.StatusFound, "/doppler/signup/")
+	valid, err := services.ValidateUser(h.server.DB, c.FormValue("username"), c.FormValue("password"))
+	if err != nil {
+		log.Printf("Error validating user: %v", err)
+		return renderView(c, auth.LoginForm("System error, please try again later."))
+	}
+	if !valid {
+		return renderView(c, auth.LoginForm("Invalid username or password."))
 	}
 	user, err := services.GetUserByUsername(h.server.DB, c.FormValue("username"))
 	if err != nil {
 		log.Printf("Failed to get username after authenticating user")
-		return err
+		return renderView(c, auth.LoginForm("System error, please try again later."))
 	}
 	sess, err := session.Get("auth-session", c)
 	if err != nil {
 		log.Printf("Failed to setup gorilla session")
-		return err
+		return renderView(c, auth.LoginForm("System error, please try again later."))
 	}
 	sess.Options = &sessions.Options{
 		Path:   "/",
@@ -47,7 +52,9 @@ func (h *AuthHandler) Login(c echo.Context) error {
 	sess.Values["authed"] = true
 	sess.Values["userID"] = user.ID
 	sess.Save(c.Request(), c.Response())
-	return c.Redirect(http.StatusFound, "/doppler/")
+
+	c.Response().Header().Set("HX-Redirect", "/doppler/")
+	return c.NoContent(http.StatusOK)
 }
 
 func (h *AuthHandler) ProfileIndex(c echo.Context) error {
