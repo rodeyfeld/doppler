@@ -62,7 +62,7 @@ services:
       - garage-meta:/var/lib/garage/meta
       - garage-data:/var/lib/garage/data
       - s3-credentials:/shared
-    restart: "no"
+    restart: on-failure:3
     networks:
       - doppler-net
     secrets:

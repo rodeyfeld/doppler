@@ -10,6 +10,11 @@ else
     echo "Warning: S3 credentials not found"
 fi
 
+# Install dependencies
+echo "Installing dependencies..."
+go mod download
+bun install
+
 # Start air for hot-reloading
 exec air
 

@@ -1,4 +1,4 @@
-FROM golang:1.23 AS builder
+FROM golang:1.25.4 AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
@@ -9,7 +9,7 @@ WORKDIR /app/cmd
 RUN go build -o /app/app-binary
 
 
-FROM golang:1.23 AS dev
+FROM golang:1.25.4 AS dev
 WORKDIR /app
 
 # Install system dependencies
