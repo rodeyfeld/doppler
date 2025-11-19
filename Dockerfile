@@ -1,6 +1,9 @@
 FROM golang:1.25.4 AS builder
 WORKDIR /app
 
+# Install system dependencies for bun
+RUN apt-get update && apt-get install -y unzip
+
 # Install templ and bun for building assets
 RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN curl -fsSL https://bun.sh/install | bash
