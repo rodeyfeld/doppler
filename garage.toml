@@ -3,7 +3,6 @@ metadata_dir = "/var/lib/garage/meta"
 data_dir = "/var/lib/garage/data"
 
 replication_factor = 1
-consistency_mode = "none"
 
 rpc_bind_addr = "[::]:3901"
 rpc_public_addr = "garage:3901"
