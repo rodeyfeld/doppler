@@ -104,6 +104,53 @@ func GetPosts(db *sql.DB) []models.Post {
 	return posts
 }
 
+// GetPostByID retrieves a single post with its pictures
+func GetPostByID(db *sql.DB, postID int) (models.Post, error) {
+	// Query the post
+	postQuery := `
+		SELECT id, user_id, title, content, created, modified
+		FROM post
+		WHERE id = ?
+	`
+
+	var post models.Post
+	err := db.QueryRow(postQuery, postID).Scan(
+		&post.ID, &post.UserID, &post.Title, &post.Content, &post.Created, &post.Modified,
+	)
+	if err != nil {
+		return models.Post{}, fmt.Errorf("failed to get post: %v", err)
+	}
+
+	post.PictureURLs = []string{} // Initialize empty slice
+
+	// Query pictures for this post
+	pictureQuery := `
+		SELECT filename
+		FROM picture
+		WHERE post_id = ?
+		ORDER BY id ASC
+	`
+
+	rows, err := db.Query(pictureQuery, postID)
+	if err != nil {
+		log.Printf("Picture query failed: %v", err)
+		return post, nil // Return post without pictures
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var filename string
+		if err := rows.Scan(&filename); err != nil {
+			log.Printf("Failed scanning picture: %v", err)
+			continue
+		}
+		pictureURL := fmt.Sprintf("/doppler/images/%s", filename)
+		post.PictureURLs = append(post.PictureURLs, pictureURL)
+	}
+
+	return post, nil
+}
+
 // placeholders generates SQL placeholder string like "?,?,?"
 func placeholders(n int) string {
 	if n <= 0 {

@@ -35,7 +35,9 @@ templ CreatePostModal() {
 					</button>
 				</form>
 			</div>
-			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-encoding="multipart/form-data" hx-swap="none" hx-indicator="#loading-indicator" class="space-y-4">
+			<!-- Response area for errors -->
+			<div id="form-response" class="mb-4"></div>
+			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-encoding="multipart/form-data" hx-target="#form-response" hx-swap="innerHTML" hx-indicator="#loading-indicator" class="space-y-4">
 				<div class="form-control">
 					<label class="label">
 						<span class="label-text font-medium flex items-center gap-2">
@@ -76,7 +78,7 @@ templ CreatePostModal() {
 					</div>
 				</div>
 				<div class="divider"></div>
-				<button type="submit" class="btn btn-primary btn-block gap-2 hover:scale-105 hover:shadow-lg transition-all" onclick="create_post_modal.close()" hx-disabled-elt="this">
+				<button type="submit" class="btn btn-primary btn-block gap-2 hover:scale-105 hover:shadow-lg transition-all" hx-disabled-elt="this">
 					<span class="htmx-indicator" id="loading-indicator">
 						<span class="loading loading-spinner loading-sm"></span>
 						Publishing...
@@ -93,6 +95,61 @@ templ CreatePostModal() {
 		</form>
 	</dialog>
 	<script>
+		// Handle successful post creation
+		document.body.addEventListener('htmx:afterSwap', function(event) {
+			if (event.detail.target.id === 'form-response') {
+				const response = event.detail.target;
+				
+				// Check if response contains a success indicator (we'll add data attribute from backend)
+				// or check if it contains the new post HTML
+				if (response.querySelector('.post-success-marker') || event.detail.xhr.getResponseHeader('HX-Trigger')) {
+					// Success! Add the new post to the top of the list
+					const postsContainer = document.getElementById('posts-container');
+					if (postsContainer && response.innerHTML) {
+						// Extract the post card if it's wrapped in success message
+						const postCard = response.querySelector('.card') || response.firstElementChild;
+						if (postCard) {
+							postsContainer.insertAdjacentHTML('afterbegin', postCard.outerHTML);
+						}
+					}
+					
+					// Close the modal
+					const modal = document.getElementById('create_post_modal');
+					if (modal) {
+						modal.close();
+					}
+					
+					// Reset the form
+					const form = document.getElementById('create_post_form');
+					if (form) {
+						form.reset();
+						
+						// Clear response area
+						response.innerHTML = '';
+						
+						// Clear image preview
+						const previewContainer = document.getElementById('image-preview');
+						if (previewContainer) {
+							previewContainer.innerHTML = '';
+							previewContainer.classList.add('hidden');
+						}
+						
+						// Clear Quill editor if it exists
+						const editor = document.querySelector('#editor .ql-editor');
+						if (editor) {
+							editor.innerHTML = '';
+						}
+					}
+					
+					// Trigger timestamp conversion for the new post
+					setTimeout(convertTimestamps, 100);
+					// Trigger image fullscreen setup for the new post
+					setTimeout(setupImageFullscreen, 100);
+				}
+				// If no success marker, it's an error - leave modal open and show error
+			}
+		});
+		
 		function previewImages(event) {
 			const files = event.target.files;
 			const previewContainer = document.getElementById('image-preview');

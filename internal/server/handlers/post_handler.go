@@ -71,6 +71,13 @@ func (h *PostHandler) Create(c echo.Context) error {
 
 	// Sanitize content (allow safe HTML tags for rich text)
 	content := p.Sanitize(rawContent)
+
+	// Validate title
+	if title == "" {
+		cmp := shared.ErrorMessage("Title is required")
+		return renderView(c, cmp)
+	}
+
 	log.Printf("Creating post - Title: %s, Content length: %d", title, len(content))
 	log.Printf("Content preview (sanitized): %s", content)
 
@@ -103,13 +110,16 @@ func (h *PostHandler) Create(c echo.Context) error {
 		log.Printf("Successfully uploaded %d/%d images", len(uploadedImages), len(imageFiles))
 	}
 
-	// Use first image for success display (or empty struct if no images)
-	var displayImage models.Picture
-	if len(uploadedImages) > 0 {
-		displayImage = uploadedImages[0]
+	// Reload the post with all images for display
+	fullPost, err := services.GetPostByID(h.server.DB, createdPost.ID)
+	if err != nil {
+		log.Printf("Failed to reload post: %v", err)
+		// Fallback to created post without pictures
+		fullPost = createdPost
+		fullPost.PictureURLs = []string{}
 	}
 
-	cmp := post.PostSuccess(createdPost, displayImage)
+	cmp := post.CreateSuccess(fullPost)
 	return renderView(c, cmp)
 }
 
