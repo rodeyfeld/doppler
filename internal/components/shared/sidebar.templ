@@ -11,13 +11,13 @@ templ Sidebar(user *models.User) {
 			<li><a disabled>Search<span class="badge badge-neutral badge-outline">coming soon!</span></a></li>
 			if user != nil {
 				<li><a href="/doppler/profile">Profile</a></li>
-				<li>
-					@CreatePost()
-				</li>
 			} else {
 				<li><a href="/doppler/login">Login</a></li>
 				<li><a href="/doppler/signup">Signup</a></li>
 			}
+			<li>
+				@CreatePost(user)
+			</li>
 		</ul>
 	</div>
 }

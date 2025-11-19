@@ -24,6 +24,9 @@ export function initQuillEditor() {
                 }
             });
 
+            // Prevent Quill from auto-focusing on initialization
+            quill.blur();
+
             console.log('Quill editor initialized');
         }
     };
@@ -40,15 +43,25 @@ export function initQuillEditor() {
         });
     }
 
-    // Initialize when modal opens
+    // Initialize when modal opens (using the proper 'show' event for dialogs)
     if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (modal.open) {
-                initQuill();
-            }
+        // Listen for when modal becomes visible
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'open') {
+                    if (modal.open && !quill) {
+                        // Delay initialization slightly to ensure modal is fully rendered
+                        setTimeout(initQuill, 50);
+                    }
+                }
+            });
         });
+
+        observer.observe(modal, { attributes: true });
     }
 
-    // Initialize immediately if modal exists
-    setTimeout(initQuill, 100);
+    // Initialize immediately if modal is already open
+    if (modal && modal.open) {
+        setTimeout(initQuill, 100);
+    }
 }

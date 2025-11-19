@@ -5,6 +5,19 @@ import (
 	"fmt"
 )
 
+func getGridClass(count int) string {
+	switch count {
+	case 2:
+		return "grid-cols-2"
+	case 3:
+		return "grid-cols-3"
+	case 4:
+		return "grid-cols-2"
+	default: // 5 or more
+		return "grid-cols-3"
+	}
+}
+
 templ UserInfo(id int) {
 	<span
 		hx-get={ fmt.Sprintf("/doppler/user-info/%d", id) }
@@ -14,44 +27,9 @@ templ UserInfo(id int) {
 }
 
 templ ListPosts(posts []models.Post) {
-	<div class="p-8">
+	<div class="p-4 max-w-5xl mx-auto">
 		for _, post := range posts {
-			<div class="card lg:card-side bg-base-100 shadow-xl m-4">
-				if len(post.PictureURLs) > 0 {
-					<figure class="lg:w-1/3">
-						if len(post.PictureURLs) == 1 {
-							<img
-								src={ post.PictureURLs[0] }
-								alt={ post.Title }
-								class="w-full h-full object-cover"
-							/>
-						} else {
-							<div class="carousel w-full h-full">
-								for idx, picURL := range post.PictureURLs {
-									<div id={ fmt.Sprintf("slide%d-%d", post.ID, idx) } class="carousel-item relative w-full">
-										<img
-											src={ picURL }
-											alt={ fmt.Sprintf("%s - Image %d", post.Title, idx+1) }
-											class="w-full object-cover"
-										/>
-										<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-											if idx > 0 {
-												<a href={ templ.URL(fmt.Sprintf("#slide%d-%d", post.ID, idx-1)) } class="btn btn-circle">❮</a>
-											} else {
-												<span></span>
-											}
-											if idx < len(post.PictureURLs)-1 {
-												<a href={ templ.URL(fmt.Sprintf("#slide%d-%d", post.ID, idx+1)) } class="btn btn-circle">❯</a>
-											} else {
-												<span></span>
-											}
-										</div>
-									</div>
-								}
-							</div>
-						}
-					</figure>
-				}
+			<div class="card bg-base-100 shadow-xl mb-6">
 				<div class="card-body">
 					<h2 class="card-title">
 						{ post.Title }
@@ -65,7 +43,80 @@ templ ListPosts(posts []models.Post) {
 						@templ.Raw(post.Content)
 					</div>
 				</div>
+				if len(post.PictureURLs) > 0 {
+					<figure class="pb-4">
+						if len(post.PictureURLs) == 1 {
+							<img
+								src={ post.PictureURLs[0] }
+								alt={ post.Title }
+								class="w-full max-h-[600px] object-contain cursor-pointer hover:opacity-90 transition-opacity image-fullscreen"
+							/>
+						} else {
+							<div class={ fmt.Sprintf("grid gap-2 px-2 %s", getGridClass(len(post.PictureURLs))) }>
+								for idx, picURL := range post.PictureURLs {
+									<img
+										src={ picURL }
+										alt={ fmt.Sprintf("%s - Image %d", post.Title, idx+1) }
+										class="w-full h-80 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity image-fullscreen"
+									/>
+								}
+							</div>
+						}
+					</figure>
+				}
 			</div>
 		}
 	</div>
+	<!-- Fullscreen Image Modal -->
+	<dialog id="image_modal" class="modal">
+		<div class="modal-box max-w-7xl w-full h-full max-h-screen p-0 bg-black">
+			<form method="dialog" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10">
+				<button class="btn btn-circle btn-sm sm:btn-md btn-ghost text-white hover:bg-white/20 touch-manipulation">✕</button>
+			</form>
+			<div class="flex items-center justify-center w-full h-full p-2 sm:p-4">
+				<img id="modal_image" src="" alt="Full size" class="max-w-full max-h-full object-contain touch-manipulation" style="touch-action: pinch-zoom;"/>
+			</div>
+		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
+	</dialog>
+	<script>
+		// Add click handlers to all images with class 'image-fullscreen'
+		document.addEventListener('DOMContentLoaded', function() {
+			setupImageFullscreen();
+		});
+
+		// Also setup after HTMX swaps
+		document.addEventListener('htmx:afterSwap', function() {
+			setupImageFullscreen();
+		});
+
+		function setupImageFullscreen() {
+			document.querySelectorAll('.image-fullscreen').forEach(function(img) {
+				img.onclick = function(e) {
+					// Prevent event bubbling
+					e.stopPropagation();
+					
+					// Set image source
+					document.getElementById('modal_image').src = this.src;
+					
+					// Open modal
+					const modal = document.getElementById('image_modal');
+					modal.showModal();
+					
+					// Prevent body scroll on mobile when modal is open
+					document.body.style.overflow = 'hidden';
+				};
+			});
+
+			// Restore scroll when modal closes
+			const modal = document.getElementById('image_modal');
+			if (modal) {
+				modal.addEventListener('close', function() {
+					document.body.style.overflow = '';
+				});
+			}
+		}
+	</script>
 }

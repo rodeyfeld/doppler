@@ -1,5 +1,15 @@
 package shared
 
-templ CreatePost() {
-	<button class="btn btn-primary w-full" onclick="create_post_modal.showModal()"><i class="fa-solid fa-tower-cell"></i>Emit!<i class="fa-solid fa-tower-cell"></i></button>
+import "doppler/internal/models"
+
+templ CreatePost(user *models.User) {
+	if user != nil {
+		<button class="btn btn-primary w-full" onclick="create_post_modal.showModal()">
+			<i class="fa-solid fa-tower-cell"></i>EMIT<i class="fa-solid fa-tower-cell"></i>
+		</button>
+	} else {
+		<button class="btn btn-disabled w-full" disabled title="Login to create posts">
+			<i class="fa-solid fa-tower-cell"></i>EMIT<i class="fa-solid fa-tower-cell"></i>
+		</button>
+	}
 }

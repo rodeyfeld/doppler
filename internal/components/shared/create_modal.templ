@@ -28,23 +28,24 @@ templ CreatePostModal() {
 			<h3 class="text-lg font-bold p-4">create a post!</h3>
 			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-encoding="multipart/form-data" hx-swap="none" hx-indicator="#loading-indicator">
 				<label class="input input-bordered flex items-center gap-2 my-2">
-					<input name="title" class="grow" placeholder="title" required/>
+					<input name="title" type="text" class="grow" placeholder="title" required/>
 				</label>
 				<div id="editor" class="bg-base-100 rounded-lg my-2 min-h-[200px]"></div>
 				<!-- Image Upload Section -->
 				<div class="form-control my-4">
 					<label class="label">
-						<span class="label-text">Add Image (optional)</span>
+						<span class="label-text">Add Images (optional, max 5)</span>
 					</label>
 					<input
 						type="file"
 						name="image-content"
 						accept="image/*"
+						multiple
 						class="file-input file-input-bordered file-input-primary w-full"
-						onchange="previewImage(event)"
+						onchange="previewImages(event)"
 					/>
-					<div id="image-preview" class="mt-2 hidden">
-						<img id="preview-img" class="rounded-lg max-h-48 object-cover" alt="Preview"/>
+					<div id="image-preview" class="mt-2 hidden grid grid-cols-2 gap-2">
+						<!-- Preview images will be inserted here -->
 					</div>
 				</div>
 				<!-- Submit Button with Loading State -->
@@ -62,17 +63,49 @@ templ CreatePostModal() {
 		</form>
 	</dialog>
 	<script>
-		function previewImage(event) {
-			const file = event.target.files[0];
-			if (file) {
-				const reader = new FileReader();
-				reader.onload = function(e) {
-					document.getElementById('preview-img').src = e.target.result;
-					document.getElementById('image-preview').classList.remove('hidden');
+		function previewImages(event) {
+			const files = event.target.files;
+			const previewContainer = document.getElementById('image-preview');
+			
+			// Clear previous previews
+			previewContainer.innerHTML = '';
+			
+			if (files.length > 0) {
+				// Limit to 5 images
+				const maxFiles = Math.min(files.length, 5);
+				
+				for (let i = 0; i < maxFiles; i++) {
+					const file = files[i];
+					const reader = new FileReader();
+					
+					reader.onload = function(e) {
+						const imgWrapper = document.createElement('div');
+						imgWrapper.className = 'relative';
+						
+						const img = document.createElement('img');
+						img.src = e.target.result;
+						img.className = 'rounded-lg max-h-48 w-full object-cover';
+						img.alt = `Preview ${i + 1}`;
+						
+						const badge = document.createElement('div');
+						badge.className = 'badge badge-primary badge-sm absolute top-2 right-2';
+						badge.textContent = `${i + 1}`;
+						
+						imgWrapper.appendChild(img);
+						imgWrapper.appendChild(badge);
+						previewContainer.appendChild(imgWrapper);
+					}
+					
+					reader.readAsDataURL(file);
 				}
-				reader.readAsDataURL(file);
+				
+				previewContainer.classList.remove('hidden');
+				
+				if (files.length > 5) {
+					alert('Maximum 5 images allowed. Only the first 5 will be uploaded.');
+				}
 			} else {
-				document.getElementById('image-preview').classList.add('hidden');
+				previewContainer.classList.add('hidden');
 			}
 		}
 	</script>

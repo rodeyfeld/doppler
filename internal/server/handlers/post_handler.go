@@ -6,7 +6,6 @@ import (
 	"doppler/internal/models"
 	"doppler/internal/server"
 	"doppler/internal/services"
-	"fmt"
 	"log"
 	"strconv"
 
@@ -62,11 +61,6 @@ func (h *PostHandler) Create(c echo.Context) error {
 	// Get form values
 	rawTitle := c.FormValue("title")
 	rawContent := c.FormValue("content")
-	imageFormFile, err := c.FormFile("image-content")
-	if err != nil {
-		log.Printf("No image file provided: %v", err)
-		return c.String(400, "Image file is required")
-	}
 
 	// Sanitize inputs using bluemonday
 	// UGCPolicy allows safe HTML tags (for Quill content) while stripping dangerous elements
@@ -81,13 +75,41 @@ func (h *PostHandler) Create(c echo.Context) error {
 	log.Printf("Content preview (sanitized): %s", content)
 
 	createdPost := services.CreatePost(h.server.DB, userID, title, content)
-	createdImage, err := services.CreatePicture(h.server.DB, createdPost.ID, imageFormFile)
+
+	// Get multiple image files
+	form, err := c.MultipartForm()
 	if err != nil {
-		log.Printf("Failed to create picture: %v", err)
-		return c.String(400, fmt.Sprintf("Image upload failed: %v", err))
+		log.Printf("No multipart form: %v", err)
 	}
 
-	cmp := post.PostSuccess(createdPost, createdImage)
+	var uploadedImages []models.Picture
+	if form != nil {
+		imageFiles := form.File["image-content"]
+		// Limit to 5 images
+		maxImages := 5
+		if len(imageFiles) > maxImages {
+			imageFiles = imageFiles[:maxImages]
+		}
+
+		for i, imageFormFile := range imageFiles {
+			log.Printf("Processing image %d/%d: %s", i+1, len(imageFiles), imageFormFile.Filename)
+			createdImage, err := services.CreatePicture(h.server.DB, createdPost.ID, imageFormFile)
+			if err != nil {
+				log.Printf("Failed to create picture %d: %v", i+1, err)
+				continue // Skip this image but continue with others
+			}
+			uploadedImages = append(uploadedImages, createdImage)
+		}
+		log.Printf("Successfully uploaded %d/%d images", len(uploadedImages), len(imageFiles))
+	}
+
+	// Use first image for success display (or empty struct if no images)
+	var displayImage models.Picture
+	if len(uploadedImages) > 0 {
+		displayImage = uploadedImages[0]
+	}
+
+	cmp := post.PostSuccess(createdPost, displayImage)
 	return renderView(c, cmp)
 }
 
