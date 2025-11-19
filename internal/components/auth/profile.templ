@@ -12,7 +12,13 @@ templ Profile(user *models.User) {
 			<div class="flex items-center gap-6 mb-6">
 				<div class="avatar placeholder">
 					<div class="bg-gradient-to-br from-primary to-secondary text-primary-content rounded-full w-24 h-24 shadow-lg">
-						<span class="text-4xl font-bold">{ user.Username[:1] }</span>
+						<span class="text-4xl font-bold">
+							if len(user.Username) > 0 {
+								{ user.Username[:1] }
+							} else {
+								?
+							}
+						</span>
 					</div>
 				</div>
 				<div class="flex-1">

@@ -156,7 +156,7 @@ input:focus, textarea:focus, select:focus {
 
 /* Smooth page transitions */
 @media (prefers-reduced-motion: no-preference) {
-	* {
+	html {
 		scroll-behavior: smooth;
 	}
 }

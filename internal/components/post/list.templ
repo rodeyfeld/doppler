@@ -46,7 +46,7 @@ templ ListPosts(posts []models.Post) {
 						</div>
 						<div class="flex items-center gap-2">
 							<i class="fa-solid fa-calendar text-secondary"></i>
-							<span>{ post.Created.String() }</span>
+							<span class="utc-timestamp" data-utc={ post.Created.String() }>{ post.Created.String() }</span>
 						</div>
 					</div>
 					<div class="divider my-2"></div>
@@ -105,6 +105,9 @@ templ ListPosts(posts []models.Post) {
 
 		function setupImageFullscreen() {
 			document.querySelectorAll('.image-fullscreen').forEach(function(img) {
+				// Remove existing handler to prevent duplicates
+				img.onclick = null;
+				
 				img.onclick = function(e) {
 					// Prevent event bubbling
 					e.stopPropagation();
@@ -121,13 +124,56 @@ templ ListPosts(posts []models.Post) {
 				};
 			});
 
-			// Restore scroll when modal closes
+			// Restore scroll when modal closes (use once to prevent duplicate listeners)
 			const modal = document.getElementById('image_modal');
-			if (modal) {
+			if (modal && !modal.dataset.listenerAdded) {
+				modal.dataset.listenerAdded = 'true';
 				modal.addEventListener('close', function() {
 					document.body.style.overflow = '';
 				});
 			}
 		}
+		
+		// Convert UTC timestamps to local time
+		function convertTimestamps() {
+			document.querySelectorAll('.utc-timestamp').forEach(function(element) {
+				const utcString = element.getAttribute('data-utc');
+				if (!utcString) return;
+				
+				try {
+					// Parse the UTC timestamp
+					const date = new Date(utcString);
+					
+					// Check if date is valid
+					if (isNaN(date.getTime())) {
+						console.error('Invalid date:', utcString);
+						return;
+					}
+					
+					// Format options
+					const options = {
+						year: 'numeric',
+						month: 'short',
+						day: 'numeric',
+						hour: '2-digit',
+						minute: '2-digit',
+						timeZoneName: 'short'
+					};
+					
+					// Convert to local time and format
+					const localTime = date.toLocaleString(undefined, options);
+					element.textContent = localTime;
+					element.title = 'Original UTC: ' + utcString; // Show original on hover
+				} catch (error) {
+					console.error('Error converting timestamp:', error);
+				}
+			});
+		}
+		
+		// Run on page load
+		document.addEventListener('DOMContentLoaded', convertTimestamps);
+		
+		// Run after HTMX updates
+		document.addEventListener('htmx:afterSwap', convertTimestamps);
 	</script>
 }
