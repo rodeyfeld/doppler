@@ -6,6 +6,7 @@ import (
 	"doppler/internal/models"
 	"doppler/internal/server"
 	"doppler/internal/services"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -80,7 +81,11 @@ func (h *PostHandler) Create(c echo.Context) error {
 	log.Printf("Content preview (sanitized): %s", content)
 
 	createdPost := services.CreatePost(h.server.DB, userID, title, content)
-	createdImage := services.CreatePicture(h.server.DB, createdPost.ID, imageFormFile)
+	createdImage, err := services.CreatePicture(h.server.DB, createdPost.ID, imageFormFile)
+	if err != nil {
+		log.Printf("Failed to create picture: %v", err)
+		return c.String(400, fmt.Sprintf("Image upload failed: %v", err))
+	}
 
 	cmp := post.PostSuccess(createdPost, createdImage)
 	return renderView(c, cmp)
@@ -88,7 +93,7 @@ func (h *PostHandler) Create(c echo.Context) error {
 
 func (h *PostHandler) UserInfo(c echo.Context) error {
 	p := c.Param("id")
-	log.Printf(p)
+	log.Printf("User info requested for ID: %s", p)
 	id, err := strconv.Atoi(p)
 	if err != nil {
 
@@ -108,6 +113,12 @@ func (h *PostHandler) GetImage(c echo.Context) error {
 	filename := c.Param("filename")
 	if filename == "" {
 		return c.String(400, "Filename is required")
+	}
+
+	// Validate filename to prevent path traversal attacks
+	if err := services.ValidateFilename(filename); err != nil {
+		log.Printf("Invalid filename requested: %s, error: %v", filename, err)
+		return c.String(400, "Invalid filename")
 	}
 
 	// Stream the image from S3
