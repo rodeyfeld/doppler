@@ -34,8 +34,7 @@ static/css/all.min.css
 static/css/output.css
 
 # Generated bundles
-static/js/bundle.js
-static/js/quill*.css
+static/dist/
 
 # Templ generated files
 *_templ.go

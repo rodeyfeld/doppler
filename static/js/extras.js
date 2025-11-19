@@ -6,7 +6,7 @@
  * - Quill for rich text editing
  * - tsParticles for home page animations
  * 
- * Bun bundles everything from node_modules into static/dist/index.js
+ * Bun bundles everything from node_modules into static/js/extras.bundle.js
  * 
  * Build commands:
  *   - Development: bun run dev:js (watch mode)
