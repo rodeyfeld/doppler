@@ -3,7 +3,14 @@ package post
 import "doppler/internal/models"
 
 templ PostSuccess(post models.Post, picture models.Picture) {
-	<div>
-		<span class="loading loading-bars loading-md"></span>
+	<div class="flex items-center justify-center gap-3 p-4 bg-success/10 rounded-lg animate-scaleIn">
+		<div class="flex items-center justify-center w-12 h-12 rounded-full bg-success/20">
+			<i class="fa-solid fa-check-circle text-2xl text-success"></i>
+		</div>
+		<div>
+			<p class="font-bold text-success">Post created successfully!</p>
+			<p class="text-sm text-base-content/70">Your signal has been emitted</p>
+		</div>
+		<span class="loading loading-spinner loading-md text-success"></span>
 	</div>
 }

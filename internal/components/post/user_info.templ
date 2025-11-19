@@ -3,5 +3,5 @@ package post
 import "doppler/internal/models"
 
 templ PostUserInfo(user *models.User) {
-	{ user.Username }
+	<span class="font-medium text-primary hover:underline cursor-pointer">{ user.Username }</span>
 }

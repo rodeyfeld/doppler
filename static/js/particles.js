@@ -3,6 +3,18 @@ import { loadSlim } from "@tsparticles/slim";
 
 export async function initParticles() {
     await loadSlim(tsParticles);
+
+    // Responsive particle count based on screen size
+    const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+
+    let particleCount = 80; // Desktop default
+    if (isMobile) {
+        particleCount = 25; // Mobile: much fewer
+    } else if (isTablet) {
+        particleCount = 45; // Tablet: moderate
+    }
+
     await tsParticles.load({
         id: "tsparticles",
         options: {
@@ -40,20 +52,26 @@ export async function initParticles() {
                     }
                 },
                 number: {
-                    value: 80
+                    value: particleCount
                 },
                 color: {
                     value: [
                         "#1eb854",
                         "#1db88e",
                         "#1db8ab",
-                        "#19362d",
+                        "#52c97c",
+                        "#87ceeb",
+                        "#98fb98",
+                        "#7bed9f",
                     ]
                 },
                 rotate: {
                     direction: "random",
                     value: { min: 0, max: 360 },
-                    animation: { speed: 20, enable: true, },
+                    animation: {
+                        speed: 25,
+                        enable: true,
+                    },
                 },
                 shape: {
                     type: "images",
@@ -69,29 +87,53 @@ export async function initParticles() {
                     }
                 },
                 opacity: {
-                    value: 1
+                    value: 0.95,
+                    animation: {
+                        enable: true,
+                        speed: 0.3,
+                        minimumValue: 0.6
+                    }
                 },
                 size: {
                     value: {
-                        min: 10,
-                        max: 15
+                        min: 18,
+                        max: 28
                     }
                 },
                 collisions: {
-                    enable: true,
+                    enable: !isMobile, // Disable collisions on mobile for better performance
                     mode: "bounce"
                 },
                 move: {
                     enable: true,
-                    speed: 1,
-                    outModes: "bounce"
+                    speed: 1.5,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    outModes: "bounce",
+                    attract: {
+                        enable: true,
+                        distance: 200,
+                        rotate: {
+                            x: 600,
+                            y: 1200
+                        }
+                    }
                 }
             },
             interactivity: {
                 events: {
                     onClick: {
                         enable: true,
-                        mode: "pop"
+                        mode: "push"
+                    },
+                    onHover: {
+                        enable: false
+                    }
+                },
+                modes: {
+                    push: {
+                        quantity: 3
                     }
                 }
             },

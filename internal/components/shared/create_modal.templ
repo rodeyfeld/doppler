@@ -19,42 +19,72 @@ templ CreatePostModal() {
 		}
 	</style>
 	<dialog id="create_post_modal" class="modal">
-		<div class="modal-box max-w-3xl">
-			<div class="modal-action">
+		<div class="modal-box max-w-3xl border border-base-300 shadow-2xl">
+			<div class="flex items-center justify-between mb-6">
+				<div class="flex items-center gap-3">
+					<div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+						<i class="fa-solid fa-pen-to-square text-xl text-primary"></i>
+					</div>
+					<h3 class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+						Send a Signal!
+					</h3>
+				</div>
 				<form method="dialog">
-					<button class="btn btn-ghost">close</button>
+					<button class="btn btn-ghost btn-circle hover:bg-base-300">
+						<i class="fa-solid fa-times text-lg"></i>
+					</button>
 				</form>
 			</div>
-			<h3 class="text-lg font-bold p-4">create a post!</h3>
-			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-encoding="multipart/form-data" hx-swap="none" hx-indicator="#loading-indicator">
-				<label class="input input-bordered flex items-center gap-2 my-2">
-					<input name="title" type="text" class="grow" placeholder="title" required/>
-				</label>
-				<div id="editor" class="bg-base-100 rounded-lg my-2 min-h-[200px]"></div>
-				<!-- Image Upload Section -->
-				<div class="form-control my-4">
+			<form id="create_post_form" method="post" hx-post="/doppler/create" hx-encoding="multipart/form-data" hx-swap="none" hx-indicator="#loading-indicator" class="space-y-4">
+				<div class="form-control">
 					<label class="label">
-						<span class="label-text">Add Images (optional, max 5)</span>
+						<span class="label-text font-medium flex items-center gap-2">
+							<i class="fa-solid fa-heading text-primary"></i>
+							Title
+						</span>
+					</label>
+					<label class="input input-bordered flex items-center gap-2 focus-within:ring-2 focus-within:ring-primary transition-all">
+						<input name="title" type="text" class="grow" placeholder="Current wavelength" required/>
+					</label>
+				</div>
+				<div class="form-control">
+					<label class="label">
+						<span class="label-text font-medium flex items-center gap-2">
+							<i class="fa-solid fa-align-left text-primary"></i>
+							Content
+						</span>
+					</label>
+					<div id="editor" class="bg-base-100 rounded-lg border-2 border-base-300 focus-within:border-primary transition-all shadow-inner" style="min-height: 300px;"></div>
+				</div>
+				<div class="form-control">
+					<label class="label">
+						<span class="label-text font-medium flex items-center gap-2">
+							<i class="fa-solid fa-image text-secondary"></i>
+							Images (optional, max 5)
+						</span>
 					</label>
 					<input
 						type="file"
 						name="image-content"
 						accept="image/*"
 						multiple
-						class="file-input file-input-bordered file-input-primary w-full"
+						class="file-input file-input-bordered file-input-secondary w-full hover:file-input-primary transition-all"
 						onchange="previewImages(event)"
 					/>
-					<div id="image-preview" class="mt-2 hidden grid grid-cols-2 gap-2">
+					<div id="image-preview" class="mt-4 hidden grid grid-cols-2 gap-3 animate-fadeIn">
 						<!-- Preview images will be inserted here -->
 					</div>
 				</div>
-				<!-- Submit Button with Loading State -->
-				<button type="submit" class="btn btn-primary btn-block" onclick="create_post_modal.close()" hx-disabled-elt="this">
+				<div class="divider"></div>
+				<button type="submit" class="btn btn-primary btn-block gap-2 hover:scale-105 hover:shadow-lg transition-all" onclick="create_post_modal.close()" hx-disabled-elt="this">
 					<span class="htmx-indicator" id="loading-indicator">
 						<span class="loading loading-spinner loading-sm"></span>
-						uploading...
+						Publishing...
 					</span>
-					<span class="htmx-not-indicator">send</span>
+					<span class="htmx-not-indicator flex items-center gap-2">
+						<i class="fa-solid fa-paper-plane"></i>
+						Publish Post
+					</span>
 				</button>
 			</form>
 		</div>
@@ -80,15 +110,15 @@ templ CreatePostModal() {
 					
 					reader.onload = function(e) {
 						const imgWrapper = document.createElement('div');
-						imgWrapper.className = 'relative';
+						imgWrapper.className = 'relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all';
 						
 						const img = document.createElement('img');
 						img.src = e.target.result;
-						img.className = 'rounded-lg max-h-48 w-full object-cover';
+						img.className = 'rounded-lg max-h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300';
 						img.alt = `Preview ${i + 1}`;
 						
 						const badge = document.createElement('div');
-						badge.className = 'badge badge-primary badge-sm absolute top-2 right-2';
+						badge.className = 'badge badge-primary badge-sm absolute top-2 right-2 shadow-lg';
 						badge.textContent = `${i + 1}`;
 						
 						imgWrapper.appendChild(img);

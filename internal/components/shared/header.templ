@@ -3,28 +3,34 @@ package shared
 import "doppler/internal/models"
 
 templ Header(user *models.User) {
-	<div class="navbar bg-base-100 max-w-[100rem] mx-auto">
+	<div class="navbar bg-base-100 max-w-[100rem] mx-auto shadow-lg border-b border-base-300 backdrop-blur-sm bg-opacity-95 sticky top-0 z-50 animate-fadeIn">
 		<div class="flex-1">
-			<a class="btn btn-ghost text-xl" href="/doppler/"><i class="fa-solid fa-record-vinyl"></i>doppler</a>
+			<a class="btn btn-ghost text-xl gap-2 hover:scale-105 transition-transform" href="/doppler/">
+				<i class="fa-solid fa-record-vinyl text-primary"></i>
+				<span class="font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">doppler</span>
+			</a>
 		</div>
 		<div class="flex-none">
 			<div class="dropdown dropdown-end">
 				if user != nil {
-					<span class="mx-2">{ user.Username }</span>
+					<span class="mx-2 px-3 py-1 rounded-full bg-base-200 text-sm font-medium animate-slideIn">
+						<i class="fa-solid fa-circle text-success text-xs mr-1"></i>
+						{ user.Username }
+					</span>
 				}
-				<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-					<i class="fa-solid fa-user"></i>
+				<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar hover:ring-2 hover:ring-primary hover:ring-offset-2 hover:ring-offset-base-100 transition-all">
+					<i class="fa-solid fa-user text-lg"></i>
 				</div>
 				<ul
 					tabindex="0"
-					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow-xl border border-base-300 animate-scaleIn"
 				>
 					if user != nil {
-						<li><a href="/doppler/profile">Profile</a></li>
-						<li><a href="/doppler/logout">Logout</a></li>
+						<li><a href="/doppler/profile" class="hover:bg-primary hover:text-primary-content"><i class="fa-solid fa-user-circle mr-2"></i>Profile</a></li>
+						<li><a href="/doppler/logout" class="hover:bg-error hover:text-error-content"><i class="fa-solid fa-sign-out-alt mr-2"></i>Logout</a></li>
 					} else {
-						<li><a href="/doppler/login">Login</a></li>
-						<li><a href="/doppler/signup">Signup</a></li>
+						<li><a href="/doppler/login" class="hover:bg-primary hover:text-primary-content"><i class="fa-solid fa-sign-in-alt mr-2"></i>Login</a></li>
+						<li><a href="/doppler/signup" class="hover:bg-secondary hover:text-secondary-content"><i class="fa-solid fa-user-plus mr-2"></i>Signup</a></li>
 					}
 				</ul>
 			</div>

@@ -8,7 +8,7 @@ templ Home() {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<meta
 				name="description"
-				content="pinwheel labs: projects by rodeyfeld"
+				content="pinwheel labs: projects by eric rodefeld"
 			/>
 			<meta name="google" content="notranslate"/>
 			<link rel="stylesheet" href="/static/css/all.min.css"/>
@@ -19,51 +19,105 @@ templ Home() {
 			</style>
 		</head>
 		<body>
-			<div id="tsparticles"></div>
-			<div class="hero bg-base-300 min-h-screen">
-				<div class="hero-content">
-					<div class="max-w-md">
-						<h1 class="text-5xl font-bold text-center">pinwheel labs</h1>
-						<p class="py-6 text-center">projects by rodeyfeld</p>
-						<div class="flex justify-center items-center ">
-							<ul class="max-w-md justify-center text-center menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
-								<li><a href="https://github.com/rodeyfeld"><i class="fa-brands fa-github"></i></a></li>
-								<li><a href="https://linkedin.com/in/eric-rodefeld-a0413b188"><i class="fa-brands fa-linkedin"></i></a></li>
+			<div id="tsparticles" class="fixed inset-0 z-0"></div>
+			<div class="hero bg-base-300/70 backdrop-blur-[2px] min-h-screen relative z-10">
+				<div class="hero-content py-12">
+					<div class="max-w-2xl w-full">
+						<div class="text-center mb-8 animate-fadeIn">
+							<h1 class="text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-float">
+								pinwheel labs
+							</h1>
+							<p class="text-xl text-base-content/80 font-medium">projects by eric rodefeld</p>
+						</div>
+						<div class="flex justify-center items-center mb-8 animate-slideIn">
+							<ul class="menu menu-horizontal bg-base-100 rounded-box shadow-xl border border-base-300 gap-2">
+								<li>
+									<a href="https://github.com/rodeyfeld" class="hover:text-primary hover:scale-110 transition-all" target="_blank">
+										<i class="fa-brands fa-github text-2xl"></i>
+									</a>
+								</li>
+								<li>
+									<a href="https://linkedin.com/in/eric-rodefeld-a0413b188" class="hover:text-primary hover:scale-110 transition-all" target="_blank">
+										<i class="fa-brands fa-linkedin text-2xl"></i>
+									</a>
+								</li>
 							</ul>
 						</div>
-						<div class="my-2 card-body bg-base-100  max-w-md">
-							<h2 class="card-title">doppler</h2>
-							<p>Personal website and blog. Written in Go, HTMX, Tailwind, Templ.</p>
-							<div class="card-actions justify-end">
-								<a class="btn btn-primary" href="/doppler/">Visit Site</a>
+						<div class="space-y-4">
+							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-1">
+								<div class="card-body">
+									<h2 class="card-title text-2xl">
+										<i class="fa-solid fa-record-vinyl text-primary"></i>
+										doppler
+									</h2>
+									<p class="text-base-content/80">Personal website and blog. Written in Go, HTMX, Tailwind, Templ.</p>
+									<div class="card-actions justify-end mt-2">
+										<a class="btn btn-primary gap-2 hover:scale-105 transition-transform" href="/doppler/">
+											<i class="fa-solid fa-arrow-right"></i>
+											Visit Site
+										</a>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="my-2 card-body bg-base-100  max-w-md">
-							<h2 class="card-title">lunar prance</h2>
-							<p>Simple 2D sidescrolling game hosted on itch.io. Pickup mini moons for score, avoid enemies. Written in Godot.</p>
-							<div class="card-actions justify-end">
-								<a class="btn btn-accent" href="https://rodeyfeld.itch.io/lunar-prance">Visit Site</a>
+							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-2">
+								<div class="card-body">
+									<h2 class="card-title text-2xl">
+										<i class="fa-solid fa-gamepad text-accent"></i>
+										lunar prance
+									</h2>
+									<p class="text-base-content/80">Simple 2D sidescrolling game hosted on itch.io. Pickup mini moons for score, avoid enemies. Written in Godot.</p>
+									<div class="card-actions justify-end mt-2">
+										<a class="btn btn-accent gap-2 hover:scale-105 transition-transform" href="https://rodeyfeld.itch.io/lunar-prance" target="_blank">
+											<i class="fa-solid fa-arrow-right"></i>
+											Visit Site
+										</a>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="my-2 card-body bg-base-100  max-w-md">
-							<h2 class="card-title">augur</h2>
-							<p>Satellite data archive search REST API. Implemented using Python, Django, Django Ninja.</p>
-							<div class="card-actions justify-end">
-								<a class="btn btn-secondary" href="https://augur.pinwheel.fan/api/docs">Visit Site</a>
+							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-3">
+								<div class="card-body">
+									<h2 class="card-title text-2xl">
+										<i class="fa-solid fa-satellite text-secondary"></i>
+										augur
+									</h2>
+									<p class="text-base-content/80">Satellite data archive search REST API. Implemented using Python, Django, Django Ninja.</p>
+									<div class="card-actions justify-end mt-2">
+										<a class="btn btn-secondary gap-2 hover:scale-105 transition-transform" href="https://augur.pinwheel.fan/api/docs" target="_blank">
+											<i class="fa-solid fa-arrow-right"></i>
+											Visit Site
+										</a>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="my-2 card-body bg-base-100  max-w-md">
-							<h2 class="card-title">luna</h2>
-							<p>Easy to use frontend map tool for finding satellite imagery. Created with Typescript, Svelte, Sveltekit, OpenLayers, Tailwind.</p>
-							<div class="card-actions justify-end">
-								<a class="btn btn-primary" href="https://luna.pinwheel.fan">Visit Site</a>
+							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-4">
+								<div class="card-body">
+									<h2 class="card-title text-2xl">
+										<i class="fa-solid fa-map text-primary"></i>
+										luna
+									</h2>
+									<p class="text-base-content/80">Easy to use frontend map tool for finding satellite imagery. Created with Typescript, Svelte, Sveltekit, OpenLayers, Tailwind.</p>
+									<div class="card-actions justify-end mt-2">
+										<a class="btn btn-primary gap-2 hover:scale-105 transition-transform" href="https://luna.pinwheel.fan" target="_blank">
+											<i class="fa-solid fa-arrow-right"></i>
+											Visit Site
+										</a>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="my-2 card-body bg-base-100  max-w-md">
-							<h2 class="card-title">dreamflow</h2>
-							<p>Apache Airflow for coordinating satellite archive searches. Implemented using Python, Postgres, Apache Airflow.</p>
-							<div class="card-actions justify-end">
-								<a class="btn btn-secondary" href="https://dreamflow.pinwheel.fan">Visit Site</a>
+							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-5">
+								<div class="card-body">
+									<h2 class="card-title text-2xl">
+										<i class="fa-solid fa-cloud text-secondary"></i>
+										dreamflow
+									</h2>
+									<p class="text-base-content/80">Apache Airflow for coordinating satellite archive searches. Implemented using Python, Postgres, Apache Airflow.</p>
+									<div class="card-actions justify-end mt-2">
+										<a class="btn btn-secondary gap-2 hover:scale-105 transition-transform" href="https://dreamflow.pinwheel.fan" target="_blank">
+											<i class="fa-solid fa-arrow-right"></i>
+											Visit Site
+										</a>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

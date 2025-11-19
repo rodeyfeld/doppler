@@ -29,35 +29,46 @@ templ UserInfo(id int) {
 templ ListPosts(posts []models.Post) {
 	<div class="p-4 max-w-5xl mx-auto">
 		for _, post := range posts {
-			<div class="card bg-base-100 shadow-xl mb-6">
+			<div class="card bg-base-100 shadow-xl mb-6 hover-lift border border-base-300 overflow-hidden group animate-fadeIn">
+				<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 				<div class="card-body">
-					<h2 class="card-title">
+					<h2 class="card-title text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+						<i class="fa-solid fa-circle-dot text-xs text-primary mr-2"></i>
 						{ post.Title }
 					</h2>
-					<h3 class="text-sm opacity-70">
-						created by 
-						@UserInfo(post.UserID)
-					</h3>
-					<h3 class="text-sm opacity-70">created on { post.Created.String() }</h3>
-					<div class="prose max-w-none">
+					<div class="flex items-center gap-4 text-sm opacity-70 mt-2">
+						<div class="flex items-center gap-2">
+							<i class="fa-solid fa-user text-primary"></i>
+							<span>
+								created by 
+								@UserInfo(post.UserID)
+							</span>
+						</div>
+						<div class="flex items-center gap-2">
+							<i class="fa-solid fa-calendar text-secondary"></i>
+							<span>{ post.Created.String() }</span>
+						</div>
+					</div>
+					<div class="divider my-2"></div>
+					<div class="prose max-w-none prose-headings:text-primary prose-a:text-secondary hover:prose-a:text-secondary-focus prose-strong:text-accent">
 						@templ.Raw(post.Content)
 					</div>
 				</div>
 				if len(post.PictureURLs) > 0 {
-					<figure class="pb-4">
+					<figure class="pb-4 px-4">
 						if len(post.PictureURLs) == 1 {
 							<img
 								src={ post.PictureURLs[0] }
 								alt={ post.Title }
-								class="w-full max-h-[600px] object-contain cursor-pointer hover:opacity-90 transition-opacity image-fullscreen"
+								class="w-full max-h-[600px] object-contain cursor-pointer hover:scale-[1.02] transition-transform image-fullscreen rounded-lg shadow-lg"
 							/>
 						} else {
-							<div class={ fmt.Sprintf("grid gap-2 px-2 %s", getGridClass(len(post.PictureURLs))) }>
+							<div class={ fmt.Sprintf("grid gap-3 %s", getGridClass(len(post.PictureURLs))) }>
 								for idx, picURL := range post.PictureURLs {
 									<img
 										src={ picURL }
 										alt={ fmt.Sprintf("%s - Image %d", post.Title, idx+1) }
-										class="w-full h-80 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity image-fullscreen"
+										class="w-full h-80 object-cover rounded-lg cursor-pointer hover:scale-105 hover:shadow-xl transition-all image-fullscreen"
 									/>
 								}
 							</div>

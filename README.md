@@ -1,5 +1,5 @@
 # doppler
-Personal website for rodeyfeld.
+Personal website for eric rodefeld.
 
 ## Local Development
 
