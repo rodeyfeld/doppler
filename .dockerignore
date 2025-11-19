@@ -14,9 +14,12 @@ tmp/
 node_modules/
 .bun/
 
-# Build artifacts
+# Build artifacts (will be regenerated in Docker)
 *.log
 build-errors.log
+static/dist/
+static/css/output.css
+*_templ.go
 
 # IDE
 .vscode/

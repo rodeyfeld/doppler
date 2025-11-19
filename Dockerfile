@@ -1,12 +1,29 @@
 FROM golang:1.25.4 AS builder
 WORKDIR /app
-COPY go.mod go.sum ./
+
+# Install templ and bun for building assets
+RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+
+# Copy dependency files
+COPY go.mod go.sum package.json bun.lockb ./
 RUN go mod download
 
-COPY . . 
+# Copy source code
+COPY . .
 
+# Generate templ files
+RUN templ generate
+
+# Build JavaScript and CSS
+RUN bun install --frozen-lockfile
+RUN bun run build:js
+RUN bun run build:css
+
+# Build Go binary
 WORKDIR /app/cmd
-RUN go build -o /app/app-binary
+RUN CGO_ENABLED=1 go build -o /app/app-binary
 
 
 FROM golang:1.25.4 AS dev
