@@ -95,104 +95,71 @@ templ CreatePostModal() {
 		</form>
 	</dialog>
 	<script>
-		// Handle successful post creation
 		document.body.addEventListener('htmx:afterSwap', function(event) {
 			if (event.detail.target.id === 'form-response') {
 				const response = event.detail.target;
 				
-				// Check if response contains a success indicator (we'll add data attribute from backend)
-				// or check if it contains the new post HTML
-				if (response.querySelector('.post-success-marker') || event.detail.xhr.getResponseHeader('HX-Trigger')) {
-					// Success! Add the new post to the top of the list
+				if (response.querySelector('.post-success-marker')) {
 					const postsContainer = document.getElementById('posts-container');
-					if (postsContainer && response.innerHTML) {
-						// Extract the post card if it's wrapped in success message
-						const postCard = response.querySelector('.card') || response.firstElementChild;
-						if (postCard) {
-							postsContainer.insertAdjacentHTML('afterbegin', postCard.outerHTML);
-						}
+					const postCard = response.querySelector('.card');
+					if (postsContainer && postCard) {
+						postsContainer.insertAdjacentHTML('afterbegin', postCard.outerHTML);
 					}
 					
-					// Close the modal
-					const modal = document.getElementById('create_post_modal');
-					if (modal) {
-						modal.close();
+					document.getElementById('create_post_modal')?.close();
+					document.getElementById('create_post_form')?.reset();
+					response.innerHTML = '';
+					
+					const preview = document.getElementById('image-preview');
+					if (preview) {
+						preview.innerHTML = '';
+						preview.classList.add('hidden');
 					}
 					
-					// Reset the form
-					const form = document.getElementById('create_post_form');
-					if (form) {
-						form.reset();
-						
-						// Clear response area
-						response.innerHTML = '';
-						
-						// Clear image preview
-						const previewContainer = document.getElementById('image-preview');
-						if (previewContainer) {
-							previewContainer.innerHTML = '';
-							previewContainer.classList.add('hidden');
-						}
-						
-						// Clear Quill editor if it exists
-						const editor = document.querySelector('#editor .ql-editor');
-						if (editor) {
-							editor.innerHTML = '';
-						}
-					}
+					const editor = document.querySelector('#editor .ql-editor');
+					if (editor) editor.innerHTML = '';
 					
-					// Trigger timestamp conversion for the new post
-					setTimeout(convertTimestamps, 100);
-					// Trigger image fullscreen setup for the new post
-					setTimeout(setupImageFullscreen, 100);
+					setTimeout(() => {
+						convertTimestamps();
+						setupImageFullscreen();
+					}, 100);
 				}
-				// If no success marker, it's an error - leave modal open and show error
 			}
 		});
 		
 		function previewImages(event) {
 			const files = event.target.files;
-			const previewContainer = document.getElementById('image-preview');
-			
-			// Clear previous previews
-			previewContainer.innerHTML = '';
+			const preview = document.getElementById('image-preview');
+			preview.innerHTML = '';
 			
 			if (files.length > 0) {
-				// Limit to 5 images
 				const maxFiles = Math.min(files.length, 5);
 				
 				for (let i = 0; i < maxFiles; i++) {
-					const file = files[i];
 					const reader = new FileReader();
-					
 					reader.onload = function(e) {
-						const imgWrapper = document.createElement('div');
-						imgWrapper.className = 'relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all';
+						const wrapper = document.createElement('div');
+						wrapper.className = 'relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all';
 						
 						const img = document.createElement('img');
 						img.src = e.target.result;
 						img.className = 'rounded-lg max-h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300';
-						img.alt = `Preview ${i + 1}`;
 						
 						const badge = document.createElement('div');
 						badge.className = 'badge badge-primary badge-sm absolute top-2 right-2 shadow-lg';
 						badge.textContent = `${i + 1}`;
 						
-						imgWrapper.appendChild(img);
-						imgWrapper.appendChild(badge);
-						previewContainer.appendChild(imgWrapper);
+						wrapper.appendChild(img);
+						wrapper.appendChild(badge);
+						preview.appendChild(wrapper);
 					}
-					
-					reader.readAsDataURL(file);
+					reader.readAsDataURL(files[i]);
 				}
 				
-				previewContainer.classList.remove('hidden');
-				
-				if (files.length > 5) {
-					alert('Maximum 5 images allowed. Only the first 5 will be uploaded.');
-				}
+				preview.classList.remove('hidden');
+				if (files.length > 5) alert('Max 5 images. Only first 5 will upload.');
 			} else {
-				previewContainer.classList.add('hidden');
+				preview.classList.add('hidden');
 			}
 		}
 	</script>

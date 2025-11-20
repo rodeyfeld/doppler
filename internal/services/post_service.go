@@ -104,9 +104,7 @@ func GetPosts(db *sql.DB) []models.Post {
 	return posts
 }
 
-// GetPostByID retrieves a single post with its pictures
 func GetPostByID(db *sql.DB, postID int) (models.Post, error) {
-	// Query the post
 	postQuery := `
 		SELECT id, user_id, title, content, created, modified
 		FROM post
@@ -121,9 +119,8 @@ func GetPostByID(db *sql.DB, postID int) (models.Post, error) {
 		return models.Post{}, fmt.Errorf("failed to get post: %v", err)
 	}
 
-	post.PictureURLs = []string{} // Initialize empty slice
+	post.PictureURLs = []string{}
 
-	// Query pictures for this post
 	pictureQuery := `
 		SELECT filename
 		FROM picture

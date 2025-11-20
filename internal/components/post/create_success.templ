@@ -2,8 +2,6 @@ package post
 
 import "doppler/internal/models"
 
-// Response component for successful post creation
-// This wraps the post card with a success marker so JavaScript knows it succeeded
 templ CreateSuccess(post models.Post) {
 	<div class="post-success-marker">
 		@PostCard(post)

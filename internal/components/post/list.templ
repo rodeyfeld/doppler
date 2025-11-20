@@ -28,33 +28,12 @@ templ UserInfo(id int) {
 
 templ ListPosts(posts []models.Post) {
 	<div class="p-4 max-w-5xl mx-auto">
-		<!-- New posts notification -->
-		<div id="new-posts-notification" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-50 animate-slideIn">
-			<div class="alert alert-info shadow-lg">
-				<i class="fa-solid fa-bell"></i>
-				<span>New posts available!</span>
-				<button class="btn btn-sm btn-ghost" onclick="location.reload()">
-					<i class="fa-solid fa-refresh"></i>
-					Refresh
-				</button>
-			</div>
-		</div>
-		<!-- Polling for new posts every 30 seconds -->
-		<div
-			hx-get="/doppler/posts"
-			hx-trigger="every 30s"
-			hx-swap="outerHTML"
-			hx-select="#posts-container"
-			hx-target="#posts-container"
-			class="htmx-poll-trigger"
-		></div>
 		<div id="posts-container">
 			for _, post := range posts {
 				@PostCard(post)
 			}
 		</div>
 	</div>
-	<!-- Fullscreen Image Modal -->
 	<dialog id="image_modal" class="modal">
 		<div class="modal-box max-w-7xl w-full h-full max-h-screen p-0 bg-black">
 			<form method="dialog" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10">
@@ -69,87 +48,41 @@ templ ListPosts(posts []models.Post) {
 		</form>
 	</dialog>
 	<script>
-		// Add click handlers to all images with class 'image-fullscreen'
-		document.addEventListener('DOMContentLoaded', function() {
-			setupImageFullscreen();
-		});
-
-		// Also setup after HTMX swaps
-		document.addEventListener('htmx:afterSwap', function() {
-			setupImageFullscreen();
-		});
+		document.addEventListener('DOMContentLoaded', setupImageFullscreen);
+		document.addEventListener('htmx:afterSwap', setupImageFullscreen);
 
 		function setupImageFullscreen() {
 			document.querySelectorAll('.image-fullscreen').forEach(function(img) {
-				// Remove existing handler to prevent duplicates
-				img.onclick = null;
-				
 				img.onclick = function(e) {
-					// Prevent event bubbling
 					e.stopPropagation();
-					
-					// Set image source
 					document.getElementById('modal_image').src = this.src;
-					
-					// Open modal
-					const modal = document.getElementById('image_modal');
-					modal.showModal();
-					
-					// Prevent body scroll on mobile when modal is open
+					document.getElementById('image_modal').showModal();
 					document.body.style.overflow = 'hidden';
 				};
 			});
 
-			// Restore scroll when modal closes (use once to prevent duplicate listeners)
 			const modal = document.getElementById('image_modal');
 			if (modal && !modal.dataset.listenerAdded) {
 				modal.dataset.listenerAdded = 'true';
-				modal.addEventListener('close', function() {
-					document.body.style.overflow = '';
-				});
+				modal.addEventListener('close', () => document.body.style.overflow = '');
 			}
 		}
 		
-		// Convert UTC timestamps to local time
 		function convertTimestamps() {
 			document.querySelectorAll('.utc-timestamp').forEach(function(element) {
 				const utcString = element.getAttribute('data-utc');
 				if (!utcString) return;
 				
-				try {
-					// Parse the UTC timestamp
-					const date = new Date(utcString);
-					
-					// Check if date is valid
-					if (isNaN(date.getTime())) {
-						console.error('Invalid date:', utcString);
-						return;
-					}
-					
-					// Format options
-					const options = {
-						year: 'numeric',
-						month: 'short',
-						day: 'numeric',
-						hour: '2-digit',
-						minute: '2-digit',
-						timeZoneName: 'short'
-					};
-					
-					// Convert to local time and format
-					const localTime = date.toLocaleString(undefined, options);
-					element.textContent = localTime;
-					element.title = 'Original UTC: ' + utcString; // Show original on hover
-				} catch (error) {
-					console.error('Error converting timestamp:', error);
-				}
+				const date = new Date(utcString);
+				if (isNaN(date.getTime())) return;
+				
+				const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+				element.textContent = date.toLocaleString(undefined, options);
+				element.title = 'UTC: ' + utcString;
 			});
 		}
 		
-		// Run on page load
 		document.addEventListener('DOMContentLoaded', convertTimestamps);
-		
-		// Run after HTMX updates
 		document.addEventListener('htmx:afterSwap', convertTimestamps);
 	</script>
 }

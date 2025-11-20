@@ -66,20 +66,13 @@ func (h *PostHandler) Create(c echo.Context) error {
 	// UGCPolicy allows safe HTML tags (for Quill content) while stripping dangerous elements
 	p := bluemonday.UGCPolicy()
 
-	// Sanitize title (strip all HTML tags)
 	title := bluemonday.StrictPolicy().Sanitize(rawTitle)
-
-	// Sanitize content (allow safe HTML tags for rich text)
 	content := p.Sanitize(rawContent)
 
-	// Validate title
 	if title == "" {
 		cmp := shared.ErrorMessage("Title is required")
 		return renderView(c, cmp)
 	}
-
-	log.Printf("Creating post - Title: %s, Content length: %d", title, len(content))
-	log.Printf("Content preview (sanitized): %s", content)
 
 	createdPost := services.CreatePost(h.server.DB, userID, title, content)
 
@@ -89,32 +82,21 @@ func (h *PostHandler) Create(c echo.Context) error {
 		log.Printf("No multipart form: %v", err)
 	}
 
-	var uploadedImages []models.Picture
 	if form != nil {
 		imageFiles := form.File["image-content"]
-		// Limit to 5 images
-		maxImages := 5
-		if len(imageFiles) > maxImages {
-			imageFiles = imageFiles[:maxImages]
+		if len(imageFiles) > 5 {
+			imageFiles = imageFiles[:5]
 		}
 
-		for i, imageFormFile := range imageFiles {
-			log.Printf("Processing image %d/%d: %s", i+1, len(imageFiles), imageFormFile.Filename)
-			createdImage, err := services.CreatePicture(h.server.DB, createdPost.ID, imageFormFile)
-			if err != nil {
-				log.Printf("Failed to create picture %d: %v", i+1, err)
-				continue // Skip this image but continue with others
+		for _, imageFormFile := range imageFiles {
+			if _, err := services.CreatePicture(h.server.DB, createdPost.ID, imageFormFile); err != nil {
+				log.Printf("Failed to create picture: %v", err)
 			}
-			uploadedImages = append(uploadedImages, createdImage)
 		}
-		log.Printf("Successfully uploaded %d/%d images", len(uploadedImages), len(imageFiles))
 	}
 
-	// Reload the post with all images for display
 	fullPost, err := services.GetPostByID(h.server.DB, createdPost.ID)
 	if err != nil {
-		log.Printf("Failed to reload post: %v", err)
-		// Fallback to created post without pictures
 		fullPost = createdPost
 		fullPost.PictureURLs = []string{}
 	}
