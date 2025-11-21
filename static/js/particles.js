@@ -56,13 +56,12 @@ export async function initParticles() {
                 },
                 color: {
                     value: [
-                        "#1eb854",
-                        "#1db88e",
-                        "#1db8ab",
-                        "#52c97c",
-                        "#87ceeb",
-                        "#98fb98",
-                        "#7bed9f",
+                        "#10b981", // emerald - doppler
+                        "#14b8a6", // teal - luna
+                        "#3b82f6", // blue - augur
+                        "#06b6d4", // cyan - lunar prance
+                        "#ec4899", // pink - kami
+                        "#8b5cf6", // violet - dreamflow
                     ]
                 },
                 rotate: {
@@ -112,12 +111,7 @@ export async function initParticles() {
                     straight: false,
                     outModes: "bounce",
                     attract: {
-                        enable: true,
-                        distance: 200,
-                        rotate: {
-                            x: 600,
-                            y: 1200
-                        }
+                        enable: false
                     }
                 }
             },

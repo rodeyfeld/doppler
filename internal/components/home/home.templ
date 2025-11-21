@@ -44,90 +44,162 @@ templ Home() {
 							</ul>
 						</div>
 						<div class="space-y-4">
-						<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-1">
-							<div class="card-body">
-								<h2 class="card-title text-2xl">
-									<i class="fa-solid fa-record-vinyl text-primary"></i>
-									doppler
-								</h2>
-									<p class="text-base-content/80">A personal corner of the internet for sharing thoughts, projects, and the occasional deep dive into tech.</p>
+							<!-- 1. Doppler -->
+							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-1">
+								<div class="card-body">
+									<div class="flex items-center justify-between mb-2">
+										<h2 class="card-title text-2xl">
+											<i class="fa-solid fa-record-vinyl" style="color: #10b981;"></i>
+											doppler
+										</h2>
+										<a href="https://github.com/rodeyfeld/doppler" class="text-base-content/60 transition-colors" style="hover:color: #10b981;" target="_blank">
+											<i class="fa-brands fa-github text-xl"></i>
+										</a>
+									</div>
+									<p class="text-base-content/80">Personal blog and content platform built with Go, HTMX, and server-side rendering.</p>
+									<div class="flex gap-2 mt-2 flex-wrap">
+										<span class="badge badge-sm badge-outline">Go</span>
+										<span class="badge badge-sm badge-outline">Echo</span>
+										<span class="badge badge-sm badge-outline">HTMX</span>
+										<span class="badge badge-sm badge-outline">Templ</span>
+										<span class="badge badge-sm badge-outline">Tailwind</span>
+									</div>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="/doppler/">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="/doppler/">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
 									</div>
 								</div>
 							</div>
+							<!-- 2. Luna -->
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-2">
 								<div class="card-body">
-									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-heart-pulse text-error"></i>
-										kami
-									</h2>
-									<p class="text-base-content/80">Real-time health monitoring for the infrastructure keeping everything running smoothly.</p>
+									<div class="flex items-center justify-between mb-2">
+										<h2 class="card-title text-2xl">
+											<i class="fa-solid fa-map" style="color: #14b8a6;"></i>
+											luna
+										</h2>
+										<a href="https://github.com/rodeyfeld/luna" class="text-base-content/60 hover:text-primary transition-colors" target="_blank">
+											<i class="fa-brands fa-github text-xl"></i>
+										</a>
+									</div>
+									<p class="text-base-content/80">Interactive web map for exploring and searching satellite imagery archives.</p>
+									<div class="flex gap-2 mt-2 flex-wrap">
+										<span class="badge badge-sm badge-outline">TypeScript</span>
+										<span class="badge badge-sm badge-outline">SvelteKit</span>
+										<span class="badge badge-sm badge-outline">OpenLayers</span>
+										<span class="badge badge-sm badge-outline">Tailwind</span>
+									</div>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://kami.pinwheel.fan" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://luna.pinwheel.fan" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
 									</div>
 								</div>
 							</div>
+							<!-- 3. Augur -->
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-3">
 								<div class="card-body">
-									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-gamepad text-accent"></i>
-										lunar prance
-									</h2>
-									<p class="text-base-content/80">A cozy little sidescroller where you bounce through space collecting moons and dodging trouble.</p>
+									<div class="flex items-center justify-between mb-2">
+										<h2 class="card-title text-2xl">
+											<i class="fa-solid fa-satellite" style="color: #3b82f6;"></i>
+											augur
+										</h2>
+										<a href="https://github.com/rodeyfeld/augur" class="text-base-content/60 hover:text-secondary transition-colors" target="_blank">
+											<i class="fa-brands fa-github text-xl"></i>
+										</a>
+									</div>
+									<p class="text-base-content/80">REST API for querying satellite imagery archives with automated OpenAPI documentation.</p>
+									<div class="flex gap-2 mt-2 flex-wrap">
+										<span class="badge badge-sm badge-outline">Python</span>
+										<span class="badge badge-sm badge-outline">Django</span>
+										<span class="badge badge-sm badge-outline">Django Ninja</span>
+										<span class="badge badge-sm badge-outline">PostgreSQL</span>
+										<span class="badge badge-sm badge-outline">PostGIS</span>
+									</div>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://rodeyfeld.itch.io/lunar-prance" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://augur.pinwheel.fan/api/docs" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
 									</div>
 								</div>
 							</div>
+							<!-- 4. Lunar Prance -->
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-4">
 								<div class="card-body">
-									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-satellite text-secondary"></i>
-										augur
-									</h2>
-									<p class="text-base-content/80">A REST API that helps you discover what satellite data exists and where to find it.</p>
+									<div class="flex items-center justify-between mb-2">
+										<h2 class="card-title text-2xl">
+											<i class="fa-solid fa-gamepad" style="color: #06b6d4;"></i>
+											lunar prance
+										</h2>
+										<a href="https://github.com/rodeyfeld/lunar-prance" class="text-base-content/60 hover:text-accent transition-colors" target="_blank">
+											<i class="fa-brands fa-github text-xl"></i>
+										</a>
+									</div>
+									<p class="text-base-content/80">2D platformer game with score-based gameplay mechanics.</p>
+									<div class="flex gap-2 mt-2 flex-wrap">
+										<span class="badge badge-sm badge-outline">Godot</span>
+										<span class="badge badge-sm badge-outline">GDScript</span>
+									</div>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://augur.pinwheel.fan/api/docs" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://rodeyfeld.itch.io/lunar-prance" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
 									</div>
 								</div>
 							</div>
+							<!-- 5. Kami -->
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-5">
 								<div class="card-body">
-									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-map text-primary"></i>
-										luna
-									</h2>
-									<p class="text-base-content/80">An interactive map that makes exploring satellite imagery feel effortless.</p>
+									<div class="flex items-center justify-between mb-2">
+										<h2 class="card-title text-2xl">
+											<i class="fa-solid fa-heart-pulse" style="color: #ec4899;"></i>
+											kami
+										</h2>
+										<a href="https://github.com/rodeyfeld/kami" class="text-base-content/60 hover:text-error transition-colors" target="_blank">
+											<i class="fa-brands fa-github text-xl"></i>
+										</a>
+									</div>
+									<p class="text-base-content/80">Kubernetes cluster health monitoring dashboard with real-time status updates.</p>
+									<div class="flex gap-2 mt-2 flex-wrap">
+										<span class="badge badge-sm badge-outline">Go</span>
+										<span class="badge badge-sm badge-outline">Echo</span>
+										<span class="badge badge-sm badge-outline">Templ</span>
+										<span class="badge badge-sm badge-outline">Kubernetes</span>
+									</div>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://luna.pinwheel.fan" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://kami.pinwheel.fan" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
 									</div>
 								</div>
 							</div>
+							<!-- 6. Dreamflow -->
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-6">
 								<div class="card-body">
-									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-cloud text-secondary"></i>
-										dreamflow
-									</h2>
-									<p class="text-base-content/80">Orchestration workflows that coordinate complex satellite data operations behind the scenes.</p>
+									<div class="flex items-center justify-between mb-2">
+										<h2 class="card-title text-2xl">
+											<i class="fa-solid fa-cloud" style="color: #8b5cf6;"></i>
+											dreamflow
+										</h2>
+										<a href="https://github.com/rodeyfeld/dreamflow" class="text-base-content/60 hover:text-secondary transition-colors" target="_blank">
+											<i class="fa-brands fa-github text-xl"></i>
+										</a>
+									</div>
+									<p class="text-base-content/80">Apache Airflow deployment for orchestrating satellite data processing workflows.</p>
+									<div class="flex gap-2 mt-2 flex-wrap">
+										<span class="badge badge-sm badge-outline">Python</span>
+										<span class="badge badge-sm badge-outline">Apache Airflow</span>
+										<span class="badge badge-sm badge-outline">Celery</span>
+										<span class="badge badge-sm badge-outline">Redis</span>
+									</div>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://dreamflow.pinwheel.fan" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://dreamflow.pinwheel.fan" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
@@ -138,6 +210,9 @@ templ Home() {
 					</div>
 				</div>
 			</div>
+			<footer class="relative z-10 py-6 text-center bg-base-300/70 backdrop-blur-[2px]">
+				<p class="text-sm text-base-content/40">© 2025 Pinwheel Labs</p>
+			</footer>
 		</body>
 	</html>
 }
