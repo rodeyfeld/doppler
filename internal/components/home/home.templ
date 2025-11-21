@@ -23,7 +23,7 @@ templ Home() {
 			<div class="hero bg-base-300/70 backdrop-blur-[2px] min-h-screen relative z-10">
 				<div class="hero-content py-12">
 					<div class="max-w-2xl w-full">
-						<div class="text-center mb-8 animate-fadeIn">
+						<div class="text-center mb-8 animate-fadeIn relative">
 							<h1 class="text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-float">
 								pinwheel labs
 							</h1>
@@ -50,9 +50,9 @@ templ Home() {
 									<i class="fa-solid fa-record-vinyl text-primary"></i>
 									doppler
 								</h2>
-									<p class="text-base-content/80">Personal website and blog. Written in Go, HTMX, Tailwind, Templ.</p>
+									<p class="text-base-content/80">A personal corner of the internet for sharing thoughts, projects, and the occasional deep dive into tech.</p>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-primary gap-2 hover:scale-105 transition-transform text-white font-semibold" href="/doppler/">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="/doppler/">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
@@ -62,12 +62,12 @@ templ Home() {
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-2">
 								<div class="card-body">
 									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-gamepad text-accent"></i>
-										lunar prance
+										<i class="fa-solid fa-heart-pulse text-error"></i>
+										kami
 									</h2>
-									<p class="text-base-content/80">Simple 2D sidescrolling game hosted on itch.io. Pickup mini moons for score, avoid enemies. Written in Godot.</p>
+									<p class="text-base-content/80">Real-time health monitoring for the infrastructure keeping everything running smoothly.</p>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-accent gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://rodeyfeld.itch.io/lunar-prance" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://kami.pinwheel.fan" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
@@ -77,12 +77,12 @@ templ Home() {
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-3">
 								<div class="card-body">
 									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-satellite text-secondary"></i>
-										augur
+										<i class="fa-solid fa-gamepad text-accent"></i>
+										lunar prance
 									</h2>
-									<p class="text-base-content/80">Satellite data archive search REST API. Implemented using Python, Django, Django Ninja.</p>
+									<p class="text-base-content/80">A cozy little sidescroller where you bounce through space collecting moons and dodging trouble.</p>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-secondary gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://augur.pinwheel.fan/api/docs" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://rodeyfeld.itch.io/lunar-prance" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
@@ -92,12 +92,12 @@ templ Home() {
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-4">
 								<div class="card-body">
 									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-map text-primary"></i>
-										luna
+										<i class="fa-solid fa-satellite text-secondary"></i>
+										augur
 									</h2>
-									<p class="text-base-content/80">Easy to use frontend map tool for finding satellite imagery. Created with Typescript, Svelte, Sveltekit, OpenLayers, Tailwind.</p>
+									<p class="text-base-content/80">A REST API that helps you discover what satellite data exists and where to find it.</p>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-primary gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://luna.pinwheel.fan" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://augur.pinwheel.fan/api/docs" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>
@@ -107,12 +107,27 @@ templ Home() {
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-5">
 								<div class="card-body">
 									<h2 class="card-title text-2xl">
+										<i class="fa-solid fa-map text-primary"></i>
+										luna
+									</h2>
+									<p class="text-base-content/80">An interactive map that makes exploring satellite imagery feel effortless.</p>
+									<div class="card-actions justify-end mt-2">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://luna.pinwheel.fan" target="_blank">
+											<i class="fa-solid fa-arrow-right"></i>
+											Visit Site
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-6">
+								<div class="card-body">
+									<h2 class="card-title text-2xl">
 										<i class="fa-solid fa-cloud text-secondary"></i>
 										dreamflow
 									</h2>
-									<p class="text-base-content/80">Apache Airflow for coordinating satellite archive searches. Implemented using Python, Postgres, Apache Airflow.</p>
+									<p class="text-base-content/80">Orchestration workflows that coordinate complex satellite data operations behind the scenes.</p>
 									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-secondary gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://dreamflow.pinwheel.fan" target="_blank">
+										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform" href="https://dreamflow.pinwheel.fan" target="_blank">
 											<i class="fa-solid fa-arrow-right"></i>
 											Visit Site
 										</a>

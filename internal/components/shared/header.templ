@@ -25,7 +25,11 @@ templ Header(user *models.User) {
 				<span class="font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">doppler</span>
 			</a>
 		</div>
-		<div class="flex-none">
+		<div class="flex-none gap-2">
+			<a href="https://pinwheel.fan" class="btn btn-ghost btn-sm gap-2 hover:btn-primary transition-all">
+				<i class="fa-solid fa-grip"></i>
+				<span class="hidden sm:inline">All Projects</span>
+			</a>
 			<div class="dropdown dropdown-end">
 				if user != nil {
 					<span class="mx-2 px-3 py-1 rounded-full bg-base-200 text-sm font-medium animate-slideIn">
