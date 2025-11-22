@@ -14,7 +14,7 @@ import (
 func Start() {
 	dopplerServer := server.NewDopplerServer()
 
-	// Run database migrations on startup
+	// TODO: Move this to a callable depends on job
 	if err := db.RunMigrations(dopplerServer.DB); err != nil {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
