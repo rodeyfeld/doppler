@@ -17,22 +17,30 @@ steps:
         branch: main
 
   sync-secrets:
-    image: bitnami/kubectl
+    image: alpine:3.22.2
     environment:
       BAO_ADDR: https://cuneiform.pinwheel.fan
       BAO_TOKEN:
         from_secret: cuneiform_token
     commands:
+      # Install dependencies
+      - apk add --no-cache curl jq zip
+      
+      # Install kubectl
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+
+      # Install bao CLI
+      - curl -L -o bao.zip https://github.com/openbao/openbao/releases/download/v2.1.0/bao_2.1.0_linux_amd64.zip
+      - unzip bao.zip
+      - chmod +x bao
+      
+      # Fetch secrets from Cuneiform
+      - ./bao kv get -format=json galaxy-kv/prod/doppler > /tmp/secrets.json
+      
+      # Create K8s secret
       - |
-        # Install bao CLI
-        wget -q https://github.com/openbao/openbao/releases/download/v2.1.0/bao_2.1.0_linux_amd64.tar.gz
-        tar -xzf bao_2.1.0_linux_amd64.tar.gz
-        chmod +x bao
-        
-        # Fetch secrets from Cuneiform
-        ./bao kv get -format=json galaxy-kv/prod/doppler > /tmp/secrets.json
-        
-        # Create K8s secret
         kubectl create secret generic doppler-env-secrets \
           --from-literal=DOPPLER_SESSION_SECRET="$(cat /tmp/secrets.json | jq -r '.data.data.session_secret')" \
           --from-literal=S3_ACCESS_KEY_ID="$(cat /tmp/secrets.json | jq -r '.data.data.s3_access_key_id')" \
