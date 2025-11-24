@@ -16,6 +16,32 @@ steps:
       - event: [push, manual]
         branch: main
 
+  sync-secrets:
+    image: bitnami/kubectl
+    environment:
+      BAO_ADDR: https://cuneiform.pinwheel.fan
+      BAO_TOKEN:
+        from_secret: cuneiform_token
+    commands:
+      - |
+        # Install bao CLI
+        wget -q https://github.com/openbao/openbao/releases/download/v2.1.0/bao_2.1.0_linux_amd64.tar.gz
+        tar -xzf bao_2.1.0_linux_amd64.tar.gz
+        chmod +x bao
+        
+        # Fetch secrets from Cuneiform
+        ./bao kv get -format=json galaxy-kv/prod/doppler > /tmp/secrets.json
+        
+        # Create K8s secret
+        kubectl create secret generic doppler-env-secrets \
+          --from-literal=DOPPLER_SESSION_SECRET="$(cat /tmp/secrets.json | jq -r '.data.data.session_secret')" \
+          --from-literal=S3_ACCESS_KEY_ID="$(cat /tmp/secrets.json | jq -r '.data.data.s3_access_key_id')" \
+          --from-literal=S3_SECRET_ACCESS_KEY="$(cat /tmp/secrets.json | jq -r '.data.data.s3_secret_access_key')" \
+          -n galaxy --dry-run=client -o yaml | kubectl apply -f -
+    when:
+      - event: [push, manual]
+        branch: main
+
   deploy:
     image: bitnami/kubectl
     commands:
