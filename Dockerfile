@@ -24,6 +24,9 @@ RUN bun install --frozen-lockfile
 RUN bun run build:js
 RUN bun run build:css
 
+# Download FontAwesome CSS
+RUN curl -fsSL https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css -o static/css/all.min.css
+
 # Build Go binary
 WORKDIR /app/cmd
 RUN CGO_ENABLED=1 go build -o /app/app-binary
