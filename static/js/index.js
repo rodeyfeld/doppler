@@ -14,7 +14,6 @@
  */
 
 import htmx from 'htmx.org';
-import { initQuillEditor } from './editor.js';
 import { initParticles } from './particles.js';
 
 // Make htmx globally available
@@ -23,7 +22,12 @@ window.htmx = htmx;
 // Initialize components when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize Quill editor for post creation
-    initQuillEditor();
+    const modal = document.getElementById('create_post_modal');
+    if (modal) {
+        import('./editor.js').then(({ initQuillEditor }) => {
+            initQuillEditor();
+        });
+    }
 
     // Initialize particles on home page if container exists
     if (document.getElementById('tsparticles')) {

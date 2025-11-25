@@ -6,8 +6,7 @@ RUN apt-get update && apt-get install -y unzip
 
 # Install templ and bun for building assets
 RUN go install github.com/a-h/templ/cmd/templ@latest
-RUN curl -fsSL https://bun.sh/install | bash
-ENV PATH="/root/.bun/bin:${PATH}"
+COPY --from=oven/bun:1 /usr/local/bin/bun /usr/local/bin/bun
 
 # Copy dependency files
 COPY go.mod go.sum package.json bun.lockb ./
@@ -43,8 +42,7 @@ RUN go install github.com/air-verse/air@v1.52.3
 RUN go install github.com/a-h/templ/cmd/templ@latest
 
 # Install bun for JavaScript bundling
-RUN curl -fsSL https://bun.sh/install | bash
-ENV PATH="/root/.bun/bin:${PATH}"
+COPY --from=oven/bun:1 /usr/local/bin/bun /usr/local/bin/bun
 
 CMD ["air"]
 

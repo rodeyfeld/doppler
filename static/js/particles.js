@@ -8,11 +8,11 @@ export async function initParticles() {
     const isMobile = window.innerWidth < 768;
     const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
 
-    let particleCount = 80; // Desktop default
+    let particleCount = 60; // Desktop default (reduced from 80)
     if (isMobile) {
-        particleCount = 25; // Mobile: much fewer
+        particleCount = 15; // Mobile: much fewer
     } else if (isTablet) {
-        particleCount = 45; // Tablet: moderate
+        particleCount = 30; // Tablet: moderate
     }
 
     await tsParticles.load({
