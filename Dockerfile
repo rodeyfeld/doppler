@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y unzip
 
 # Install templ and bun for building assets
 RUN go install github.com/a-h/templ/cmd/templ@latest
-COPY --from=oven/bun:1 /usr/local/bin/bun /usr/local/bin/bun
+COPY --from=oven/bun:1 /usr/local/bin/bun ./
 
 # Copy dependency files
 COPY go.mod go.sum package.json bun.lockb ./
@@ -19,9 +19,9 @@ COPY . .
 RUN templ generate
 
 # Build JavaScript and CSS
-RUN bun install --frozen-lockfile
-RUN bun run build:js
-RUN bun run build:css
+RUN ./bun install --frozen-lockfile
+RUN ./bun run build:js
+RUN ./bun run build:css
 
 # Download FontAwesome CSS
 RUN curl -fsSL https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css -o static/css/all.min.css
