@@ -8,60 +8,32 @@ export async function initParticles() {
     const isMobile = window.innerWidth < 768;
     const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
 
-    let particleCount = 60; // Desktop default (reduced from 80)
+    let particleCount = 60;
     if (isMobile) {
-        particleCount = 15; // Mobile: much fewer
+        particleCount = 15;
     } else if (isTablet) {
-        particleCount = 30; // Tablet: moderate
+        particleCount = 30;
     }
 
     await tsParticles.load({
         id: "tsparticles",
         options: {
             particles: {
-                destroy: {
-                    mode: "split",
-                    split: {
-                        count: 1,
-                        factor: {
-                            value: {
-                                min: 2,
-                                max: 4
-                            }
-                        },
-                        rate: {
-                            value: 100
-                        },
-                        particles: {
-                            life: {
-                                count: 1,
-                                duration: {
-                                    value: {
-                                        min: 2,
-                                        max: 3
-                                    }
-                                }
-                            },
-                            move: {
-                                speed: {
-                                    min: 1,
-                                    max: 5
-                                }
-                            }
-                        }
-                    }
-                },
                 number: {
-                    value: particleCount
+                    value: particleCount,
+                    density: {
+                        enable: true,
+                        area: 800
+                    }
                 },
                 color: {
                     value: [
-                        "#10b981", // emerald - doppler
-                        "#14b8a6", // teal - luna
-                        "#3b82f6", // blue - augur
-                        "#06b6d4", // cyan - lunar prance
-                        "#ec4899", // pink - kami
-                        "#8b5cf6", // violet - dreamflow
+                        "#10b981", 
+                        "#14b8a6", 
+                        "#3b82f6", 
+                        "#06b6d4", 
+                        "#ec4899", 
+                        "#8b5cf6", 
                     ]
                 },
                 rotate: {
@@ -86,30 +58,38 @@ export async function initParticles() {
                     }
                 },
                 opacity: {
-                    value: 0.95,
+                    value: 0.65,
+                    random: {
+                        enable: true,
+                        minimumValue: 0.3
+                    },
                     animation: {
                         enable: true,
-                        speed: 0.3,
-                        minimumValue: 0.6
+                        speed: 0.12,
+                        startValue: "random",
+                        sync: false,
+                        minimumValue: 0.3
                     }
                 },
                 size: {
                     value: {
-                        min: 18,
-                        max: 28
+                        min: 12,
+                        max: 26
                     }
-                },
-                collisions: {
-                    enable: !isMobile, // Disable collisions on mobile for better performance
-                    mode: "bounce"
                 },
                 move: {
                     enable: true,
-                    speed: 1.5,
-                    direction: "none",
+                    speed: {
+                        min: 0.05,
+                        max: 0.25
+                    },
+                    direction: "top",
                     random: true,
+                    drift: 0,
                     straight: false,
-                    outModes: "bounce",
+                    outModes: {
+                        default: "out"
+                    },
                     attract: {
                         enable: false
                     }
@@ -118,8 +98,7 @@ export async function initParticles() {
             interactivity: {
                 events: {
                     onClick: {
-                        enable: true,
-                        mode: "push"
+                        enable: false
                     },
                     onHover: {
                         enable: false
