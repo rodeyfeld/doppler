@@ -10,11 +10,11 @@ export async function initParticles() {
     const isMobile = window.innerWidth < 768;
     const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
 
-    let particleCount = 60;
+    let particleCount = 100;
     if (isMobile) {
-        particleCount = 15;
-    } else if (isTablet) {
         particleCount = 30;
+    } else if (isTablet) {
+        particleCount = 50;
     }
 
     await tsParticles.load({
@@ -85,13 +85,15 @@ export async function initParticles() {
                 move: {
                     enable: true,
                     speed: {
-                        min: 0.05,
-                        max: 0.25
+                        value: {
+                            min: .2,
+                            max: .6
+                        }
                     },
-                    direction: "top",
-                    random: true,
+                    direction: "right",
+                    random: false,
                     drift: 0,
-                    straight: false,
+                    straight: true,
                     outModes: {
                         default: "out"
                     },
