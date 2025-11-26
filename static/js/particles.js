@@ -1,8 +1,10 @@
 import { tsParticles } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
+import { loadImageShape } from "@tsparticles/shape-image";
 
 export async function initParticles() {
     await loadSlim(tsParticles);
+    await loadImageShape(tsParticles);
 
     // Responsive particle count based on screen size
     const isMobile = window.innerWidth < 768;
@@ -28,12 +30,15 @@ export async function initParticles() {
                 },
                 color: {
                     value: [
-                        "#10b981", 
-                        "#14b8a6", 
-                        "#3b82f6", 
-                        "#06b6d4", 
-                        "#ec4899", 
-                        "#8b5cf6", 
+                        "#1eb854", 
+                        "#1db88e", 
+                        "#1db8ab", 
+                        "#38bdf8", 
+                        "#36d399", 
+                        "#fbbd23", 
+                        "#f87272", 
+                        "#f5f5f4", 
+                        "#3f4c46", 
                     ]
                 },
                 rotate: {
