@@ -30,15 +30,16 @@ export async function initParticles() {
                 },
                 color: {
                     value: [
-                        "#1eb854", 
-                        "#1db88e", 
-                        "#1db8ab", 
-                        "#38bdf8", 
-                        "#36d399", 
-                        "#fbbd23", 
-                        "#f87272", 
-                        "#f5f5f4", 
-                        "#3f4c46", 
+                        "#14b8a6",
+                        "#06b6d4",
+                        "#10b981",
+                        "#0ea5e9",
+                        "#22c55e",
+                        "#22d3ee",
+                        "#3b82f6",
+                        "#34d399",
+                        "#0d9488",
+                        "#38bdf8",
                     ]
                 },
                 rotate: {
