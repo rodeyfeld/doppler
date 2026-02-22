@@ -17,46 +17,16 @@ templ Home() {
 			<title>home</title>
 			<script src="/static/dist/index.js" defer></script>
 			<style>
-				.pinwheel-color-primary {
-					color: var(--fallback-p,oklch(var(--p)/1));
-				}
-
-				.pinwheel-color-secondary {
-					color: var(--fallback-s,oklch(var(--s)/1));
-				}
-
-				.pinwheel-color-accent {
-					color: var(--fallback-a,oklch(var(--a)/1));
-				}
-
-				.pinwheel-color-info {
-					color: var(--fallback-in,oklch(var(--in)/1));
-				}
-
-				.pinwheel-color-success {
-					color: var(--fallback-su,oklch(var(--su)/1));
-				}
-
-				.pinwheel-color-warning {
-					color: var(--fallback-wa,oklch(var(--wa)/1));
-				}
-
-				.pinwheel-color-error {
-					color: var(--fallback-er,oklch(var(--er)/1));
-				}
-
-				.pinwheel-color-neutral {
-					color: var(--fallback-n,oklch(var(--n)/1));
-					color: color-mix(
-						in oklch,
-						var(--fallback-n,oklch(var(--n)/1)) 60%,
-						var(--fallback-bc,oklch(var(--bc)/1)) 40%
-					);
-				}
-
-				.pinwheel-color-base {
-					color: var(--fallback-bc,oklch(var(--bc)/1));
-				}
+				.pw-teal { color: #14b8a6; }
+				.pw-cyan { color: #06b6d4; }
+				.pw-emerald { color: #10b981; }
+				.pw-sky { color: #0ea5e9; }
+				.pw-green { color: #22c55e; }
+				.pw-aqua { color: #22d3ee; }
+				.pw-blue { color: #3b82f6; }
+				.pw-mint { color: #34d399; }
+				.pw-teal-deep { color: #0d9488; }
+				.pw-slate-blue { color: #38bdf8; }
 			</style>
 		</head>
 		<body>
@@ -65,7 +35,7 @@ templ Home() {
 				<div class="hero-content py-12">
 					<div class="max-w-2xl w-full">
 						<div class="text-center mb-8 animate-fadeIn relative">
-							<h1 class="text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-float">
+							<h1 class="text-6xl font-bold mb-4 bg-gradient-to-r from-teal-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent animate-float">
 								pinwheel labs
 							</h1>
 							<p class="text-xl text-base-content/80 font-medium">projects by eric rodefeld</p>
@@ -73,27 +43,54 @@ templ Home() {
 						<div class="flex justify-center items-center mb-8 animate-slideIn">
 							<ul class="menu menu-horizontal bg-base-100 rounded-box shadow-xl border border-base-300 gap-2">
 								<li>
-									<a href="https://github.com/rodeyfeld" class="hover:text-primary hover:scale-110 transition-all" target="_blank">
-										<i class="fa-brands fa-github text-2xl"></i>
-									</a>
-								</li>
-								<li>
-									<a href="https://linkedin.com/in/eric-rodefeld-a0413b188" class="hover:text-primary hover:scale-110 transition-all" target="_blank">
+								<a href="https://github.com/rodeyfeld" class="hover:text-teal-400 hover:scale-110 transition-all" target="_blank">
+									<i class="fa-brands fa-github text-2xl"></i>
+								</a>
+							</li>
+							<li>
+								<a href="https://linkedin.com/in/eric-rodefeld-a0413b188" class="hover:text-cyan-400 hover:scale-110 transition-all" target="_blank">
 										<i class="fa-brands fa-linkedin text-2xl"></i>
 									</a>
 								</li>
 							</ul>
 						</div>
 						<div class="space-y-4">
-							<!-- 1. Doppler -->
+						<!-- 0. Parakeet -->
+						<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-1">
+							<div class="card-body">
+								<div class="flex items-center justify-between mb-2">
+									<h2 class="card-title text-2xl">
+										<i class="fa-solid fa-diamond pw-emerald mr-2"></i>
+										parakeet
+									</h2>
+									<a href="https://github.com/rodeyfeld/parakeet" class="text-base-content/60 transition-colors hover:text-emerald-400" target="_blank">
+										<i class="fa-brands fa-github text-xl"></i>
+									</a>
+								</div>
+								<p class="text-base-content/80">Multiplayer card game with real-time lobbies and server-authoritative game engine.</p>
+								<div class="flex gap-2 mt-2 flex-wrap">
+									<span class="badge badge-sm badge-outline">Elixir</span>
+									<span class="badge badge-sm badge-outline">Phoenix</span>
+									<span class="badge badge-sm badge-outline">LiveView</span>
+									<span class="badge badge-sm badge-outline">PostgreSQL</span>
+								</div>
+								<div class="card-actions justify-end mt-2">
+									<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://parakeet.pinwheel.fan" target="_blank">
+										<i class="fa-solid fa-arrow-right"></i>
+										Visit Site
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- 1. Doppler -->
 							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-1">
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-bullseye pinwheel-color-primary mr-2"></i>
+											<i class="fa-solid fa-bullseye pw-teal mr-2"></i>
 											doppler
 										</h2>
-										<a href="https://github.com/rodeyfeld/doppler" class="text-base-content/60 transition-colors hover:text-primary" target="_blank">
+										<a href="https://github.com/rodeyfeld/doppler" class="text-base-content/60 transition-colors hover:text-teal-400" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
@@ -118,10 +115,10 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-map pinwheel-color-secondary mr-2"></i>
+											<i class="fa-solid fa-map pw-cyan mr-2"></i>
 											luna
 										</h2>
-										<a href="https://github.com/rodeyfeld/luna" class="text-base-content/60 transition-colors hover:text-secondary" target="_blank">
+										<a href="https://github.com/rodeyfeld/luna" class="text-base-content/60 transition-colors hover:text-cyan-400" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
@@ -145,10 +142,10 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-spray-can-sparkles pinwheel-color-accent mr-2"></i>
+											<i class="fa-solid fa-spray-can-sparkles pw-sky mr-2"></i>
 											augur
 										</h2>
-										<a href="https://github.com/rodeyfeld/augur" class="text-base-content/60 transition-colors hover:text-accent" target="_blank">
+										<a href="https://github.com/rodeyfeld/augur" class="text-base-content/60 transition-colors hover:text-sky-400" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
@@ -171,10 +168,10 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-heart-pulse pinwheel-color-info mr-2"></i>
+											<i class="fa-solid fa-heart-pulse pw-green mr-2"></i>
 											kami
 										</h2>
-										<a href="https://github.com/rodeyfeld/kami" class="text-base-content/60 transition-colors hover:text-info" target="_blank">
+										<a href="https://github.com/rodeyfeld/kami" class="text-base-content/60 transition-colors hover:text-green-400" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
@@ -198,10 +195,10 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-cloud-moon pinwheel-color-success mr-2"></i>
+											<i class="fa-solid fa-cloud-moon pw-aqua mr-2"></i>
 											noctis
 										</h2>
-										<a href="https://github.com/rodeyfeld/noctis" class="text-base-content/60 transition-colors hover:text-success" target="_blank">
+										<a href="https://github.com/rodeyfeld/noctis" class="text-base-content/60 transition-colors hover:text-cyan-300" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
@@ -224,10 +221,10 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-building-lock pinwheel-color-warning mr-2"></i>
+											<i class="fa-solid fa-building-lock pw-blue mr-2"></i>
 											cuneiform
 										</h2>
-										<a href="https://github.com/rodeyfeld/universe" class="text-base-content/60 hover:text-warning transition-colors" target="_blank">
+										<a href="https://github.com/rodeyfeld/universe" class="text-base-content/60 hover:text-blue-400 transition-colors" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
@@ -248,10 +245,10 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-gamepad pinwheel-color-error mr-2"></i>
+											<i class="fa-solid fa-gamepad pw-mint mr-2"></i>
 											lunar prance
 										</h2>
-										<a href="https://github.com/rodeyfeld/lunar-prance" class="text-base-content/60 hover:text-accent transition-colors" target="_blank">
+										<a href="https://github.com/rodeyfeld/lunar-prance" class="text-base-content/60 hover:text-emerald-300 transition-colors" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
@@ -273,7 +270,7 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-infinity pinwheel-color-base mr-2"></i>
+											<i class="fa-solid fa-infinity pw-teal-deep mr-2"></i>
 											ouroboros
 										</h2>
 									</div>
@@ -296,10 +293,10 @@ templ Home() {
 								<div class="card-body">
 									<div class="flex items-center justify-between mb-2">
 										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-water pinwheel-color-neutral mr-2"></i>
+											<i class="fa-solid fa-water pw-slate-blue mr-2"></i>
 											mirage
 										</h2>
-										<a href="https://github.com/rodeyfeld/mirage" class="text-base-content/60 hover:text-info transition-colors" target="_blank">
+										<a href="https://github.com/rodeyfeld/mirage" class="text-base-content/60 hover:text-sky-300 transition-colors" target="_blank">
 											<i class="fa-brands fa-github text-xl"></i>
 										</a>
 									</div>
