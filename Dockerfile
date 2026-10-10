@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y unzip
 
 # Install templ and bun for building assets
-RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.960
 COPY --from=oven/bun:1 /usr/local/bin/bun ./bun
 COPY --from=oven/bun:1 /usr/local/bin/bunx ./bunx
 ENV PATH="/app:${PATH}"
@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y unzip
 
 # Install Go tools
 RUN go install github.com/air-verse/air@v1.52.3
-RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.960
 
 # Install bun for JavaScript bundling
 COPY --from=oven/bun:1 /usr/local/bin/bun /usr/local/bin/bun
