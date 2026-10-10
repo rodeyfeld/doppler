@@ -7,9 +7,9 @@ import (
 
 templ PostCard(post models.Post) {
 	<div class="card bg-base-100 shadow-xl mb-6 hover-lift border border-base-300 overflow-hidden group animate-fadeIn">
-		<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+		<div class="absolute top-0 left-0 w-full h-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
 		<div class="card-body">
-			<h2 class="card-title text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+			<h2 class="card-title text-2xl font-bold text-primary">
 				<i class="fa-solid fa-circle-dot text-xs text-primary mr-2"></i>
 				{ post.Title }
 			</h2>

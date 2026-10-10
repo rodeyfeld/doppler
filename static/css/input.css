@@ -76,14 +76,6 @@
 	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-/* Gradient text */
-.gradient-text {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
-}
-
 /* Hover lift effect */
 .hover-lift {
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -187,30 +179,6 @@ a:not(.btn) {
 	animation: shimmer 1.5s ease-in-out infinite;
 }
 
-/* Gradient border animation */
-@keyframes gradient-rotate {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
-.gradient-border {
-	background: linear-gradient(90deg, 
-		oklch(var(--p)), 
-		oklch(var(--s)), 
-		oklch(var(--a)), 
-		oklch(var(--p))
-	);
-	background-size: 200% 100%;
-	animation: gradient-rotate 3s ease infinite;
-}
-
 /* Beautiful input glow on focus */
 .input:focus-within {
 	animation: pulse-glow 1.5s ease-in-out;
@@ -243,31 +211,6 @@ img {
 
 img:hover {
 	filter: brightness(1.05);
-}
-
-/* Text gradient animation */
-@keyframes gradient-text-shift {
-	0%, 100% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-}
-
-.gradient-text-animated {
-	background: linear-gradient(
-		90deg,
-		oklch(var(--p)),
-		oklch(var(--s)),
-		oklch(var(--a)),
-		oklch(var(--p))
-	);
-	background-size: 200% auto;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
-	animation: gradient-text-shift 3s ease infinite;
 }
 
 /* Quill Editor Styling */

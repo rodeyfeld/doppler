@@ -40,24 +40,4 @@ templ Layout(title string, user *models.User) {
 		</div>
 	</body>
 	</html>
-	<style>
-	#primary-content {
-		background-image:
-			radial-gradient(at 0% 99%, oklch(var(--p) / 0.15) 0px, transparent 50%),
-			radial-gradient(at 0% 1%, oklch(var(--s) / 0.15) 0px, transparent 50%),
-			radial-gradient(at 99% 1%, oklch(var(--a) / 0.15) 0px, transparent 50%),
-			radial-gradient(at 99% 99%, oklch(var(--p) / 0.15) 0px, transparent 50%);
-		animation: gradient-shift 15s ease infinite;
-		background-size: 200% 200%;
-	}
-	
-	@keyframes gradient-shift {
-		0%, 100% {
-			background-position: 0% 50%;
-		}
-		50% {
-			background-position: 100% 50%;
-		}
-	}
-	</style>
 }
