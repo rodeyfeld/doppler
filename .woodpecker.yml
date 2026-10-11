@@ -9,7 +9,8 @@ steps:
   build:
     image: woodpeckerci/plugin-docker-buildx
     settings:
-      repo: edrodefeld/doppler
+      registry: schematics.pinwheel.fan
+      repo: schematics.pinwheel.fan/rodeyfeld/doppler
       auto_tag: true
       <<: *docker_creds
     when:
