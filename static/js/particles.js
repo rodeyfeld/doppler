@@ -27,10 +27,11 @@ export async function initParticles() {
                         "#22d3ee", "#3b82f6", "#34d399", "#0d9488", "#38bdf8",
                     ],
                 },
+                // Each pinwheel gets its own spin: some barely turn, some whirl
                 rotate: {
                     direction: "random",
                     value: { min: 0, max: 360 },
-                    animation: { enable: true, speed: 4 },
+                    animation: { enable: true, speed: { min: 1, max: 14 }, sync: false },
                 },
                 shape: {
                     type: "images",
@@ -55,9 +56,10 @@ export async function initParticles() {
                     },
                 },
                 size: { value: { min: 7, max: 16 } },
+                // ...and its own pace across the page, from a crawl to a breeze
                 move: {
                     enable: true,
-                    speed: { min: 0.08, max: 0.25 },
+                    speed: { min: 0.05, max: 0.7 },
                     direction: "right",
                     straight: true,
                     outModes: { default: "out" },
