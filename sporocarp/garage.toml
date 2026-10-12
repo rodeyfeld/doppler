@@ -1,0 +1,22 @@
+# Garage for a sporocarp (see boot.sh): one node inside the container, on
+# loopback only, holding nothing but seeded sample photos. The secrets are fixed
+# because nothing outside the container can reach it.
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+
+replication_factor = 1
+
+rpc_bind_addr = "127.0.0.1:3901"
+rpc_public_addr = "127.0.0.1:3901"
+rpc_secret = "5f0c2a7e9b1d4c3e8a6f0b2d4e6a8c0e1f3a5b7c9d1e3f5a7b9c1d3e5f7a9b1c"
+
+bootstrap_peers = []
+
+[s3_api]
+s3_region = "garage"
+api_bind_addr = "127.0.0.1:3900"
+root_domain = ".s3.garage.localhost"
+
+[admin]
+api_bind_addr = "127.0.0.1:3903"
+admin_token = "sporocarp"

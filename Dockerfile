@@ -47,9 +47,38 @@ COPY --from=oven/bun:1 /usr/local/bin/bunx /usr/local/bin/bunx
 CMD ["air"]
 
 
-# Default target for production
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim AS runtime
 WORKDIR /app
 COPY --from=builder /app/app-binary .
 COPY --from=builder /app/static ./static
 ENTRYPOINT ["/app/app-binary"]
+
+
+# A sporocarp: doppler on throwaway test data, for a mycelia spore to try a
+# change end to end (built from spore/* branches only; see sporocarp/boot.sh).
+# Garage runs in the same container, and the seed fills it and SQLite with
+# sample posts. Nothing here touches a real secret or the real blog.
+FROM builder AS sporocarp-tools
+WORKDIR /app/cmd
+RUN CGO_ENABLED=1 go build -o /app/seed-binary ./seed \
+  && CGO_ENABLED=0 go build -o /app/garage-init ./garageinit
+
+FROM runtime AS sporocarp
+COPY --from=dxflrs/garage:v2.1.0 /garage /garage
+COPY --from=sporocarp-tools /app/seed-binary /app/garage-init /app/
+COPY sporocarp/garage.toml /etc/garage.toml
+COPY sporocarp/boot.sh /app/sporocarp-boot.sh
+RUN useradd --uid 1000 --no-create-home sporocarp \
+  && mkdir -p /app/data /shared /var/lib/garage/meta /var/lib/garage/data \
+  && chown -R 1000:1000 /app/data /shared /var/lib/garage
+USER 1000
+ENV DB_PATH=data/doppler.db \
+    S3_ENDPOINT=127.0.0.1:3900 \
+    S3_REGION=garage \
+    S3_BUCKET=doppler-photos \
+    S3_USE_SSL=false
+ENTRYPOINT ["/app/sporocarp-boot.sh"]
+
+
+# Default target: production
+FROM runtime

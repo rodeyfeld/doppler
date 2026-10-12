@@ -17,6 +17,22 @@ steps:
       - event: [push, manual]
         branch: main
 
+  # A sporocarp image for a mycelia spore's branch: doppler on test data (the
+  # Dockerfile's `sporocarp` target), tagged by commit. Never deployed here;
+  # mycelia runs it in the sporocarps namespace when the spore asks.
+  build-sporocarp:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      registry: schematics.pinwheel.fan
+      repo: schematics.pinwheel.fan/rodeyfeld/doppler
+      target: sporocarp
+      mtu: 1450 # match the pod network (flannel), as mycelia does
+      tags: sporocarp-${CI_COMMIT_SHA}
+      <<: *docker_creds
+    when:
+      - event: [push, manual]
+        branch: spore/*
+
   deploy:
     image: bitnami/kubectl
     commands:
