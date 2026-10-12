@@ -1,321 +1,171 @@
 package home
 
+import (
+	"doppler/internal/components/shared"
+	"strings"
+)
+
+type project struct {
+	name   string
+	hue    string // a hue-* class from input.css: the color this project had on its old card
+	blurb  string
+	site   string // where it runs; empty if it has no page of its own
+	source string // the repository; empty if there is none
+	stack  []string
+}
+
+// The index on pinwheel.fan. Adding a project means adding a row here.
+var projects = []project{
+	{
+		name:   "parakeet",
+		hue:    "hue-emerald",
+		blurb:  "Multiplayer card game with real-time lobbies and a server-authoritative game engine.",
+		site:   "https://parakeet.pinwheel.fan",
+		source: "https://github.com/rodeyfeld/parakeet",
+		stack:  []string{"elixir", "phoenix", "liveview", "postgresql"},
+	},
+	{
+		name:   "doppler",
+		hue:    "hue-teal",
+		blurb:  "Personal blog and photo journal, server-rendered.",
+		site:   "/doppler/",
+		source: "https://github.com/rodeyfeld/doppler",
+		stack:  []string{"go", "echo", "htmx", "templ", "tailwind"},
+	},
+	{
+		name:   "luna",
+		hue:    "hue-cyan",
+		blurb:  "Interactive web map for exploring and searching satellite imagery archives.",
+		site:   "https://luna.pinwheel.fan",
+		source: "https://github.com/rodeyfeld/luna",
+		stack:  []string{"typescript", "sveltekit", "openlayers", "tailwind"},
+	},
+	{
+		name:   "augur",
+		hue:    "hue-sky",
+		blurb:  "REST API for querying satellite imagery archives, with generated OpenAPI docs.",
+		site:   "https://augur.pinwheel.fan/api/docs",
+		source: "https://github.com/rodeyfeld/augur",
+		stack:  []string{"python", "django", "django ninja", "postgis"},
+	},
+	{
+		name:   "kami",
+		hue:    "hue-green",
+		blurb:  "Kubernetes cluster health dashboard with live status and uptime history.",
+		site:   "https://kami.pinwheel.fan",
+		source: "https://github.com/rodeyfeld/kami",
+		stack:  []string{"go", "echo", "templ", "kubernetes"},
+	},
+	{
+		name:   "noctis",
+		hue:    "hue-aqua",
+		blurb:  "Prefect workflows that orchestrate satellite data processing.",
+		site:   "https://noctis.pinwheel.fan",
+		source: "https://github.com/rodeyfeld/noctis",
+		stack:  []string{"python", "prefect", "postgresql"},
+	},
+	{
+		name:   "cuneiform",
+		hue:    "hue-blue",
+		blurb:  "OpenBao secrets service for the platform.",
+		site:   "https://cuneiform.pinwheel.fan",
+		source: "https://github.com/rodeyfeld/universe",
+		stack:  []string{"openbao", "kubernetes"},
+	},
+	{
+		name:   "lunar prance",
+		hue:    "hue-mint",
+		blurb:  "2D platformer with score-based gameplay.",
+		site:   "https://rodeyfeld.itch.io/lunar-prance",
+		source: "https://github.com/rodeyfeld/lunar-prance",
+		stack:  []string{"godot", "gdscript"},
+	},
+	{
+		name:  "ouroboros",
+		hue:   "hue-deep",
+		blurb: "Woodpecker CI pipelines that build and deploy everything here.",
+		site:  "https://ouroboros.pinwheel.fan",
+		stack: []string{"woodpecker", "docker", "kubernetes"},
+	},
+	{
+		name:   "mirage",
+		hue:    "hue-slate",
+		blurb:  "Kubernetes manifests that define the Pinwheel Labs platform.",
+		source: "https://github.com/rodeyfeld/mirage",
+		stack:  []string{"kubernetes", "docker"},
+	},
+}
+
+func external(url string) bool {
+	return strings.HasPrefix(url, "http")
+}
+
 templ Home() {
 	<!DOCTYPE html>
-	<html lang="en" data-theme="forest">
+	<html lang="en">
 		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<meta
-				name="description"
-				content="pinwheel labs: projects by eric rodefeld"
-			/>
-			<meta name="google" content="notranslate"/>
-			<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
-			<link rel="stylesheet" href="/static/css/all.min.css"/>
-			<link rel="stylesheet" href="/static/css/output.css"/>
-			<title>home</title>
-			<script src="/static/dist/index.js" defer></script>
-			<style>
-				.pw-teal { color: #14b8a6; }
-				.pw-cyan { color: #06b6d4; }
-				.pw-emerald { color: #10b981; }
-				.pw-sky { color: #0ea5e9; }
-				.pw-green { color: #22c55e; }
-				.pw-aqua { color: #22d3ee; }
-				.pw-blue { color: #3b82f6; }
-				.pw-mint { color: #34d399; }
-				.pw-teal-deep { color: #0d9488; }
-				.pw-slate-blue { color: #38bdf8; }
-			</style>
+			@shared.Head("pinwheel labs", "pinwheel labs: projects by eric rodefeld")
 		</head>
-		<body>
-			<div id="tsparticles" class="fixed inset-0 z-0"></div>
-			<div class="hero bg-base-300/70 backdrop-blur-[2px] min-h-screen relative z-10">
-				<div class="hero-content py-12">
-					<div class="max-w-2xl w-full">
-						<div class="text-center mb-8 animate-fadeIn relative">
-							<h1 class="text-6xl font-bold mb-4 text-teal-400 animate-float">
-								pinwheel labs
-							</h1>
-							<p class="text-xl text-base-content/80 font-medium">projects by eric rodefeld</p>
-						</div>
-						<div class="flex justify-center items-center mb-8 animate-slideIn">
-							<ul class="menu menu-horizontal bg-base-100 rounded-box shadow-xl border border-base-300 gap-2">
-								<li>
-								<a href="https://github.com/rodeyfeld" class="hover:text-teal-400 hover:scale-110 transition-all" target="_blank">
-									<i class="fa-brands fa-github text-2xl"></i>
-								</a>
-							</li>
-							<li>
-								<a href="https://linkedin.com/in/eric-rodefeld-a0413b188" class="hover:text-cyan-400 hover:scale-110 transition-all" target="_blank">
-										<i class="fa-brands fa-linkedin text-2xl"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-						<div class="space-y-4">
-						<!-- 0. Parakeet -->
-						<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-1">
-							<div class="card-body">
-								<div class="flex items-center justify-between mb-2">
-									<h2 class="card-title text-2xl">
-										<i class="fa-solid fa-diamond pw-emerald mr-2"></i>
-										parakeet
-									</h2>
-									<a href="https://github.com/rodeyfeld/parakeet" class="text-base-content/60 transition-colors hover:text-emerald-400" target="_blank">
-										<i class="fa-brands fa-github text-xl"></i>
-									</a>
-								</div>
-								<p class="text-base-content/80">Multiplayer card game with real-time lobbies and server-authoritative game engine.</p>
-								<div class="flex gap-2 mt-2 flex-wrap">
-									<span class="badge badge-sm badge-outline">Elixir</span>
-									<span class="badge badge-sm badge-outline">Phoenix</span>
-									<span class="badge badge-sm badge-outline">LiveView</span>
-									<span class="badge badge-sm badge-outline">PostgreSQL</span>
-								</div>
-								<div class="card-actions justify-end mt-2">
-									<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://parakeet.pinwheel.fan" target="_blank">
-										<i class="fa-solid fa-arrow-right"></i>
-										Visit Site
-									</a>
-								</div>
-							</div>
-						</div>
-						<!-- 1. Doppler -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-1">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-bullseye pw-teal mr-2"></i>
-											doppler
-										</h2>
-										<a href="https://github.com/rodeyfeld/doppler" class="text-base-content/60 transition-colors hover:text-teal-400" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">Personal blog and content platform built with Go, HTMX, and server-side rendering.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">Go</span>
-										<span class="badge badge-sm badge-outline">Echo</span>
-										<span class="badge badge-sm badge-outline">HTMX</span>
-										<span class="badge badge-sm badge-outline">Templ</span>
-										<span class="badge badge-sm badge-outline">Tailwind</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="/doppler/">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div>
-							<!-- 2. Luna -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-2">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-map pw-cyan mr-2"></i>
-											luna
-										</h2>
-										<a href="https://github.com/rodeyfeld/luna" class="text-base-content/60 transition-colors hover:text-cyan-400" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">Interactive web map for exploring and searching satellite imagery archives.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">TypeScript</span>
-										<span class="badge badge-sm badge-outline">SvelteKit</span>
-										<span class="badge badge-sm badge-outline">OpenLayers</span>
-										<span class="badge badge-sm badge-outline">Tailwind</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://luna.pinwheel.fan" target="_blank">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div>
-							<!-- 3. Augur -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-3">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-spray-can-sparkles pw-sky mr-2"></i>
-											augur
-										</h2>
-										<a href="https://github.com/rodeyfeld/augur" class="text-base-content/60 transition-colors hover:text-sky-400" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">REST API for querying satellite imagery archives with automated OpenAPI documentation.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">Python</span>
-										<span class="badge badge-sm badge-outline">Django+Ninja</span>
-										<span class="badge badge-sm badge-outline">PostgreSQL+PostGIS</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://augur.pinwheel.fan/api/docs" target="_blank">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div>
-							<!-- 5. Kami -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-5">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-heart-pulse pw-green mr-2"></i>
-											kami
-										</h2>
-										<a href="https://github.com/rodeyfeld/kami" class="text-base-content/60 transition-colors hover:text-green-400" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">Kubernetes cluster health monitoring dashboard with real-time status updates.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">Go</span>
-										<span class="badge badge-sm badge-outline">Echo</span>
-										<span class="badge badge-sm badge-outline">Templ</span>
-										<span class="badge badge-sm badge-outline">Kubernetes</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://kami.pinwheel.fan" target="_blank">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div>
-							<!-- 6.5 Noctis -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-6">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-cloud-moon pw-aqua mr-2"></i>
-											noctis
-										</h2>
-										<a href="https://github.com/rodeyfeld/noctis" class="text-base-content/60 transition-colors hover:text-cyan-300" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">Prefect-based workflow orchestration for satellite data processing pipelines.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">Python</span>
-										<span class="badge badge-sm badge-outline">Prefect</span>
-										<span class="badge badge-sm badge-outline">PostgreSQL</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://noctis.pinwheel.fan" target="_blank">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div>
-							<!-- 7. Cuneiform -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-7">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-building-lock pw-blue mr-2"></i>
-											cuneiform
-										</h2>
-										<a href="https://github.com/rodeyfeld/universe" class="text-base-content/60 hover:text-blue-400 transition-colors" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">OpenBao hosted secrets service.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">OpenBao</span>
-										<span class="badge badge-sm badge-outline">Kubernetes</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://cuneiform.pinwheel.fan" target="_blank">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div> <!-- 4. Lunar Prance -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-4">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-gamepad pw-mint mr-2"></i>
-											lunar prance
-										</h2>
-										<a href="https://github.com/rodeyfeld/lunar-prance" class="text-base-content/60 hover:text-emerald-300 transition-colors" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">2D platformer game with score-based gameplay mechanics.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">Godot</span>
-										<span class="badge badge-sm badge-outline">GDScript</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://rodeyfeld.itch.io/lunar-prance" target="_blank">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div>
-							<!-- 8. Ouroboros -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-8">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-infinity pw-teal-deep mr-2"></i>
-											ouroboros
-										</h2>
-									</div>
-									<p class="text-base-content/80">Woodpecker CI/CD pipeline engine for automated building and deployment.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">Woodpecker</span>
-										<span class="badge badge-sm badge-outline">Docker</span>
-										<span class="badge badge-sm badge-outline">Kubernetes</span>
-									</div>
-									<div class="card-actions justify-end mt-2">
-										<a class="btn btn-neutral gap-2 hover:scale-105 transition-transform text-white font-semibold" href="https://ouroboros.pinwheel.fan" target="_blank">
-											<i class="fa-solid fa-arrow-right"></i>
-											Visit Site
-										</a>
-									</div>
-								</div>
-							</div>
-							<!-- 9. Mirage -->
-							<div class="card bg-base-100 shadow-xl border border-base-300 hover-lift animate-fadeIn stagger-9">
-								<div class="card-body">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="card-title text-2xl">
-											<i class="fa-solid fa-water pw-slate-blue mr-2"></i>
-											mirage
-										</h2>
-										<a href="https://github.com/rodeyfeld/mirage" class="text-base-content/60 hover:text-sky-300 transition-colors" target="_blank">
-											<i class="fa-brands fa-github text-xl"></i>
-										</a>
-									</div>
-									<p class="text-base-content/80">Kubernetes manifests that define the Pinwheel Labs platform.</p>
-									<div class="flex gap-2 mt-2 flex-wrap">
-										<span class="badge badge-sm badge-outline">Kubernetes</span>
-										<span class="badge badge-sm badge-outline">Docker</span>
-									</div>
-								</div>
-							</div>
-						</div>
+		<body class="flex min-h-screen flex-col">
+			<div id="tsparticles" class="pointer-events-none fixed inset-0 -z-10" aria-hidden="true"></div>
+			<main class="wrap-wide flex-1 pb-16 pt-12 sm:pb-24 sm:pt-24">
+				<header class="animate-fadeIn">
+					<div class="flex items-center gap-4 sm:gap-6">
+						@shared.Pinwheel("pinwheel-slow h-10 w-10 shrink-0 text-pin sm:h-14 sm:w-14")
+						<h1 class="text-[2.5rem] font-medium leading-none tracking-[-0.035em] sm:text-7xl">pinwheel labs</h1>
 					</div>
-				</div>
-			</div>
-			<footer class="relative z-10 py-6 text-center bg-base-300/70 backdrop-blur-[2px]">
-				<p class="text-sm text-base-content/40">© 2025 Pinwheel Labs</p>
-			</footer>
+					<p class="mt-4 text-lg text-dim sm:mt-5">projects by eric rodefeld</p>
+					<p class="mt-5 flex gap-6 font-mono text-xs sm:mt-7">
+						<a class="quiet-link" href="https://github.com/rodeyfeld" target="_blank" rel="noopener">github ↗</a>
+						<a class="quiet-link" href="https://linkedin.com/in/eric-rodefeld-a0413b188" target="_blank" rel="noopener">linkedin ↗</a>
+					</p>
+				</header>
+				<section class="mt-14 animate-fadeIn stagger-2 sm:mt-20" aria-labelledby="projects-heading">
+					<h2 id="projects-heading" class="eyebrow pb-4">projects</h2>
+					<ul>
+						for _, p := range projects {
+							@row(p)
+						}
+					</ul>
+				</section>
+			</main>
 		</body>
 	</html>
+}
+
+templ row(p project) {
+	<li class={ "project", p.hue }>
+		<h3 class="project-name">
+			if p.site != "" {
+				@projectLink(p.site, p.name)
+			} else {
+				@projectLink(p.source, p.name)
+			}
+		</h3>
+		<div>
+			<p class="text-[15px] leading-relaxed text-dim">{ p.blurb }</p>
+			<p class="project-stack">{ strings.Join(p.stack, " · ") }</p>
+		</div>
+		<p class="project-links">
+			if p.site != "" {
+				@projectLink(p.site, "visit ↗")
+			}
+			if p.source != "" {
+				@projectLink(p.source, "source ↗")
+			}
+		</p>
+	</li>
+}
+
+// projectLink opens other sites in a new tab and keeps doppler in this one.
+templ projectLink(url string, label string) {
+	<a
+		href={ templ.SafeURL(url) }
+		if external(url) {
+			target="_blank"
+			rel="noopener"
+		}
+	>{ label }</a>
 }
 
 templ HomeIndex(title string) {

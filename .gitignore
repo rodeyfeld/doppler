@@ -30,7 +30,6 @@ tmp/*
 *.db
 
 node_modules/
-static/css/all.min.css
 static/css/output.css
 
 # Generated bundles

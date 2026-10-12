@@ -11,7 +11,7 @@ export function initQuillEditor() {
         if (!quill && document.getElementById('editor')) {
             quill = new Quill('#editor', {
                 theme: 'snow',
-                placeholder: 'share something neat...',
+                placeholder: 'share something neat…',
                 modules: {
                     toolbar: [
                         [{ 'header': [1, 2, 3, false] }],

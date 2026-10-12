@@ -1,0 +1,16 @@
+package shared
+
+templ Head(title string, description string) {
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="description" content={ description }/>
+	<meta name="google" content="notranslate"/>
+	<meta name="theme-color" content="#0a0c0c"/>
+	<title>{ title }</title>
+	<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
+	<link rel="preconnect" href="https://fonts.googleapis.com"/>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap"/>
+	<link rel="stylesheet" href={ templ.SafeURL(Asset("/static/css/output.css")) }/>
+	<script src={ templ.SafeURL(Asset("/static/dist/index.js")) } defer></script>
+}

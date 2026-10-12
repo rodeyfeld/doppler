@@ -2,53 +2,35 @@ import { tsParticles } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { loadImageShape } from "@tsparticles/shape-image";
 
+// A sparse field of small pinwheels in the site's greens and blues, drifting
+// slowly across the landing page behind the text.
 export async function initParticles() {
     await loadSlim(tsParticles);
     await loadImageShape(tsParticles);
 
-    // Responsive particle count based on screen size
-    const isMobile = window.innerWidth < 768;
-    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
-
-    let particleCount = 100;
-    if (isMobile) {
-        particleCount = 30;
-    } else if (isTablet) {
-        particleCount = 50;
-    }
+    const width = window.innerWidth;
+    const particleCount = width < 768 ? 24 : width < 1024 ? 40 : 70;
 
     await tsParticles.load({
         id: "tsparticles",
         options: {
+            fpsLimit: 30,
+            detectRetina: true,
             particles: {
                 number: {
                     value: particleCount,
-                    density: {
-                        enable: true,
-                        area: 800
-                    }
+                    density: { enable: true, area: 900 },
                 },
                 color: {
                     value: [
-                        "#14b8a6",
-                        "#06b6d4",
-                        "#10b981",
-                        "#0ea5e9",
-                        "#22c55e",
-                        "#22d3ee",
-                        "#3b82f6",
-                        "#34d399",
-                        "#0d9488",
-                        "#38bdf8",
-                    ]
+                        "#14b8a6", "#06b6d4", "#10b981", "#0ea5e9", "#22c55e",
+                        "#22d3ee", "#3b82f6", "#34d399", "#0d9488", "#38bdf8",
+                    ],
                 },
                 rotate: {
                     direction: "random",
                     value: { min: 0, max: 360 },
-                    animation: {
-                        speed: 25,
-                        enable: true,
-                    },
+                    animation: { enable: true, speed: 4 },
                 },
                 shape: {
                     type: "images",
@@ -58,67 +40,35 @@ export async function initParticles() {
                                 src: "static/pinwheel.svg",
                                 width: 100,
                                 height: 100,
-                                replaceColor: true
-                            }
-                        ]
-                    }
+                                replaceColor: true,
+                            },
+                        ],
+                    },
                 },
                 opacity: {
-                    value: 0.65,
-                    random: {
-                        enable: true,
-                        minimumValue: 0.3
-                    },
+                    value: { min: 0.18, max: 0.45 },
                     animation: {
                         enable: true,
-                        speed: 0.12,
+                        speed: 0.15,
                         startValue: "random",
                         sync: false,
-                        minimumValue: 0.3
-                    }
+                    },
                 },
-                size: {
-                    value: {
-                        min: 12,
-                        max: 26
-                    }
-                },
+                size: { value: { min: 7, max: 16 } },
                 move: {
                     enable: true,
-                    speed: {
-                        value: {
-                            min: .2,
-                            max: .6
-                        }
-                    },
+                    speed: { min: 0.08, max: 0.25 },
                     direction: "right",
-                    random: false,
-                    drift: 0,
                     straight: true,
-                    outModes: {
-                        default: "out"
-                    },
-                    attract: {
-                        enable: false
-                    }
-                }
+                    outModes: { default: "out" },
+                },
             },
             interactivity: {
                 events: {
-                    onClick: {
-                        enable: false
-                    },
-                    onHover: {
-                        enable: false
-                    }
+                    onClick: { enable: false },
+                    onHover: { enable: false },
                 },
-                modes: {
-                    push: {
-                        quantity: 3
-                    }
-                }
             },
-        }
+        },
     });
 }
-

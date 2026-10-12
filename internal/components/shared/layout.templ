@@ -4,40 +4,23 @@ import "doppler/internal/models"
 
 templ Layout(title string, user *models.User) {
 	<!DOCTYPE html>
-	<html lang="en" data-theme="forest">
+	<html lang="en">
 		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<meta
-				name="description"
-				content="Doppler: Send Signals!"
-			/>
-			<meta name="google" content="notranslate"/>
-			<link rel="stylesheet" href="/static/css/all.min.css"/>
-			<link rel="stylesheet" href="/static/css/output.css"/>
-			<link rel="stylesheet" href="/static/dist/index.css"/>
-			<title>doppler | { title }</title>
-			<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
-			<script src="/static/dist/index.js" defer></script>
+			@Head("doppler · "+title, "doppler: posts and photos from pinwheel labs")
+			<link rel="stylesheet" href={ templ.SafeURL(Asset("/static/dist/index.css")) }/>
 		</head>
-	<body class="overflow-x-hidden">
-		<div class="bg-base-300 min-h-screen">
+		<body class="flex min-h-screen flex-col">
 			@Header(user)
-			<div class="drawer lg:drawer-open max-w-[100rem] mx-auto">
-				<input id="my-drawer-2" type="checkbox" class="drawer-toggle"/>
-				<div class="drawer-content flex flex-col" id="primary-content">
-					<label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden m-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all gap-2">
-						<i class="fa-solid fa-bars text-lg"></i>
-						Menu
-					</label>
-					<div class="animate-fadeIn">
-						{ children... }
-					</div>
-					@CreatePostModal()
-				</div>
-				@Sidebar(user)
-			</div>
-		</div>
-	</body>
+			<main class="flex-1 animate-fadeIn">
+				{ children... }
+			</main>
+			<footer class="wrap flex items-center justify-between gap-4 border-t border-line py-6 font-mono text-xs text-mute">
+				<span>doppler</span>
+				<a href="/" class="quiet-link">all projects ↗</a>
+			</footer>
+			if user != nil {
+				@CreatePostModal()
+			}
+		</body>
 	</html>
 }

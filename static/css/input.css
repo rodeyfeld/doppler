@@ -2,269 +2,490 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom animations */
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-		transform: translateY(10px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
+/*
+ * pinwheel labs and doppler.
+ * Near-black, one teal, hairlines instead of boxes. Depth comes from tone
+ * steps and 1px lines: no cards, no glass, no gradients.
+ */
 
-@keyframes slideIn {
-	from {
-		opacity: 0;
-		transform: translateX(-20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateX(0);
-	}
-}
-
-@keyframes scaleIn {
-	from {
-		opacity: 0;
-		transform: scale(0.95);
-	}
-	to {
-		opacity: 1;
-		transform: scale(1);
-	}
-}
-
-@keyframes shimmer {
-	0% {
-		background-position: -1000px 0;
-	}
-	100% {
-		background-position: 1000px 0;
-	}
-}
-
-/* Apply smooth animations */
-.animate-fadeIn {
-	animation: fadeIn 0.6s ease-out;
-}
-
-.animate-slideIn {
-	animation: slideIn 0.5s ease-out;
-}
-
-.animate-scaleIn {
-	animation: scaleIn 0.4s ease-out;
-}
-
-/* Stagger animations for lists */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
-.stagger-7 { animation-delay: 0.7s; }
-.stagger-8 { animation-delay: 0.8s; }
-
-/* Glass morphism effect */
-.glass-card {
-	background: rgba(255, 255, 255, 0.05);
-	backdrop-filter: blur(10px);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
-
-/* Hover lift effect */
-.hover-lift {
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-}
-
-/* Smooth transitions for all interactive elements */
-button, a, .card {
-	transition: all 0.3s ease;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-	width: 10px;
-}
-
-::-webkit-scrollbar-track {
-	background: oklch(var(--b2));
-}
-
-::-webkit-scrollbar-thumb {
-	background: oklch(var(--p));
-	border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: oklch(var(--pf));
-}
-
-/* Glow effect */
-.glow {
-	box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
-}
-
-/* Pulse animation for important elements */
-@keyframes pulse-glow {
-	0%, 100% {
-		box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-	}
-	50% {
-		box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
-	}
-}
-
-.pulse-glow {
-	animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Floating animation */
-@keyframes float {
-	0%, 100% {
-		transform: translateY(0px);
-	}
-	50% {
-		transform: translateY(-10px);
-	}
-}
-
-.float {
-	animation: float 3s ease-in-out infinite;
-}
-
-/* Better focus states */
-input:focus, textarea:focus, select:focus {
-	outline: none;
-	box-shadow: 0 0 0 3px oklch(var(--p) / 0.3);
-	border-color: oklch(var(--p));
-}
-
-/* Smooth page transitions */
-@media (prefers-reduced-motion: no-preference) {
+@layer base {
+	/* The background sits on html so the landing page's pinwheels, behind body's content, still show */
 	html {
-		scroll-behavior: smooth;
+		color-scheme: dark;
+		-webkit-text-size-adjust: 100%;
+		@apply bg-night;
+	}
+
+	body {
+		@apply font-sans text-fg antialiased;
+	}
+
+	::selection {
+		@apply bg-pin/30 text-fg;
+	}
+
+	:focus-visible {
+		@apply outline outline-1 outline-offset-2 outline-pin;
+	}
+
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: theme("colors.line-strong") transparent;
 	}
 }
 
-/* Enhanced link hover effects */
-a:not(.btn) {
-	position: relative;
-	transition: color 0.3s ease;
+@layer components {
+	/* ---------- layout ---------- */
+
+	.wrap {
+		@apply mx-auto w-full max-w-2xl px-5;
+	}
+
+	.wrap-wide {
+		@apply mx-auto w-full max-w-4xl px-5 sm:px-8;
+	}
+
+	/* ---------- type ---------- */
+
+	/* Small lowercase mono labels */
+	.eyebrow {
+		@apply font-mono text-xs lowercase tracking-[0.14em] text-mute;
+	}
+
+	.nav-link {
+		@apply text-sm text-dim transition-colors duration-300 hover:text-fg;
+	}
+
+	.quiet-link {
+		@apply text-dim transition-colors duration-300 hover:text-fg;
+	}
+
+	.link {
+		@apply text-fg underline decoration-pin/60 underline-offset-4 transition-colors hover:decoration-pin;
+	}
+
+
+	/* ---------- controls ---------- */
+
+	.btn {
+		@apply inline-flex h-9 cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-[4px] border border-line-strong px-3.5 text-sm text-fg transition-colors duration-200 hover:border-dim disabled:cursor-not-allowed disabled:opacity-40;
+	}
+
+	.btn-primary {
+		@apply border-pin bg-pin font-medium text-night hover:border-[#5eead4] hover:bg-[#5eead4];
+	}
+
+	.btn-quiet {
+		@apply border-transparent text-dim hover:border-transparent hover:text-fg;
+	}
+
+	.btn-danger {
+		@apply border-rust/40 text-rust hover:border-rust;
+	}
+
+	.btn-block {
+		@apply flex w-full;
+	}
+
+	.field {
+		@apply flex flex-col gap-2;
+	}
+
+	.field-label {
+		@apply eyebrow;
+	}
+
+	/* Inputs are a single underline that turns teal on focus */
+	.input {
+		@apply h-10 w-full rounded-none border-0 border-b border-line-strong bg-transparent px-0 text-base text-fg transition-colors placeholder:text-mute focus:border-pin focus:outline-none;
+	}
+
+	.title-input {
+		@apply w-full border-0 bg-transparent p-0 text-2xl font-medium tracking-[-0.02em] text-fg placeholder:text-mute focus:outline-none;
+	}
+
+	/* Errors and notes: a thin tinted rule instead of a filled box */
+	.notice {
+		@apply border-l py-1 pl-4 text-sm text-dim;
+	}
+
+	.notice-error {
+		@apply border-rust/60 text-rust;
+	}
+
+	.notice-warn {
+		@apply border-pin/60;
+	}
+
+	/* Dropdown built on <details> */
+	.menu {
+		@apply relative;
+	}
+
+	.menu > summary {
+		@apply list-none;
+	}
+
+	.menu > summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.menu-panel {
+		@apply absolute right-0 top-full z-50 mt-3 flex min-w-[9rem] flex-col rounded-[4px] border border-line bg-ink py-1;
+		animation: fadeIn 0.2s ease-out;
+	}
+
+	.menu-item {
+		@apply px-3 py-1.5 text-sm text-dim transition-colors hover:bg-night hover:text-fg;
+	}
+
+	/* Dialog */
+	.sheet {
+		@apply m-auto w-[calc(100%-2rem)] max-w-2xl rounded-[6px] border border-line bg-night p-0 text-fg;
+	}
+
+	.sheet[open] {
+		animation: fadeIn 0.25s ease-out;
+	}
+
+	.sheet::backdrop {
+		background: rgba(10, 12, 12, 0.82);
+	}
+
+	/* ---------- landing page: one hairline row per project ---------- */
+
+	.project {
+		@apply grid gap-x-8 gap-y-2 border-t border-line py-6 sm:grid-cols-[10rem_1fr_auto];
+	}
+
+	.project:last-child {
+		@apply border-b;
+	}
+
+	.project-name {
+		@apply text-xl font-medium leading-tight tracking-[-0.01em];
+	}
+
+	.project-name a,
+	.project-links a {
+		@apply transition-colors duration-300;
+	}
+
+	.project-name a:hover,
+	.project-links a:hover {
+		color: var(--hue, theme("colors.pin"));
+	}
+
+	.project-stack {
+		@apply mt-2 font-mono text-xs text-mute;
+	}
+
+	.project-links {
+		@apply flex gap-5 font-mono text-xs text-dim sm:flex-col sm:items-end sm:gap-1.5;
+	}
+
+	/* ---------- posts ---------- */
+
+	.post {
+		@apply relative scroll-mt-8 py-12;
+	}
+
+	/* Between posts runs a thin wave. Its wavelength (--wl, set per post as
+	   wave-<bucket>) stretches with the post's age: tight ripples for new
+	   posts, long swells for old ones. Doppler, quietly. */
+	.post + .post::before {
+		content: "";
+		@apply absolute inset-x-0 top-0 h-2;
+		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 8' preserveAspectRatio='none'%3E%3Cpath d='M0 4C3 1.5 9 1.5 12 4S21 6.5 24 4' fill='none' stroke='%233a4644' stroke-width='1' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") repeat-x left center;
+		background-size: var(--wl, 32px) 8px;
+	}
+
+	.post-title {
+		@apply text-balance text-[1.65rem] font-medium leading-[1.15] tracking-[-0.02em] sm:text-[1.9rem];
+	}
+
+	.post-title a {
+		@apply transition-colors duration-300 hover:text-pin;
+	}
+
+	/* Photos: a tight grid; a single photo keeps its own shape */
+	.photos {
+		@apply mt-6 grid grid-cols-2 gap-2;
+	}
+
+	.photos[data-count="1"] {
+		@apply grid-cols-1;
+	}
+
+	.photos[data-count="3"] {
+		@apply grid-cols-3;
+	}
+
+	.photos[data-count="5"] > :first-child {
+		@apply col-span-2;
+	}
+
+	.photo {
+		@apply block aspect-[4/3] w-full cursor-zoom-in rounded-[3px] bg-ink object-cover transition-[filter] duration-300 hover:brightness-110;
+	}
+
+	.photos[data-count="1"] .photo {
+		@apply aspect-auto max-h-[80vh];
+	}
+
+	/* Rich text from Quill */
+	.post-body {
+		@apply mt-6 text-[17px] leading-[1.7] text-dim;
+	}
+
+	.post-body > * + * {
+		@apply mt-4;
+	}
+
+	.post-body h1,
+	.post-body h2,
+	.post-body h3 {
+		@apply mt-8 font-medium leading-tight text-fg;
+	}
+
+	.post-body h1 { @apply text-2xl; }
+	.post-body h2 { @apply text-xl; }
+	.post-body h3 { @apply text-lg; }
+
+	.post-body strong {
+		@apply font-semibold text-fg;
+	}
+
+	.post-body a {
+		@apply link;
+	}
+
+	.post-body blockquote {
+		@apply border-l-2 border-pin/70 pl-4 text-fg;
+	}
+
+	.post-body code {
+		@apply rounded-[3px] bg-ink px-1.5 py-0.5 font-mono text-[0.88em] text-fg;
+	}
+
+	.post-body pre,
+	.post-body .ql-code-block-container {
+		@apply overflow-x-auto rounded-[4px] border border-line bg-ink p-4 font-mono text-[13.5px] leading-relaxed text-fg;
+	}
+
+	.post-body ul,
+	.post-body ol {
+		@apply space-y-1 pl-5;
+	}
+
+	.post-body ul { @apply list-disc; }
+	.post-body ol { @apply list-decimal; }
+
+	.post-body li::marker {
+		@apply text-mute;
+	}
+
+	.post-body img {
+		@apply max-w-full rounded-[3px];
+	}
+
+	.post-body .ql-ui {
+		display: none;
+	}
 }
 
-/* Card animations on hover */
-.card {
-	will-change: transform;
+/* ---------- waves and color ---------- */
+
+/* Wavelength of the wave above a post, by the post's age. Picked per post in
+   templates as wave-<bucket>; kept outside @layer so Tailwind doesn't purge
+   the dynamically built class names. */
+.wave-1 { --wl: 14px; }
+.wave-2 { --wl: 20px; }
+.wave-3 { --wl: 28px; }
+.wave-4 { --wl: 40px; }
+.wave-5 { --wl: 56px; }
+.wave-6 { --wl: 80px; }
+
+/* Each project on the landing page keeps the color it had on its old card,
+   shown when its name or links are hovered */
+.hue-emerald { --hue: #10b981; }
+.hue-teal    { --hue: #14b8a6; }
+.hue-cyan    { --hue: #06b6d4; }
+.hue-sky     { --hue: #0ea5e9; }
+.hue-green   { --hue: #22c55e; }
+.hue-aqua    { --hue: #22d3ee; }
+.hue-blue    { --hue: #3b82f6; }
+.hue-mint    { --hue: #34d399; }
+.hue-deep    { --hue: #0d9488; }
+.hue-slate   { --hue: #38bdf8; }
+
+/* ---------- the pinwheel ---------- */
+
+/* It spins while its link is hovered; on the landing page it turns on its own,
+   slowly, and speeds up under the pointer */
+.brand:hover .pinwheel,
+.brand:focus-visible .pinwheel {
+	animation: spin 1.4s linear infinite;
 }
 
-/* Loading skeleton shimmer effect */
-.skeleton {
-	background: linear-gradient(
-		90deg,
-		oklch(var(--b2)) 0%,
-		oklch(var(--b3)) 50%,
-		oklch(var(--b2)) 100%
-	);
-	background-size: 200% 100%;
-	animation: shimmer 1.5s ease-in-out infinite;
+.pinwheel-slow {
+	animation: spin 48s linear infinite;
 }
 
-/* Beautiful input glow on focus */
-.input:focus-within {
-	animation: pulse-glow 1.5s ease-in-out;
+.pinwheel-slow:hover {
+	animation-duration: 1.4s;
 }
 
-/* Smooth modal animations */
-dialog[open] {
-	animation: scaleIn 0.3s ease-out;
+/* The blog's pinwheel sends out a faint ring while hovered */
+.mark {
+	@apply relative inline-flex;
 }
 
-dialog::backdrop {
-	animation: fadeIn 0.3s ease-out;
-	backdrop-filter: blur(4px);
+.mark::before {
+	content: "";
+	@apply absolute inset-0 rounded-full border border-pin opacity-0;
 }
 
-/* Enhanced button press effect */
-.btn:active {
-	transform: scale(0.95);
+.brand:hover .mark::before,
+.brand:focus-visible .mark::before {
+	animation: ripple 1.6s ease-out infinite;
 }
 
-/* Icon rotation on hover */
-.fa-spin-pulse:hover {
-	animation: fa-spin 1s linear infinite;
+@keyframes ripple {
+	from { transform: scale(0.7); opacity: 0.7; }
+	to { transform: scale(2.6); opacity: 0; }
 }
 
-/* Improved image transitions */
-img {
-	transition: transform 0.3s ease, filter 0.3s ease;
+/* ---------- compose (Quill) ---------- */
+
+.compose-editor .ql-toolbar.ql-snow {
+	@apply border-0 border-b border-line px-0 py-2 font-sans;
 }
 
-img:hover {
-	filter: brightness(1.05);
+.compose-editor .ql-container.ql-snow {
+	@apply border-0 font-sans;
 }
 
-/* Quill Editor Styling */
-#editor .ql-container {
-	min-height: 250px;
-	font-size: 1rem;
+.compose-editor .ql-editor {
+	@apply min-h-[220px] px-0 py-4 text-[16px] leading-[1.7] text-fg;
 }
 
-#editor .ql-editor {
-	min-height: 250px;
-	padding: 1rem;
-	font-size: 1rem;
-	line-height: 1.6;
+.compose-editor .ql-editor.ql-blank::before {
+	@apply left-0 not-italic text-mute;
 }
 
-#editor .ql-editor.ql-blank::before {
-	color: oklch(var(--bc) / 0.4);
-	font-style: italic;
+.compose-editor .ql-snow .ql-stroke {
+	stroke: theme("colors.dim");
 }
 
-#editor .ql-toolbar {
-	border-top-left-radius: 0.5rem;
-	border-top-right-radius: 0.5rem;
-	border-color: oklch(var(--b3));
-	background: oklch(var(--b2));
+.compose-editor .ql-snow .ql-fill {
+	fill: theme("colors.dim");
 }
 
-#editor .ql-container {
-	border-bottom-left-radius: 0.5rem;
-	border-bottom-right-radius: 0.5rem;
-	border-color: oklch(var(--b3));
-	background: oklch(var(--b1));
+.compose-editor .ql-snow .ql-picker {
+	color: theme("colors.dim");
 }
 
-#editor .ql-stroke {
-	stroke: oklch(var(--bc) / 0.7);
+.compose-editor .ql-snow .ql-picker-options {
+	@apply rounded-[4px] border-line bg-ink;
 }
 
-#editor .ql-fill {
-	fill: oklch(var(--bc) / 0.7);
+.compose-editor .ql-snow button:hover .ql-stroke,
+.compose-editor .ql-snow button.ql-active .ql-stroke,
+.compose-editor .ql-snow .ql-picker-label:hover .ql-stroke {
+	stroke: theme("colors.fg");
 }
 
-#editor .ql-picker-label {
-	color: oklch(var(--bc) / 0.7);
+.compose-editor .ql-snow button:hover .ql-fill,
+.compose-editor .ql-snow button.ql-active .ql-fill {
+	fill: theme("colors.fg");
 }
 
-#editor button:hover .ql-stroke,
-#editor button:focus .ql-stroke,
-#editor button.ql-active .ql-stroke {
-	stroke: oklch(var(--p));
+.compose-editor .ql-snow .ql-picker-label:hover,
+.compose-editor .ql-snow .ql-picker-item:hover {
+	color: theme("colors.fg");
 }
 
-#editor button:hover .ql-fill,
-#editor button:focus .ql-fill,
-#editor button.ql-active .ql-fill {
-	fill: oklch(var(--p));
+.compose-editor .ql-snow .ql-tooltip {
+	@apply rounded-[4px] border-line bg-ink text-dim shadow-none;
+}
+
+.compose-editor .ql-snow .ql-tooltip input[type="text"] {
+	@apply border-line bg-night text-fg;
+}
+
+/* Photo dropzone */
+.dropzone {
+	@apply flex h-20 cursor-pointer items-center justify-center rounded-[4px] border border-dashed border-line-strong text-sm text-mute transition-colors hover:border-dim hover:text-fg;
+}
+
+.dropzone.is-over {
+	@apply border-pin text-fg;
+}
+
+/* Lightbox */
+.lightbox {
+	@apply m-0 h-full max-h-none w-full max-w-none cursor-zoom-out border-0 bg-transparent p-0;
+}
+
+.lightbox[open] {
+	@apply flex items-center justify-center;
+	animation: fadeIn 0.2s ease-out;
+}
+
+.lightbox::backdrop {
+	background: rgba(10, 12, 12, 0.94);
+}
+
+/* Empty feed, hidden as soon as a post lands beside it */
+.feed-empty:not(:only-child) {
+	display: none;
+}
+
+/* HTMX request states */
+.htmx-indicator {
+	display: none;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+	display: inline-flex;
+}
+
+.htmx-request .htmx-not-indicator {
+	display: none;
+}
+
+/* ---------- motion ---------- */
+
+/* Content fades in once on load; swaps stay still */
+.animate-fadeIn {
+	animation: fadeIn 0.6s ease-out both;
+}
+
+.stagger-1 { animation-delay: 0.08s; }
+.stagger-2 { animation-delay: 0.16s; }
+.stagger-3 { animation-delay: 0.24s; }
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(4px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+
+	#tsparticles {
+		display: none;
+	}
 }
