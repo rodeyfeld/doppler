@@ -11,6 +11,12 @@ import (
 func Setup(s *server.DopplerServer) {
 
 	s.Echo.Use(middleware.Logger(), middleware.Recover())
+	s.Echo.Use(middleware.SecureWithConfig(middleware.SecureConfig{
+		ContentTypeNosniff: "nosniff",
+		XFrameOptions:      "SAMEORIGIN",
+		HSTSMaxAge:         31536000,
+		ReferrerPolicy:     "strict-origin-when-cross-origin",
+	}))
 
 	homeHandler := handlers.NewHomeHandler(s)
 	s.Echo.GET("/", homeHandler.HomeIndex)
