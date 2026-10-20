@@ -31,7 +31,7 @@ export async function initParticles() {
                 rotate: {
                     direction: "random",
                     value: { min: 0, max: 360 },
-                    animation: { enable: true, speed: { min: 1, max: 14 }, sync: false },
+                    animation: { enable: true, speed: { min: 2, max: 28 }, sync: false },
                 },
                 shape: {
                     type: "images",

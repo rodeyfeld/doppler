@@ -329,7 +329,7 @@
 }
 
 .pinwheel-slow {
-	animation: spin 48s linear infinite;
+	animation: spin 24s linear infinite;
 }
 
 .pinwheel-slow:hover {
